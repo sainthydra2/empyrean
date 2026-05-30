@@ -244,6 +244,11 @@
   .lightbox-text .crest{font-family:var(--roman);font-size:.7rem;letter-spacing:.24em;text-transform:uppercase;color:var(--wine);margin-bottom:8px;}
   .lightbox-text h3{font-family:var(--serif);font-size:2rem;font-weight:700;color:var(--ink);margin-bottom:14px;}
   .lightbox-text p{font-size:1.02rem;color:var(--ink);opacity:.85;line-height:1.85;}
+  /* 富文本小传：分段、逐行换行 */
+  .lb-desc{font-size:1.02rem;color:var(--ink);line-height:1.95;}
+  .lb-desc p{margin:0 0 1.1em;opacity:.88;}
+  .lb-desc p:last-child{margin-bottom:0;}
+  .lb-desc .verse{font-family:var(--script);font-style:italic;color:var(--ink-soft);font-size:1.12rem;}
 
   /* 人物灯箱：左图右文，文字区与图等高、超长滚动 */
   .lightbox.person-mode .lightbox-inner{max-width:1000px;}
@@ -489,7 +494,7 @@
     <div class="grid place-grid">
 
       <div class="place reveal" onclick="openPlace(this)"
-        data-img="everitel.png"
+        data-img=""everitel.png""
         data-crest="王 都"
         data-name="王城伊维特里"
         data-desc="王国的心脏与太阳神王的座所。德拉维安四世在此立朝，王后伊索莉娅怀着王嗣，宰相卡德伦执掌政务，沉默如石的雷恩哈特统领军队。荣光与裂痕都从这里生长。">
@@ -545,7 +550,7 @@
       <div class="lightbox-text">
         <div class="crest" id="lbCrest"></div>
         <h3 id="lbName"></h3>
-        <p id="lbDesc"></p>
+        <div id="lbDesc" class="lb-desc"></div>
       </div>
     </div>
   </div>
@@ -568,7 +573,7 @@
         <p class="house-desc">以太阳神王为首的中央王权，靠瑟拉斐的神迹维系着黄金时代——而瑟拉斐已在这位神王身上，悄悄播下了蚀印。</p>
       </div>
       <div class="grid member-grid">
-        <div class="person reveal" onclick="openPlace(this)" data-img="char-draevian.png" data-crest="太阳神王 · 本名拉多米尔" data-name="德拉维安四世" data-desc="年轻的太阳神王。他靠瑟拉斐的神迹终结了险些灭国的寒冬，换来黄金时代。与卡德伦在橄榄树下立誓：即便失败，也不能被高于他们的存在所操控——而这正是他一生要对抗的诱惑。"><div class="frame"><img src="char-draevian.png"></div><div class="place-cap"><div class="crest">太阳神王 · 本名拉多米尔</div><h3>德拉维安四世</h3></div></div>
+        <div class="person reveal" onclick="openPlace(this)" data-img="char-draevian.png" data-crest="太阳神王 · 本名拉多米尔" data-name="德拉维安四世" data-desc="年轻的太阳神王。他靠瑟拉斐的神迹终结了险些灭国的寒冬，换来黄金时代。"><div class="frame"><img src="char-draevian.png"></div><div class="bio" style="display:none"><p class="verse">你相信自己会是改变一切的那个人吗？</p><p>拉多米尔在加冕的那一日相信了，旧名被取走，新名是初代之王的圣征。他金冠聚顶，长袍加身。他相信了，自己会是那个改变一切的人。</p><p>寒冬里他做过一个决定，救了自己的臣民，从此一只巨大的眼睛在天空中时刻凝视着自己。他在橄榄树下许过另一个约定，答应了另一个男人。两个决定像两只手，一只往前推，一只往回拉，而他站在中间，越来越分不清自己究竟是谁。</p><p>人们把他视作太阳。可太阳从不知道自己照亮了什么，也从不知道，是谁在背后点燃了它，又是谁，早已诅咒它终将熄灭。</p><p>他始终在等一个时刻，等自己终于能说出那个字。<br>后来他真的说了。<br>那个字是同意。<br>然后天亮了，亮得什么都不剩。</p></div><div class="place-cap"><div class="crest">太阳神王 · 本名拉多米尔</div><h3>德拉维安四世</h3></div></div>
         <div class="person reveal" onclick="openPlace(this)" data-img="char-Isolya.png" data-crest="王 后" data-name="伊索莉娅·埃登维尔" data-desc="太阳神王的王后，腹中怀着王嗣。（占位描述，待作者补充。）"><div class="frame"><img src="char-Isolya.png"></div><div class="place-cap"><div class="crest">王 后</div><h3>伊索莉娅·埃登维尔</h3></div></div>
       </div>
     </div>
@@ -693,7 +698,10 @@
     document.getElementById('lbImg').alt=el.dataset.name;
     document.getElementById('lbCrest').textContent=el.dataset.crest;
     document.getElementById('lbName').textContent=el.dataset.name;
-    document.getElementById('lbDesc').textContent=el.dataset.desc;
+    // 优先用卡片内的富文本小传(.bio)，没有则回退到 data-desc
+    var bio = el.querySelector('.bio');
+    if(bio){ document.getElementById('lbDesc').innerHTML = bio.innerHTML; }
+    else { document.getElementById('lbDesc').textContent = el.dataset.desc || ''; }
     // 人物卡走左图右文布局，地点卡保持图上文下
     if(el.classList.contains('person')){ box.classList.add('person-mode'); }
     else { box.classList.remove('person-mode'); }
