@@ -6,7 +6,7 @@
 <title>世界档案</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&family=Cinzel:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&family=Noto+Serif+SC:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Pirata+One&family=UnifrakturCook:wght@700&family=Cinzel:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&family=Noto+Serif+SC:wght@400;500;600;700;900&display=swap" rel="stylesheet">
 <style>
   :root{
     /* —— 米白 × 深酒红配色：想调整改这几行 —— */
@@ -24,7 +24,7 @@
     --abyss:   #5b4775;   /* 深渊紫（保留） */
     --moon:    #3c4a66;   /* 月之靛（保留） */
     --line:    rgba(31,28,26,.16);
-    --display: 'UnifrakturCook', 'Cinzel', serif;  /* 英文大标题 · 哥特花体 */
+    --display: 'Pirata One', 'Cinzel', serif;      /* 英文大标题 · 哥特 */
     --roman:   'Cinzel', serif;                    /* 英文小标签 · 罗马碑刻 */
     --serif:   'Noto Serif SC', serif;             /* 中文 · 厚宋体 */
     --script:  'Cormorant Garamond', serif;        /* 斜体引文 */
@@ -96,6 +96,17 @@
     opacity:0;animation:rise .9s ease forwards;}
   .gate:nth-child(1){animation-delay:.7s;} .gate:nth-child(2){animation-delay:.85s;} .gate:nth-child(3){animation-delay:1s;}
   .gate.open:hover{transform:translateY(-9px);border-color:var(--wine);box-shadow:0 22px 50px rgba(153,26,55,.16);}
+  /* 日蚀卡悬停：酒红从右下角柔和扩散铺满，文字+圆框反白 */
+  .gate.open::before{content:"";position:absolute;inset:0;z-index:0;
+    background:radial-gradient(circle at bottom right, var(--wine) 0%, var(--wine) 100%);
+    opacity:0;transform:scale(.2);transform-origin:bottom right;
+    transition:opacity .5s ease, transform .6s cubic-bezier(.4,0,.2,1);}
+  .gate.open:hover::before{opacity:1;transform:scale(1.6);}
+  .gate.open > *{position:relative;z-index:1;}
+  .gate.open:hover .en,
+  .gate.open:hover h2,
+  .gate.open:hover p{color:#fff;transition:color .45s ease;}
+  .gate.open:hover .seal{border-color:rgba(255,255,255,.7);color:#fff;transition:border-color .45s,color .45s;}
   .gate .seal{width:78px;height:78px;margin:0 auto 18px;display:flex;align-items:center;justify-content:center;
     border:1px dashed var(--line);border-radius:50%;color:var(--ink-soft);font-size:.66rem;letter-spacing:.1em;overflow:hidden;}
   .gate .seal img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
@@ -229,7 +240,7 @@
 <!-- ========== 导航 ========== -->
 <nav>
   <!-- ↓ 改成你的名字/笔名 ↓ -->
-  <div class="brand" onclick="go('hall')">SAINTHYDRA</div>
+  <div class="brand" onclick="go('hall')">SaintHydra</div>
   <ul>
     <li><a onclick="go('eclipse')">日蚀</a></li>
     <li><a onclick="go('supreme')">至高天</a></li>
@@ -244,7 +255,7 @@
       <!-- ↓↓↓ 头像：把图传进仓库 images 文件夹后，将下面 src 整段换成 images/avatar.jpg ↓↓↓ -->
       <div class="avatar"><img src="profile.png" alt="头像"></div>
       <!-- ↓ 改成你的名字（这里会用哥特花体显示） ↓ -->
-      <h1>SAINTHYDRA</h1>
+      <h1>SaintHydra</h1>
       <div class="role">Welcome to my world</div>
     </div>
 
