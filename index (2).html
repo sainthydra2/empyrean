@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>世界档案</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Cormorant+Garamond:ital@0;1&family=Noto+Serif+SC:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    /* —— 古卷抄本配色：想调整改这几行 —— */
+    --paper:   #e8dabb;   /* 做旧米黄羊皮纸 · 主底 */
+    --paper-2: #e1d0ac;   /* 略深 */
+    --paper-3: #d8c49c;   /* 卡片底 */
+    --ink:     #3a2c1b;   /* 褐墨水 · 正文 */
+    --ink-soft:#6f5c44;   /* 弱化褐 */
+    --gild:    #9b7826;   /* 烫金 · 主强调 */
+    --gild-lt: #c0a04a;   /* 亮金 */
+    --accent:  #7c4528;   /* 赭红做旧 */
+    --abyss:   #5b4775;   /* 深渊紫 */
+    --moon:    #4d5b78;   /* 月之靛 */
+    --line:    rgba(58,44,27,.22);
+    --display: 'Cinzel', serif;
+    --serif:   'Noto Serif SC', serif;
+    --script:  'Cormorant Garamond', serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--serif);
+    font-size:18px;line-height:1.9;font-weight:400;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+    /* 羊皮纸做旧：四角氧化的褐晕 + 中心微光 */
+    background-image:
+      radial-gradient(ellipse 60% 50% at 50% 40%, rgba(255,248,228,.5), transparent 70%),
+      radial-gradient(circle at 0% 0%, rgba(120,80,30,.14), transparent 30%),
+      radial-gradient(circle at 100% 0%, rgba(120,80,30,.13), transparent 30%),
+      radial-gradient(circle at 0% 100%, rgba(120,80,30,.14), transparent 30%),
+      radial-gradient(circle at 100% 100%, rgba(120,80,30,.13), transparent 30%);
+    background-attachment:fixed;
+  }
+  /* 纸张纤维颗粒 */
+  body::before{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.06;mix-blend-mode:multiply;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* —— 导航：常驻品牌 + 三世界 —— */
+  nav{position:fixed;top:0;left:0;right:0;z-index:60;
+    display:flex;justify-content:space-between;align-items:center;
+    padding:15px 40px;background:rgba(232,218,187,.82);backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);}
+  nav .brand{font-family:var(--display);font-size:1.05rem;letter-spacing:.1em;
+    color:var(--ink);cursor:pointer;}
+  nav ul{display:flex;gap:28px;list-style:none;}
+  nav a{color:var(--ink-soft);text-decoration:none;font-size:.78rem;
+    letter-spacing:.16em;cursor:pointer;transition:color .3s;border-bottom:1px solid transparent;padding-bottom:2px;}
+  nav a:hover{color:var(--gild);} nav a.disabled{opacity:.45;}
+
+  /* —— 视图切换 —— */
+  .view{display:none;position:relative;z-index:1;}
+  .view.active{display:block;}
+
+  /* 烫金小装饰 */
+  .flourish{text-align:center;color:var(--gild);font-size:1.1rem;letter-spacing:.5em;margin:0 0 6px;}
+  .label{font-family:var(--display);font-size:.72rem;letter-spacing:.4em;text-transform:uppercase;color:var(--gild);}
+  .verse{font-family:var(--script);font-style:italic;color:var(--ink-soft);}
+
+  /* ============ 门厅 ============ */
+  .hall{min-height:100vh;display:flex;flex-direction:column;align-items:center;
+    justify-content:center;text-align:center;padding:120px 24px 80px;}
+  .author{display:flex;flex-direction:column;align-items:center;margin-bottom:60px;
+    opacity:0;animation:rise 1s ease .2s forwards;}
+  .avatar{width:104px;height:104px;border-radius:50%;border:2px solid var(--gild);
+    padding:5px;margin-bottom:20px;background:var(--paper-2);
+    box-shadow:0 6px 24px rgba(58,44,27,.2);}
+  .avatar img{width:100%;height:100%;border-radius:50%;object-fit:cover;display:block;}
+  .author h1{font-family:var(--display);font-size:clamp(2rem,5vw,3rem);
+    letter-spacing:.08em;color:var(--ink);font-weight:600;}
+  .author .role{font-family:var(--script);font-style:italic;font-size:1.15rem;color:var(--ink-soft);margin-top:4px;}
+  .enter-label{font-family:var(--display);font-size:.74rem;letter-spacing:.42em;
+    text-transform:uppercase;color:var(--gild);margin-bottom:34px;
+    opacity:0;animation:rise 1s ease .5s forwards;}
+  .gates{display:grid;grid-template-columns:repeat(3,1fr);gap:30px;max-width:980px;width:100%;}
+  .gate{background:var(--paper-3);border:1px solid var(--line);border-radius:4px;
+    padding:42px 30px;cursor:pointer;position:relative;overflow:hidden;text-align:center;
+    transition:transform .5s, box-shadow .5s, border-color .5s;
+    opacity:0;animation:rise .9s ease forwards;}
+  .gate:nth-child(1){animation-delay:.7s;} .gate:nth-child(2){animation-delay:.85s;} .gate:nth-child(3){animation-delay:1s;}
+  .gate.open:hover{transform:translateY(-9px);border-color:var(--gild);box-shadow:0 22px 50px rgba(58,44,27,.22);}
+  .gate .seal{font-size:1.6rem;color:var(--gild);margin-bottom:16px;}
+  .gate h2{font-family:var(--serif);font-size:1.7rem;font-weight:600;margin-bottom:8px;}
+  .gate .en{font-family:var(--display);font-size:.66rem;letter-spacing:.26em;text-transform:uppercase;color:var(--gild);margin-bottom:14px;}
+  .gate p{font-size:.92rem;color:var(--ink-soft);line-height:1.7;}
+  .gate.locked{opacity:.62;cursor:default;}
+  .gate.locked .status{display:inline-block;margin-top:14px;font-size:.7rem;letter-spacing:.2em;
+    color:var(--ink-soft);border:1px solid var(--line);border-radius:20px;padding:3px 14px;}
+
+  /* ============ 内部页通用 ============ */
+  .crumbs{position:relative;z-index:1;max-width:1080px;margin:0 auto;padding:96px 40px 0;
+    font-size:.8rem;letter-spacing:.1em;color:var(--ink-soft);}
+  .crumbs span{cursor:pointer;color:var(--gild);} .crumbs span:hover{text-decoration:underline;}
+  .crumbs .sep{color:var(--ink-soft);cursor:default;margin:0 8px;}
+  section{position:relative;z-index:1;max-width:1080px;margin:0 auto;padding:64px 40px;}
+  .hero-band{text-align:center;padding:70px 40px 40px;}
+  .hero-band .label{display:block;margin-bottom:14px;}
+  .hero-band h1{font-family:var(--display);font-size:clamp(2.6rem,7vw,5rem);
+    letter-spacing:.06em;color:var(--ink);font-weight:600;}
+  .hero-band .tag{font-family:var(--script);font-style:italic;font-size:1.3rem;color:var(--ink-soft);margin-top:14px;}
+  .sec-head{margin-bottom:40px;}
+  .sec-head .ornament{display:flex;align-items:center;gap:14px;margin-bottom:10px;}
+  .sec-head .ornament::before,.sec-head .ornament::after{content:"";height:1px;background:var(--line);}
+  .sec-head .ornament::before{width:30px;} .sec-head .ornament::after{flex:1;}
+  .sec-head .ornament .m{color:var(--gild);font-size:.8rem;letter-spacing:.3em;}
+  .sec-head h2{font-family:var(--serif);font-size:clamp(1.7rem,4vw,2.5rem);font-weight:600;margin:6px 0 12px;}
+  .sec-head p{color:var(--ink-soft);max-width:680px;}
+
+  /* 序章 */
+  .prologue{display:grid;grid-template-columns:1.2fr .9fr;gap:50px;align-items:start;}
+  .prologue .verse{font-size:1.45rem;line-height:1.6;margin-bottom:22px;}
+  .prologue p{color:var(--ink);opacity:.85;font-size:1.02rem;}
+  .prologue p + p{margin-top:16px;}
+  .prologue .drop{font-family:var(--display);font-size:3.2rem;float:left;line-height:.85;margin:6px 12px 0 0;color:var(--gild);}
+  .scroll-frame{border:1px solid var(--line);border-radius:3px;aspect-ratio:3/4;overflow:hidden;
+    background:var(--paper-2);box-shadow:0 12px 36px rgba(58,44,27,.16);}
+  .scroll-frame img{width:100%;height:100%;object-fit:cover;display:block;}
+
+  /* 主神三联 */
+  .pantheon{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-bottom:36px;}
+  .deity{background:var(--paper-3);border:1px solid var(--line);border-radius:4px;padding:30px 26px;
+    position:relative;transition:transform .5s,box-shadow .5s;}
+  .deity:hover{transform:translateY(-6px);box-shadow:0 18px 40px rgba(58,44,27,.18);}
+  .deity .sigil{font-size:1.7rem;margin-bottom:10px;display:block;color:var(--gild);}
+  .deity h3{font-family:var(--serif);font-size:1.35rem;font-weight:600;margin-bottom:2px;}
+  .deity .domain{font-family:var(--script);font-style:italic;color:var(--ink-soft);margin-bottom:14px;}
+  .deity p{font-size:.94rem;color:var(--ink);opacity:.82;}
+  .d-nox h3{color:var(--moon);} .d-sera h3{color:var(--gild);} .d-aios h3{color:var(--accent);}
+
+  /* 外神 · 可展开 */
+  .outer{border:1px solid var(--line);border-radius:4px;background:var(--paper-3);margin-bottom:24px;overflow:hidden;}
+  .outer-head{padding:24px 28px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;
+    transition:background .3s;}
+  .outer-head:hover{background:var(--paper-2);}
+  .outer-head h3{font-family:var(--serif);font-size:1.3rem;font-weight:600;}
+  .outer-head .hint{font-size:.74rem;letter-spacing:.18em;color:var(--ink-soft);}
+  .outer-head .chev{color:var(--gild);font-size:1.1rem;transition:transform .4s;}
+  .outer.open .chev{transform:rotate(90deg);}
+  .outer-body{max-height:0;overflow:hidden;transition:max-height .5s ease;}
+  .outer.open .outer-body{max-height:600px;}
+  .outer-inner{padding:0 28px 26px;display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+  .outer-inner .one{border-top:1px solid var(--line);padding-top:20px;}
+  .outer-inner h4{font-family:var(--serif);font-size:1.1rem;font-weight:600;color:var(--accent);margin-bottom:6px;}
+  .outer-inner .ph{font-size:.66rem;letter-spacing:.2em;color:var(--gild);margin-bottom:8px;}
+  .outer-inner p{font-size:.92rem;color:var(--ink);opacity:.82;}
+
+  /* 深渊单条 */
+  .abyss-card{background:linear-gradient(150deg,var(--paper-3),#d3c3a8);
+    border:1px solid rgba(91,71,117,.4);border-radius:4px;padding:28px 30px;}
+  .abyss-card h3{font-family:var(--serif);font-size:1.3rem;font-weight:600;color:var(--abyss);margin-bottom:6px;}
+  .abyss-card .kind{font-size:.68rem;letter-spacing:.24em;color:var(--abyss);margin-bottom:12px;}
+  .abyss-card p{font-size:.94rem;color:var(--ink);opacity:.82;}
+
+  /* 卷册书架 */
+  .shelf{display:flex;gap:28px;flex-wrap:wrap;}
+  .tome{width:200px;cursor:pointer;text-align:center;transition:transform .5s;}
+  .tome.locked{cursor:default;}
+  .tome:not(.locked):hover{transform:translateY(-10px);}
+  .tome .cover{aspect-ratio:2/3;border-radius:3px 6px 6px 3px;
+    background:linear-gradient(125deg,#cdb886,#c0a86f);
+    border:1px solid var(--gild);border-left:6px solid var(--gild);
+    box-shadow:0 14px 34px rgba(58,44,27,.28);
+    display:flex;flex-direction:column;justify-content:center;align-items:center;padding:24px;gap:14px;}
+  .tome.locked .cover{background:linear-gradient(125deg,#d2c8b2,#c8bca0);border-color:var(--line);
+    border-left-color:var(--ink-soft);box-shadow:0 8px 20px rgba(58,44,27,.14);opacity:.7;}
+  .tome .vol{font-family:var(--display);font-size:.68rem;letter-spacing:.24em;color:var(--gild);}
+  .tome .name{font-family:var(--serif);font-size:1.25rem;font-weight:600;color:var(--ink);line-height:1.4;}
+  .tome .deco{color:var(--gild);font-size:.9rem;letter-spacing:.4em;}
+  .tome.locked .vol,.tome.locked .deco{color:var(--ink-soft);}
+  .tome .caption{margin-top:12px;font-size:.82rem;color:var(--ink-soft);}
+
+  /* 疆域/人物/势力卡片 */
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:26px;}
+  .card{background:var(--paper-3);border:1px solid var(--line);border-radius:4px;overflow:hidden;
+    transition:transform .5s,border-color .5s,box-shadow .5s;}
+  .card:hover{transform:translateY(-6px);border-color:var(--gild);box-shadow:0 18px 42px rgba(58,44,27,.2);}
+  .frame{aspect-ratio:4/3;overflow:hidden;background:var(--paper-2);position:relative;}
+  .frame img{width:100%;height:100%;object-fit:cover;transition:transform .9s cubic-bezier(.2,.8,.2,1);}
+  .card:hover .frame img{transform:scale(1.06);}
+  .card .body{padding:22px 24px 26px;}
+  .card .crest{font-family:var(--display);font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gild);margin-bottom:9px;}
+  .card h3{font-family:var(--serif);font-size:1.32rem;font-weight:600;margin-bottom:7px;}
+  .card p{font-size:.93rem;color:var(--ink-soft);line-height:1.7;}
+  .card.lead .frame{aspect-ratio:3/4;} .card.lead h3{font-size:1.5rem;}
+  .card.placeholder{border-style:dashed;opacity:.72;}
+  .card.placeholder .body{padding:28px 24px;}
+
+  .divider{height:1px;max-width:1080px;margin:0 auto;background:linear-gradient(90deg,transparent,var(--line),transparent);}
+
+  footer{position:relative;z-index:1;text-align:center;padding:60px 24px;color:var(--ink-soft);font-size:.85rem;}
+  footer .crest{font-family:var(--display);font-size:1.3rem;color:var(--gild);letter-spacing:.1em;margin-bottom:6px;}
+
+  .reveal{opacity:0;transform:translateY(28px);transition:opacity .8s ease,transform .8s ease;}
+  .reveal.in{opacity:1;transform:none;}
+  @keyframes rise{from{opacity:0;transform:translateY(26px);}to{opacity:1;transform:none;}}
+
+  @media(max-width:820px){
+    nav{padding:12px 18px;} nav ul{gap:16px;} nav .brand{font-size:.9rem;}
+    nav a{font-size:.66rem;letter-spacing:.1em;}
+    .gates{grid-template-columns:1fr;} .pantheon{grid-template-columns:1fr;}
+    .prologue{grid-template-columns:1fr;gap:28px;}
+    .outer-inner{grid-template-columns:1fr;}
+    section,.crumbs{padding-left:22px;padding-right:22px;}
+    body{font-size:17px;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ========== 导航 ========== -->
+<nav>
+  <!-- ↓ 改成你的名字/笔名 ↓ -->
+  <div class="brand" onclick="go('hall')">SAINTHYDRA</div>
+  <ul>
+    <li><a onclick="go('eclipse')">日蚀</a></li>
+    <li><a onclick="go('supreme')">至高天</a></li>
+    <li><a onclick="go('eden-dream')">甜蜜仙境</a></li>
+  </ul>
+</nav>
+
+<!-- ========== 视图一 · 门厅 ========== -->
+<div class="view active" id="view-hall">
+  <div class="hall">
+    <div class="author">
+      <!-- ↓ 把 src 换成你的头像，如 images/avatar.jpg ↓ -->
+      <div class="avatar"><img src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'&gt;&lt;rect width='200' height='200' fill='%23d8c49c'/&gt;&lt;text x='50%25' y='53%25' fill='%236f5c44' font-family='serif' font-size='20' text-anchor='middle'&gt;头像&lt;/text&gt;&lt;/svg&gt;" alt="头像"></div>
+      <!-- ↓ 改成你的名字 ↓ -->
+      <h1>SAINTHYDRA</h1>
+      <div class="role">造世者 · 故事的编纂人</div>
+    </div>
+
+    <div class="enter-label">进 入 世 界</div>
+    <div class="gates">
+      <div class="gate open" onclick="go('eclipse')">
+        <div class="seal">☉</div>
+        <div class="en">Eclipse</div>
+        <h2>日蚀</h2>
+        <p>诸神的战争，落在一座镀金王国的人间。一部正在展开的悲剧史诗。</p>
+      </div>
+      <div class="gate locked" onclick="go('supreme')">
+        <div class="seal">✦</div>
+        <div class="en">Supreme Heaven</div>
+        <h2>至高天</h2>
+        <p>《日蚀》之上的本源宇宙——诸神的来处。</p>
+        <span class="status">筹备中</span>
+      </div>
+      <div class="gate locked" onclick="go('eden-dream')">
+        <div class="seal">❀</div>
+        <div class="en">Sweet Eden</div>
+        <h2>逐渐崩溃的甜蜜仙境</h2>
+        <p>另一座独立的世界，正在另一条时间线里成形。</p>
+        <span class="status">筹备中</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== 视图二 · 日蚀系列 ========== -->
+<div class="view" id="view-eclipse">
+  <div class="crumbs"><span onclick="go('hall')">世界</span><span class="sep">›</span>日蚀</div>
+
+  <div class="hero-band">
+    <span class="label">至高天宇宙 · 系列</span>
+    <h1>日蚀</h1>
+    <!-- ↓ 这句系列定调可改 ↓ -->
+    <p class="tag">诸神的战争，落在一座镀金王国的人间</p>
+  </div>
+
+  <!-- 序章（世界观挂在系列层） -->
+  <section>
+    <div class="prologue reveal">
+      <div>
+        <div class="sec-head"><div class="ornament"><span class="m">☉ ☾</span></div></div>
+        <p class="verse">起初，世界是一座完整的宇宙——至高天。直到一支箭穿过了太阳的心脏。</p>
+        <p><span class="drop">三</span>位主神共执至高天：诺克斯、赛拉菲姆、艾欧斯。赛拉菲姆筑起无形的壁垒，将一切生命封锁其中；诺克斯不肯认同，一箭射穿核心的「太阳引擎」，引发了吞噬一切的大爆炸。</p>
+        <p>至高天被撕裂，壁垒随之崩毁——幸存的生命第一次重新望见群星。亿万年里，碎裂的能量与生命重新聚合成一颗星球；而诺克斯化作流星坠落，成了悬在它头顶的那轮月亮。</p>
+        <p>这是整个日蚀系列共享的世界——它的世界观自此不再更改，每一部故事，都发生在这片由神战余烬聚成的星球之上。</p>
+      </div>
+      <div class="scroll-frame">
+        <img src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='600' height='800'&gt;&lt;rect width='600' height='800' fill='%23e1d0ac'/&gt;&lt;text x='50%25' y='50%25' fill='%236f5c44' font-family='serif' font-size='22' text-anchor='middle'&gt;起源 · 插画位&lt;/text&gt;&lt;/svg&gt;" alt="">
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- 神祇体系 -->
+  <section>
+    <div class="sec-head reveal">
+      <div class="ornament"><span class="m">神 系</span></div>
+      <h2>神祇体系</h2>
+      <p>至高天遗下三位主神，彼此为敌也彼此造就。其外，尚有旧日神祇遗下的力量，以及一片不属于任何神、由人心汇成的深渊。</p>
+    </div>
+
+    <div class="pantheon">
+      <div class="deity d-nox reveal">
+        <span class="sigil">☾</span><h3>诺克斯</h3>
+        <div class="domain">梦境 · 死亡 · 预言</div>
+        <p>漆黑而鳞片七彩的巨蛇，化作星球的月亮。执念是向旧友证明自己是对的——并最终射杀那位璀璨的日冕神祇。</p>
+      </div>
+      <div class="deity d-sera reveal">
+        <span class="sigil">☉</span><h3>赛拉菲姆</h3>
+        <div class="domain">日冕 · 信仰之火</div>
+        <p>以信仰为食的太阳，从不在低等生命前现身，借一颗白色巨眼「瑟拉斐」行事——时刻扫描全境、回收信仰。它的内心独白是一种冷酷的官僚口吻。</p>
+      </div>
+      <div class="deity d-aios reveal">
+        <span class="sigil">✦</span><h3>艾欧斯</h3>
+        <div class="domain">众生之母</div>
+        <p>三主神中的第三位，众生由她而生。其本质与意图至今几乎空白——一道尚未照亮的轮廓。</p>
+      </div>
+    </div>
+
+    <!-- 外神 · 点击展开 -->
+    <div class="outer reveal" id="outer-gods">
+      <div class="outer-head" onclick="toggleOuter()">
+        <h3>外神 · 旧日的余烬</h3>
+        <span class="hint">点击展开 <span class="chev">›</span></span>
+      </div>
+      <div class="outer-body">
+        <div class="outer-inner">
+          <div class="one">
+            <div class="ph">占位 · 待修改</div>
+            <h4>凋零之母</h4>
+            <p>被赛拉菲姆斩杀的旧日神祇。临死时她留下诅咒，遗下的「灰烬腐败」显形为一朵苍白的灰烬玫瑰——所到之处色彩褪尽、影子变薄，按灵性将生者分流。</p>
+          </div>
+          <div class="one">
+            <div class="ph">占位 · 待修改</div>
+            <h4>寒霜长者</h4>
+            <p>来自宇宙深处的无名冬之神祇，曾降临法尔托外海，带来一场无法结束的冬天。神迹能钳制它、却杀不死它——唯有人类之手能终结这位长者。（此段为占位描述，待作者改写。）</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 深渊 -->
+    <div class="abyss-card reveal">
+      <h3>深渊</h3>
+      <div class="kind">不属于任何神</div>
+      <p>一片紫色、古老而粘稠的领域，由无数人类的意识汇成——没有海面也没有海底的海洋，每个气泡都是一个透明、毫无秘密的人。它是唯一能与太阳抗衡的力量，沉默地等待着被人触碰。</p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- 卷册 -->
+  <section>
+    <div class="sec-head reveal">
+      <div class="ornament"><span class="m">卷 册</span></div>
+      <h2>系列卷目</h2>
+      <p>日蚀系列共享同一片世界。翻开下面的卷册，进入每一部各自的故事与设定。</p>
+    </div>
+    <div class="shelf">
+      <div class="tome reveal" onclick="go('edenvale')">
+        <div class="cover">
+          <span class="vol">第 一 部</span>
+          <span class="deco">❦</span>
+          <span class="name">埃登维尔追忆</span>
+        </div>
+        <div class="caption">点开 · 进入设定 ›</div>
+      </div>
+      <div class="tome locked reveal">
+        <div class="cover">
+          <span class="vol">第 二 部</span>
+          <span class="deco">⸻</span>
+          <span class="name">尚未启封</span>
+        </div>
+        <div class="caption">筹备中</div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="crest">日 蚀</div>
+    <p>至高天宇宙 · 由作者本人编纂与守护</p>
+  </footer>
+</div>
+
+<!-- ========== 视图三 · 埃登维尔追忆（第一部内页） ========== -->
+<div class="view" id="view-edenvale">
+  <div class="crumbs">
+    <span onclick="go('hall')">世界</span><span class="sep">›</span>
+    <span onclick="go('eclipse')">日蚀</span><span class="sep">›</span>第一部 · 埃登维尔追忆
+  </div>
+
+  <div class="hero-band">
+    <span class="label">日蚀 · 第一部</span>
+    <h1>埃登维尔追忆</h1>
+    <p class="tag">镀金王国，与它最后的黄金时代</p>
+  </div>
+
+  <!-- 王国与疆域 -->
+  <section>
+    <div class="sec-head reveal">
+      <div class="ornament"><span class="m">疆 域</span></div>
+      <h2>埃登维尔 · 五郡王国</h2>
+      <p>王号「五郡之王，太阳神王」。靠神迹换来黄金时代的镀金王国——直到灰烬开始从边境往里褪色。</p>
+    </div>
+    <div class="grid">
+      <div class="card reveal">
+        <div class="frame"><img src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='400' height='300'&gt;&lt;rect width='400' height='300' fill='%23e1d0ac'/&gt;&lt;text x='50%25' y='50%25' fill='%236f5c44' font-family='serif' font-size='16' text-anchor='middle'&gt;王城插画位&lt;/text&gt;&lt;/svg&gt;"></div>
+        <div class="body"><div class="crest">王 都</div><h3>王城伊维特里</h3>
+          <p>王国的心脏与太阳神王的座所。德拉维安四世在此立朝，王后伊索莉娅怀着王嗣，宰相卡德伦执掌政务，沉默如石的雷恩哈特统领军队。荣光与裂痕都从这里生长。</p></div>
+      </div>
+      <div class="card reveal">
+        <div class="frame"><img src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='400' height='300'&gt;&lt;rect width='400' height='300' fill='%23e1d0ac'/&gt;&lt;text x='50%25' y='50%25' fill='%236f5c44' font-family='serif' font-size='16' text-anchor='middle'&gt;插画位&lt;/text&gt;&lt;/svg&gt;"></div>
+        <div class="body"><div class="crest">蜜蜂纹章 · 格雷维尔家</div><h3>维丹郡</h3>
+          <p>小麦、苹果与蜂蜜的农业之郡，由吝啬而野心勃勃的奥斯特克侯爵执掌。甜美的麦浪如海——也正是这里的边境，最先长出了那朵苍白的灰烬玫瑰。</p></div>
+      </div>
+      <div class="card reveal">
+        <div class="frame"><img src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='400' height='300'&gt;&lt;rect width='400' height='300' fill='%23e1d0ac'/&gt;&lt;text x='50%25' y='50%25' fill='%236f5c44' font-family='serif' font-size='16' text-anchor='middle'&gt;插画位&lt;/text&gt;&lt;/svg&gt;"></div>
+        <div class="body"><div class="crest">珍珠与海 · 斯特兰德家</div><h3>法尔托郡</h3>
+          <p>渔业与珍珠的海港之郡，由前海盗、伯爵哈维克·斯特兰德守望。十五年前的一场大火、一段被掩埋的旧案，都从这片海岸开始。寒霜长者也曾降临它的外海。</p></div>
+      </div>
+      <div class="card reveal">
+        <div class="frame"><img src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='400' height='300'&gt;&lt;rect width='400' height='300' fill='%23e1d0ac'/&gt;&lt;text x='50%25' y='50%25' fill='%236f5c44' font-family='serif' font-size='16' text-anchor='middle'&gt;插画位&lt;/text&gt;&lt;/svg&gt;"></div>
+        <div class="body"><div class="crest">银鹿纹章 · 法维恩家</div><h3>古尔纳郡</h3>
+          <p>葡萄酒与药材之郡，由公爵科尔文执掌。精明的长姐尤莉安娜扛着家族名声，幼弟塞拉诺则是王城的医师。一桩政治联姻，正把它与维丹的秘密缠在一起。</p></div>
+      </div>
+      <div class="card placeholder reveal">
+        <div class="body"><div class="crest">第 五 郡</div><h3>希瑞伊郡</h3>
+          <p>这片疆域作者尚未启封——它的纹章、领主与故事，留待后续的篇章揭开。</p></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- 人物 -->
+  <section>
+    <div class="sec-head reveal">
+      <div class="ornament"><span class="m">名 册</span></div>
+      <h2>人物</h2>
+      <p>在神战的尺度之下，是一群挣扎着不肯「身不由己」的凡人——他们立誓、相爱、背叛、赎罪。</p>
+    </div>
+    <div class="grid">
+      <div class="card lead reveal">
+        <div class="frame"><img src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='400' height='520'&gt;&lt;rect width='400' height='520' fill='%23e1d0ac'/&gt;&lt;text x='50%25' y='50%25' fill='%236f5c44' font-family='serif' font-size='16' text-anchor='middle'&gt;立绘位&lt;/text&gt;&lt;/svg&gt;"></div>
+        <div class="body"><div class="crest">太阳神王 · 真名拉多米尔</div><h3>德拉维安四世</h3>
+          <p>年轻的太阳神王。他靠瑟拉斐的神迹终结了险些灭国的寒冬，换来黄金时代。与卡德伦在橄榄树下立誓：即便失败，也不能被高于他们的存在所操控——而这正是他一生要对抗的诱惑。</p></div>
+      </div>
+      <div class="card lead reveal">
+        <div class="frame"><img src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='400' height='520'&gt;&lt;rect width='400' height='520' fill='%23e1d0ac'/&gt;&lt;text x='50%25' y='50%25' fill='%236f5c44' font-family='serif' font-size='16' text-anchor='middle'&gt;立绘位&lt;/text&gt;&lt;/svg&gt;"></div>
+        <div class="body"><div class="crest">王之宰相 · 斯特兰德家</div><h3>卡德伦·斯特兰德</h3>
+          <p>德拉维安最亲近之人，全书的道德锚点，死守那道誓言。他在冰原亲手刺穿寒霜长者的心脏，因而获得了「看见因果」之力——也因此被命运选中，成为灰烬腐败觊觎的高灵性容器。</p></div>
+      </div>
+      <div class="card lead reveal">
+        <div class="frame"><img src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='400' height='520'&gt;&lt;rect width='400' height='520' fill='%23e1d0ac'/&gt;&lt;text x='50%25' y='50%25' fill='%236f5c44' font-family='serif' font-size='16' text-anchor='middle'&gt;立绘位&lt;/text&gt;&lt;/svg&gt;"></div>
+        <div class="body"><div class="crest">维丹 · 格雷维尔家</div><h3>西维奥拉·格雷维尔</h3>
+          <p>奥斯特克之女，抗拒被许配的命运。她与来自深渊的艾萨尔结契，换来看透人心的能力——代价是每一次使用，深渊都会折磨她直至死亡。她接受这一切，只为查清母亲死于何人之手。</p></div>
+      </div>
+      <div class="card reveal">
+        <div class="frame" style="aspect-ratio:4/3;"><img src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='400' height='300'&gt;&lt;rect width='400' height='300' fill='%23e1d0ac'/&gt;&lt;text x='50%25' y='50%25' fill='%236f5c44' font-family='serif' font-size='15' text-anchor='middle'&gt;立绘位&lt;/text&gt;&lt;/svg&gt;"></div>
+        <div class="body"><div class="crest">古尔纳 · 王城医师</div><h3>塞拉诺·法维恩</h3>
+          <p>法维恩家的幼弟，王城医师，卡德伦的恋人。在这座镀金王国的阴影里，他守着一份被默许、却步步惊心的感情。</p></div>
+      </div>
+      <div class="card reveal">
+        <div class="frame" style="aspect-ratio:4/3;"><img src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='400' height='300'&gt;&lt;rect width='400' height='300' fill='%23e1d0ac'/&gt;&lt;text x='50%25' y='50%25' fill='%236f5c44' font-family='serif' font-size='15' text-anchor='middle'&gt;立绘位&lt;/text&gt;&lt;/svg&gt;"></div>
+        <div class="body"><div class="crest">斯特兰德家 · 卡德伦之弟</div><h3>卡恩</h3>
+          <p>随哈维克在法尔托长大，唤他「父亲」，给了这个破碎的男人一份救赎；却始终不安——哈维克爱的究竟是他，还是他身上另一个亡儿的影子。</p></div>
+      </div>
+      <div class="card reveal">
+        <div class="frame" style="aspect-ratio:4/3;"><img src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='400' height='300'&gt;&lt;rect width='400' height='300' fill='%23e1d0ac'/&gt;&lt;text x='50%25' y='50%25' fill='%236f5c44' font-family='serif' font-size='15' text-anchor='middle'&gt;立绘位&lt;/text&gt;&lt;/svg&gt;"></div>
+        <div class="body"><div class="crest">维丹领主 · 核心反派</div><h3>奥斯特克</h3>
+          <p>吝啬而野心勃勃的维丹侯爵。他的余生只剩两件事：守住一桩烧死了自己妻子的旧罪，以及——保护那个在火场里失去母亲的女儿。一个把最深的罪与最深的爱缝在一起的人。</p></div>
+      </div>
+      <div class="card reveal">
+        <div class="frame" style="aspect-ratio:4/3;"><img src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='400' height='300'&gt;&lt;rect width='400' height='300' fill='%23e1d0ac'/&gt;&lt;text x='50%25' y='50%25' fill='%236f5c44' font-family='serif' font-size='15' text-anchor='middle'&gt;立绘位&lt;/text&gt;&lt;/svg&gt;"></div>
+        <div class="body"><div class="crest">法尔托领主 · 前海盗</div><h3>哈维克·斯特兰德</h3>
+          <p>卡德伦与卡恩的叔叔。十五年前，他为一桩并非她所犯的罪，亲手杀了挚友的妻子。亡妻、亡子是他终生的创伤，而诺克斯在他梦里反复低语：你杀的，不是她。</p></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- 势力与家族 -->
+  <section>
+    <div class="sec-head reveal">
+      <div class="ornament"><span class="m">势 力</span></div>
+      <h2>家族与势力</h2>
+      <p>王廷与世家在太阳的余晖里彼此结盟，又彼此算计。</p>
+    </div>
+    <div class="grid">
+      <div class="card reveal"><div class="body"><div class="crest">王 廷</div><h3>太阳神王廷</h3>
+        <p>以德拉维安四世为首的中央政权，靠瑟拉斐的神迹维系着黄金时代。而瑟拉斐已在这位神王身上，悄悄播下了蚀印。</p></div></div>
+      <div class="card reveal"><div class="body"><div class="crest">法尔托 · 海与珍珠</div><h3>斯特兰德家族</h3>
+        <p>卡德伦与卡恩的家族，已故家主埃德里克·斯特兰德公爵。一个被旧案、放逐与隐瞒撕裂的世家——两个孩子被告知母亲死于海难，真相却埋在更深的地方。</p></div></div>
+      <div class="card reveal"><div class="body"><div class="crest">维丹 · 蜜蜂纹章</div><h3>格雷维尔家族</h3>
+        <p>维丹的统治家族，奥斯特克与西维奥拉的血脉。蜂蜜与麦浪的甜美门面之下，藏着一桩烧穿了三个家族的纵火旧案。</p></div></div>
+      <div class="card reveal"><div class="body"><div class="crest">古尔纳 · 银鹿纹章</div><h3>法维恩家族</h3>
+        <p>古尔纳的统治家族，葡萄酒与药材的掌管者。公爵科尔文、长姐尤莉安娜、幼弟塞拉诺——一桩联姻正将他们卷入维丹的秘密深处。</p></div></div>
+    </div>
+  </section>
+
+  <footer><div class="crest">埃登维尔追忆</div><p>日蚀 · 第一部</p></footer>
+</div>
+
+<!-- ========== 占位视图 · 至高天 ========== -->
+<div class="view" id="view-supreme">
+  <div class="crumbs"><span onclick="go('hall')">世界</span><span class="sep">›</span>至高天</div>
+  <div class="hall" style="min-height:80vh;">
+    <div class="flourish">✦</div>
+    <span class="label">本源宇宙</span>
+    <h1 style="font-family:var(--display);font-size:clamp(2.4rem,6vw,4rem);letter-spacing:.06em;margin:12px 0;">至高天</h1>
+    <p class="verse" style="font-size:1.3rem;max-width:520px;">诸神的来处，《日蚀》之上的本源宇宙。这个系列正在星图深处成形——敬请等待。</p>
+    <p style="margin-top:24px;"><a onclick="go('hall')" style="cursor:pointer;color:var(--gild);letter-spacing:.1em;">‹ 返回世界</a></p>
+  </div>
+</div>
+
+<!-- ========== 占位视图 · 甜蜜仙境 ========== -->
+<div class="view" id="view-eden-dream">
+  <div class="crumbs"><span onclick="go('hall')">世界</span><span class="sep">›</span>逐渐崩溃的甜蜜仙境</div>
+  <div class="hall" style="min-height:80vh;">
+    <div class="flourish">❀</div>
+    <span class="label">独立世界</span>
+    <h1 style="font-family:var(--display);font-size:clamp(2.2rem,5vw,3.4rem);letter-spacing:.04em;margin:12px 0;">逐渐崩溃的甜蜜仙境</h1>
+    <p class="verse" style="font-size:1.3rem;max-width:520px;">一座与日蚀无关的独立世界，正在另一条时间线里成形——敬请等待。</p>
+    <p style="margin-top:24px;"><a onclick="go('hall')" style="cursor:pointer;color:var(--gild);letter-spacing:.1em;">‹ 返回世界</a></p>
+  </div>
+</div>
+
+<script>
+  function go(id){
+    document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+    const t=document.getElementById('view-'+id);
+    if(!t) return;
+    t.classList.add('active');
+    window.scrollTo({top:0,behavior:'auto'});
+    // 触发该视图内的浮现动画
+    const items=t.querySelectorAll('.reveal');
+    items.forEach(el=>el.classList.remove('in'));
+    requestAnimationFrame(()=>{
+      items.forEach((el,i)=>setTimeout(()=>el.classList.add('in'), 50*(i%5)));
+    });
+  }
+  function toggleOuter(){
+    document.getElementById('outer-gods').classList.toggle('open');
+  }
+</script>
+</body>
+</html>
