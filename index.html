@@ -9,10 +9,10 @@
 <link href="https://fonts.googleapis.com/css2?family=Pirata+One&family=UnifrakturCook:wght@700&family=Cinzel:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,500;1,400&family=Noto+Serif+SC:wght@400;500;600;700;900&display=swap" rel="stylesheet">
 <style>
   :root{
-    /* —— 米白 × 深酒红配色：想调整改这几行 —— */
-    --paper:   #f5f2ec;   /* 米白 · 主底（近白带暖） */
-    --paper-2: #efeae0;   /* 略深 · 次级面 */
-    --paper-3: #faf8f3;   /* 卡片底 · 更亮 */
+    /* —— 冷白 × 深酒红配色：想调整改这几行 —— */
+    --paper:   #f3f5f7;   /* 冷白 · 主底（近白微带蓝灰） */
+    --paper-2: #e9edf1;   /* 略深 · 次级面 */
+    --paper-3: #fafbfc;   /* 卡片底 · 更亮 */
     --ink:     #1f1c1a;   /* 近黑无饱和 · 正文 */
     --ink-soft:#6b645d;   /* 弱化灰褐 */
     --wine:    #991a37;   /* 深酒红 · 主强调 */
@@ -38,12 +38,9 @@
     font-size:18px;line-height:1.9;font-weight:400;
     -webkit-font-smoothing:antialiased;
     overflow-x:hidden;
-    /* 四角极淡晕染成酒红（克制，不压暗米白） */
+    /* 四周向中心柔和渗入的淡酒红（边缘淡淡一圈，往中心化开） */
     background-image:
-      radial-gradient(circle at 0% 0%, rgba(153,26,55,.07), transparent 26%),
-      radial-gradient(circle at 100% 0%, rgba(153,26,55,.06), transparent 26%),
-      radial-gradient(circle at 0% 100%, rgba(153,26,55,.07), transparent 26%),
-      radial-gradient(circle at 100% 100%, rgba(153,26,55,.08), transparent 28%);
+      radial-gradient(ellipse 78% 78% at 50% 50%, transparent 56%, rgba(153,26,55,.10) 100%);
     background-attachment:fixed;
   }
   /* 主页背景：线描科林斯柱（柱头卷涡+茛苕叶+凹槽柱身），极淡居中 */
@@ -56,7 +53,7 @@
   /* —— 导航：常驻品牌 + 三世界 —— */
   nav{position:fixed;top:0;left:0;right:0;z-index:60;
     display:flex;justify-content:space-between;align-items:center;
-    padding:15px 40px;background:rgba(245,242,236,.86);backdrop-filter:blur(8px);
+    padding:15px 40px;background:rgba(243,245,247,.86);backdrop-filter:blur(8px);
     border-bottom:1px solid var(--line);}
   nav .brand{font-family:var(--display);font-size:1.5rem;letter-spacing:.02em;
     color:var(--wine);cursor:pointer;line-height:1;}
@@ -90,7 +87,7 @@
     text-transform:uppercase;color:var(--wine);margin-bottom:34px;
     opacity:0;animation:rise 1s ease .5s forwards;}
   .gates{display:grid;grid-template-columns:repeat(3,1fr);gap:30px;max-width:980px;width:100%;}
-  .gate{background:rgba(250,248,243,.82);border:1px solid var(--line);border-radius:4px;
+  .gate{background:rgba(250,251,252,.82);border:1px solid var(--line);border-radius:4px;
     padding:42px 30px;cursor:pointer;position:relative;overflow:hidden;text-align:center;
     transition:transform .5s, box-shadow .5s, border-color .5s;
     opacity:0;animation:rise .9s ease forwards;}
@@ -215,6 +212,47 @@
   .card.placeholder{border-style:dashed;opacity:.72;}
   .card.placeholder .body{padding:28px 24px;}
 
+  /* 地点 · 简洁卡（图+名，点击弹灯箱） */
+  .place-grid{grid-template-columns:repeat(auto-fill,minmax(240px,1fr));}
+  .place{background:var(--paper-3);border:1px solid var(--line);border-radius:4px;overflow:hidden;
+    cursor:pointer;transition:transform .5s,border-color .5s,box-shadow .5s;}
+  .place:hover{transform:translateY(-6px);border-color:var(--wine);box-shadow:0 18px 42px rgba(153,26,55,.12);}
+  .place .frame{aspect-ratio:4/3;}
+  .place-cap{padding:16px 20px 20px;text-align:center;}
+  .place-cap .crest{font-family:var(--roman);font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--wine);margin-bottom:6px;}
+  .place-cap h3{font-family:var(--serif);font-size:1.3rem;font-weight:700;color:var(--ink);}
+
+  /* 人物卡 · 同地点卡外观，但立绘用 3:4 竖图 */
+  .person{background:var(--paper-3);border:1px solid var(--line);border-radius:4px;overflow:hidden;
+    cursor:pointer;transition:transform .5s,border-color .5s,box-shadow .5s;}
+  .person:hover{transform:translateY(-6px);border-color:var(--wine);box-shadow:0 18px 42px rgba(153,26,55,.12);}
+  .person .frame{aspect-ratio:3/4;}
+
+  /* 灯箱 */
+  .lightbox{position:fixed;inset:0;z-index:200;background:rgba(31,28,26,.72);
+    display:none;align-items:center;justify-content:center;padding:5vh 24px;backdrop-filter:blur(4px);}
+  .lightbox.show{display:flex;}
+  .lightbox-inner{background:var(--paper);border-radius:6px;max-width:880px;width:100%;
+    max-height:90vh;overflow:auto;position:relative;box-shadow:0 30px 90px rgba(0,0,0,.4);}
+  .lightbox-close{position:absolute;top:14px;right:20px;font-size:2rem;line-height:1;
+    color:var(--ink-soft);cursor:pointer;z-index:2;transition:color .3s;}
+  .lightbox-close:hover{color:var(--wine);}
+  .lightbox-img{text-align:center;background:var(--paper-2);}
+  .lightbox-img img{max-width:100%;max-height:62vh;width:auto;display:inline-block;object-fit:contain;}
+  .lightbox-text{padding:30px 40px 38px;}
+  .lightbox-text .crest{font-family:var(--roman);font-size:.7rem;letter-spacing:.24em;text-transform:uppercase;color:var(--wine);margin-bottom:8px;}
+  .lightbox-text h3{font-family:var(--serif);font-size:2rem;font-weight:700;color:var(--ink);margin-bottom:14px;}
+  .lightbox-text p{font-size:1.02rem;color:var(--ink);opacity:.85;line-height:1.85;}
+
+  /* 家族簇 */
+  .house{margin-bottom:60px;}
+  .house:last-child{margin-bottom:0;}
+  .house-head{border-left:3px solid var(--wine);padding:4px 0 4px 20px;margin-bottom:26px;}
+  .house-head .crest{font-family:var(--roman);font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--wine);margin-bottom:4px;}
+  .house-head .house-name{font-family:var(--serif);font-size:1.7rem;font-weight:700;color:var(--ink);margin-bottom:8px;}
+  .house-head .house-desc{font-size:.96rem;color:var(--ink-soft);line-height:1.75;max-width:760px;}
+  .member-grid{grid-template-columns:repeat(auto-fill,minmax(260px,1fr));}
+
   .divider{height:1px;max-width:1080px;margin:0 auto;background:linear-gradient(90deg,transparent,var(--line),transparent);}
 
   footer{position:relative;z-index:1;text-align:center;padding:60px 24px;color:var(--ink-soft);font-size:.85rem;}
@@ -310,7 +348,7 @@
         <p>这是整个日蚀系列共享的世界——它的世界观自此不再更改，每一部故事，都发生在这片由神战余烬聚成的星球之上。</p>
       </div>
       <div class="scroll-frame">
-        <img src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='600' height='800'&gt;&lt;rect width='600' height='800' fill='%23efeae0'/&gt;&lt;text x='50%25' y='50%25' fill='%236b645d' font-family='serif' font-size='22' text-anchor='middle'&gt;起源 · 插画位&lt;/text&gt;&lt;/svg&gt;" alt="">
+        <img src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='600' height='800'&gt;&lt;rect width='600' height='800' fill='%23e9edf1'/&gt;&lt;text x='50%25' y='50%25' fill='%236b645d' font-family='serif' font-size='22' text-anchor='middle'&gt;起源 · 插画位&lt;/text&gt;&lt;/svg&gt;" alt="">
       </div>
     </div>
   </section>
@@ -430,103 +468,163 @@
     <div class="sec-head reveal">
       <div class="ornament"><span class="m">疆 域</span></div>
       <h2>埃登维尔 · 五郡王国</h2>
-      <p>王号「五郡之王，太阳神王」。靠神迹换来黄金时代的镀金王国——直到灰烬开始从边境往里褪色。</p>
+      <p>王号「五郡之王，太阳神王」。靠神迹换来黄金时代的镀金王国——直到灰烬开始从边境往里褪色。点击卷宗，查看完整图文。</p>
     </div>
-    <div class="grid">
-      <div class="card reveal">
-        <div class="frame"><img src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='400' height='300'&gt;&lt;rect width='400' height='300' fill='%23efeae0'/&gt;&lt;text x='50%25' y='50%25' fill='%236b645d' font-family='serif' font-size='16' text-anchor='middle'&gt;王城插画位&lt;/text&gt;&lt;/svg&gt;"></div>
-        <div class="body"><div class="crest">王 都</div><h3>王城伊维特里</h3>
-          <p>王国的心脏与太阳神王的座所。德拉维安四世在此立朝，王后伊索莉娅怀着王嗣，宰相卡德伦执掌政务，沉默如石的雷恩哈特统领军队。荣光与裂痕都从这里生长。</p></div>
+    <div class="grid place-grid">
+
+      <div class="place reveal" onclick="openPlace(this)"
+        data-img="erveitel.png"
+        data-crest="王 都"
+        data-name="王城伊维特里"
+        data-desc="王国的心脏与太阳神王的座所。德拉维安四世在此立朝，王后伊索莉娅怀着王嗣，宰相卡德伦执掌政务，沉默如石的雷恩哈特统领军队。荣光与裂痕都从这里生长。">
+        <!-- ↓ 把 data-img 换成你的大图文件名（如 erveitel.png），下面 frame 的小预览图同理 ↓ -->
+        <div class="frame"><img src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='400' height='300'&gt;&lt;rect width='400' height='300' fill='%23e9edf1'/&gt;&lt;text x='50%25' y='50%25' fill='%236b645d' font-family='serif' font-size='16' text-anchor='middle'&gt;王城 · 点击展开&lt;/text&gt;&lt;/svg&gt;"></div>
+        <div class="place-cap"><div class="crest">王 都</div><h3>王城伊维特里</h3></div>
       </div>
-      <div class="card reveal">
-        <div class="frame"><img src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='400' height='300'&gt;&lt;rect width='400' height='300' fill='%23efeae0'/&gt;&lt;text x='50%25' y='50%25' fill='%236b645d' font-family='serif' font-size='16' text-anchor='middle'&gt;插画位&lt;/text&gt;&lt;/svg&gt;"></div>
-        <div class="body"><div class="crest">蜜蜂纹章 · 格雷维尔家</div><h3>维丹郡</h3>
-          <p>小麦、苹果与蜂蜜的农业之郡，由吝啬而野心勃勃的奥斯特克侯爵执掌。甜美的麦浪如海——也正是这里的边境，最先长出了那朵苍白的灰烬玫瑰。</p></div>
+
+      <div class="place reveal" onclick="openPlace(this)"
+        data-img="vidan.png"
+        data-crest="蜜蜂纹章 · 格雷维尔家"
+        data-name="维丹郡"
+        data-desc="小麦、苹果与蜂蜜的农业之郡，由吝啬而野心勃勃的奥斯特克侯爵执掌。甜美的麦浪如海——也正是这里的边境，最先长出了那朵苍白的灰烬玫瑰。">
+        <div class="frame"><img src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='400' height='300'&gt;&lt;rect width='400' height='300' fill='%23e9edf1'/&gt;&lt;text x='50%25' y='50%25' fill='%236b645d' font-family='serif' font-size='16' text-anchor='middle'&gt;维丹郡 · 点击展开&lt;/text&gt;&lt;/svg&gt;"></div>
+        <div class="place-cap"><div class="crest">蜜蜂纹章 · 格雷维尔家</div><h3>维丹郡</h3></div>
       </div>
-      <div class="card reveal">
-        <div class="frame"><img src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='400' height='300'&gt;&lt;rect width='400' height='300' fill='%23efeae0'/&gt;&lt;text x='50%25' y='50%25' fill='%236b645d' font-family='serif' font-size='16' text-anchor='middle'&gt;插画位&lt;/text&gt;&lt;/svg&gt;"></div>
-        <div class="body"><div class="crest">珍珠与海 · 斯特兰德家</div><h3>法尔托郡</h3>
-          <p>渔业与珍珠的海港之郡，由前海盗、伯爵哈维克·斯特兰德守望。十五年前的一场大火、一段被掩埋的旧案，都从这片海岸开始。寒霜长者也曾降临它的外海。</p></div>
+
+      <div class="place reveal" onclick="openPlace(this)"
+        data-img="falto.png"
+        data-crest="珍珠与海 · 斯特兰德家"
+        data-name="法尔托郡"
+        data-desc="渔业与珍珠的海港之郡，由前海盗、伯爵哈维克·斯特兰德守望。十五年前的一场大火、一段被掩埋的旧案，都从这片海岸开始。寒霜长者也曾降临它的外海。">
+        <div class="frame"><img src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='400' height='300'&gt;&lt;rect width='400' height='300' fill='%23e9edf1'/&gt;&lt;text x='50%25' y='50%25' fill='%236b645d' font-family='serif' font-size='16' text-anchor='middle'&gt;法尔托郡 · 点击展开&lt;/text&gt;&lt;/svg&gt;"></div>
+        <div class="place-cap"><div class="crest">珍珠与海 · 斯特兰德家</div><h3>法尔托郡</h3></div>
       </div>
-      <div class="card reveal">
-        <div class="frame"><img src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='400' height='300'&gt;&lt;rect width='400' height='300' fill='%23efeae0'/&gt;&lt;text x='50%25' y='50%25' fill='%236b645d' font-family='serif' font-size='16' text-anchor='middle'&gt;插画位&lt;/text&gt;&lt;/svg&gt;"></div>
-        <div class="body"><div class="crest">银鹿纹章 · 法维恩家</div><h3>古尔纳郡</h3>
-          <p>葡萄酒与药材之郡，由公爵科尔文执掌。精明的长姐尤莉安娜扛着家族名声，幼弟塞拉诺则是王城的医师。一桩政治联姻，正把它与维丹的秘密缠在一起。</p></div>
+
+      <div class="place reveal" onclick="openPlace(this)"
+        data-img="gulna.png"
+        data-crest="银鹿纹章 · 法维恩家"
+        data-name="古尔纳郡"
+        data-desc="葡萄酒与药材之郡，由公爵科尔文执掌。精明的长姐尤莉安娜扛着家族名声，幼弟塞拉诺则是王城的医师。一桩政治联姻，正把它与维丹的秘密缠在一起。">
+        <div class="frame"><img src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='400' height='300'&gt;&lt;rect width='400' height='300' fill='%23e9edf1'/&gt;&lt;text x='50%25' y='50%25' fill='%236b645d' font-family='serif' font-size='16' text-anchor='middle'&gt;古尔纳郡 · 点击展开&lt;/text&gt;&lt;/svg&gt;"></div>
+        <div class="place-cap"><div class="crest">银鹿纹章 · 法维恩家</div><h3>古尔纳郡</h3></div>
       </div>
-      <div class="card placeholder reveal">
-        <div class="body"><div class="crest">第 五 郡</div><h3>希瑞伊郡</h3>
-          <p>这片疆域作者尚未启封——它的纹章、领主与故事，留待后续的篇章揭开。</p></div>
+
+      <div class="place reveal" onclick="openPlace(this)"
+        data-img="sirei.png"
+        data-crest="圣城 · 阿斯塔林家"
+        data-name="希瑞伊郡"
+        data-desc="埃登维尔的宗教圣城，由阿斯塔林家世代守护。（此处为占位描述，待作者补充：圣城的信仰、阿斯塔林家的职责、它在五郡中的特殊地位等。）">
+        <div class="frame"><img src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='400' height='300'&gt;&lt;rect width='400' height='300' fill='%23e9edf1'/&gt;&lt;text x='50%25' y='50%25' fill='%236b645d' font-family='serif' font-size='16' text-anchor='middle'&gt;希瑞伊郡 · 点击展开&lt;/text&gt;&lt;/svg&gt;"></div>
+        <div class="place-cap"><div class="crest">圣城 · 阿斯塔林家</div><h3>希瑞伊郡</h3></div>
       </div>
+
     </div>
   </section>
 
+  <!-- 地点灯箱（点击卡片时弹出） -->
+  <div class="lightbox" id="placeBox" onclick="closePlace(event)">
+    <div class="lightbox-inner">
+      <span class="lightbox-close" onclick="closePlace(event,true)">×</span>
+      <div class="lightbox-img"><img id="lbImg" src="" alt=""></div>
+      <div class="lightbox-text">
+        <div class="crest" id="lbCrest"></div>
+        <h3 id="lbName"></h3>
+        <p id="lbDesc"></p>
+      </div>
+    </div>
+  </div>
+
   <div class="divider"></div>
 
-  <!-- 人物 -->
+  <!-- 人物 · 以家族为单位 -->
   <section>
     <div class="sec-head reveal">
       <div class="ornament"><span class="m">名 册</span></div>
-      <h2>人物</h2>
-      <p>在神战的尺度之下，是一群挣扎着不肯「身不由己」的凡人——他们立誓、相爱、背叛、赎罪。</p>
+      <h2>家族与人物</h2>
+      <p>在神战的尺度之下，是一群挣扎着不肯「身不由己」的凡人——他们立誓、相爱、背叛、赎罪。以下按家族族系排列。</p>
     </div>
-    <div class="grid">
-      <div class="card lead reveal">
-        <div class="frame"><img src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='400' height='520'&gt;&lt;rect width='400' height='520' fill='%23efeae0'/&gt;&lt;text x='50%25' y='50%25' fill='%236b645d' font-family='serif' font-size='16' text-anchor='middle'&gt;立绘位&lt;/text&gt;&lt;/svg&gt;"></div>
-        <div class="body"><div class="crest">太阳神王 · 真名拉多米尔</div><h3>德拉维安四世</h3>
-          <p>年轻的太阳神王。他靠瑟拉斐的神迹终结了险些灭国的寒冬，换来黄金时代。与卡德伦在橄榄树下立誓：即便失败，也不能被高于他们的存在所操控——而这正是他一生要对抗的诱惑。</p></div>
-      </div>
-      <div class="card lead reveal">
-        <div class="frame"><img src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='400' height='520'&gt;&lt;rect width='400' height='520' fill='%23efeae0'/&gt;&lt;text x='50%25' y='50%25' fill='%236b645d' font-family='serif' font-size='16' text-anchor='middle'&gt;立绘位&lt;/text&gt;&lt;/svg&gt;"></div>
-        <div class="body"><div class="crest">王之宰相 · 斯特兰德家</div><h3>卡德伦·斯特兰德</h3>
-          <p>德拉维安最亲近之人，全书的道德锚点，死守那道誓言。他在冰原亲手刺穿寒霜长者的心脏，因而获得了「看见因果」之力——也因此被命运选中，成为灰烬腐败觊觎的高灵性容器。</p></div>
-      </div>
-      <div class="card lead reveal">
-        <div class="frame"><img src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='400' height='520'&gt;&lt;rect width='400' height='520' fill='%23efeae0'/&gt;&lt;text x='50%25' y='50%25' fill='%236b645d' font-family='serif' font-size='16' text-anchor='middle'&gt;立绘位&lt;/text&gt;&lt;/svg&gt;"></div>
-        <div class="body"><div class="crest">维丹 · 格雷维尔家</div><h3>西维奥拉·格雷维尔</h3>
-          <p>奥斯特克之女，抗拒被许配的命运。她与来自深渊的艾萨尔结契，换来看透人心的能力——代价是每一次使用，深渊都会折磨她直至死亡。她接受这一切，只为查清母亲死于何人之手。</p></div>
-      </div>
-      <div class="card reveal">
-        <div class="frame" style="aspect-ratio:4/3;"><img src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='400' height='300'&gt;&lt;rect width='400' height='300' fill='%23efeae0'/&gt;&lt;text x='50%25' y='50%25' fill='%236b645d' font-family='serif' font-size='15' text-anchor='middle'&gt;立绘位&lt;/text&gt;&lt;/svg&gt;"></div>
-        <div class="body"><div class="crest">古尔纳 · 王城医师</div><h3>塞拉诺·法维恩</h3>
-          <p>法维恩家的幼弟，王城医师，卡德伦的恋人。在这座镀金王国的阴影里，他守着一份被默许、却步步惊心的感情。</p></div>
-      </div>
-      <div class="card reveal">
-        <div class="frame" style="aspect-ratio:4/3;"><img src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='400' height='300'&gt;&lt;rect width='400' height='300' fill='%23efeae0'/&gt;&lt;text x='50%25' y='50%25' fill='%236b645d' font-family='serif' font-size='15' text-anchor='middle'&gt;立绘位&lt;/text&gt;&lt;/svg&gt;"></div>
-        <div class="body"><div class="crest">斯特兰德家 · 卡德伦之弟</div><h3>卡恩</h3>
-          <p>随哈维克在法尔托长大，唤他「父亲」，给了这个破碎的男人一份救赎；却始终不安——哈维克爱的究竟是他，还是他身上另一个亡儿的影子。</p></div>
-      </div>
-      <div class="card reveal">
-        <div class="frame" style="aspect-ratio:4/3;"><img src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='400' height='300'&gt;&lt;rect width='400' height='300' fill='%23efeae0'/&gt;&lt;text x='50%25' y='50%25' fill='%236b645d' font-family='serif' font-size='15' text-anchor='middle'&gt;立绘位&lt;/text&gt;&lt;/svg&gt;"></div>
-        <div class="body"><div class="crest">维丹领主 · 核心反派</div><h3>奥斯特克</h3>
-          <p>吝啬而野心勃勃的维丹侯爵。他的余生只剩两件事：守住一桩烧死了自己妻子的旧罪，以及——保护那个在火场里失去母亲的女儿。一个把最深的罪与最深的爱缝在一起的人。</p></div>
-      </div>
-      <div class="card reveal">
-        <div class="frame" style="aspect-ratio:4/3;"><img src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='400' height='300'&gt;&lt;rect width='400' height='300' fill='%23efeae0'/&gt;&lt;text x='50%25' y='50%25' fill='%236b645d' font-family='serif' font-size='15' text-anchor='middle'&gt;立绘位&lt;/text&gt;&lt;/svg&gt;"></div>
-        <div class="body"><div class="crest">法尔托领主 · 前海盗</div><h3>哈维克·斯特兰德</h3>
-          <p>卡德伦与卡恩的叔叔。十五年前，他为一桩并非她所犯的罪，亲手杀了挚友的妻子。亡妻、亡子是他终生的创伤，而诺克斯在他梦里反复低语：你杀的，不是她。</p></div>
-      </div>
-    </div>
-  </section>
 
-  <div class="divider"></div>
+    <!-- 王室 · 埃登维尔 -->
+    <div class="house reveal">
+      <div class="house-head">
+        <div class="crest">王 室 · 太阳神王廷</div>
+        <h3 class="house-name">埃登维尔家</h3>
+        <p class="house-desc">以太阳神王为首的中央王权，靠瑟拉斐的神迹维系着黄金时代——而瑟拉斐已在这位神王身上，悄悄播下了蚀印。</p>
+      </div>
+      <div class="grid member-grid">
+        <div class="person reveal" onclick="openPlace(this)" data-img="char-deravian.png" data-crest="太阳神王 · 本名拉多米尔" data-name="德拉维安四世" data-desc="年轻的太阳神王。他靠瑟拉斐的神迹终结了险些灭国的寒冬，换来黄金时代。与卡德伦在橄榄树下立誓：即便失败，也不能被高于他们的存在所操控——而这正是他一生要对抗的诱惑。"><div class="frame"><img src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='400' height='534'&gt;&lt;rect width='400' height='534' fill='%23e9edf1'/&gt;&lt;text x='50%25' y='50%25' fill='%236b645d' font-family='serif' font-size='15' text-anchor='middle'&gt;德拉维安四世 · 点击&lt;/text&gt;&lt;/svg&gt;"></div><div class="place-cap"><div class="crest">太阳神王 · 本名拉多米尔</div><h3>德拉维安四世</h3></div></div>
+        <div class="person reveal" onclick="openPlace(this)" data-img="char-isolia.png" data-crest="王 后" data-name="伊索莉娅·埃登维尔" data-desc="太阳神王的王后，腹中怀着王嗣。（占位描述，待作者补充。）"><div class="frame"><img src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='400' height='534'&gt;&lt;rect width='400' height='534' fill='%23e9edf1'/&gt;&lt;text x='50%25' y='50%25' fill='%236b645d' font-family='serif' font-size='15' text-anchor='middle'&gt;伊索莉娅·埃登维尔 · 点击&lt;/text&gt;&lt;/svg&gt;"></div><div class="place-cap"><div class="crest">王 后</div><h3>伊索莉娅·埃登维尔</h3></div></div>
+      </div>
+    </div>
 
-  <!-- 势力与家族 -->
-  <section>
-    <div class="sec-head reveal">
-      <div class="ornament"><span class="m">势 力</span></div>
-      <h2>家族与势力</h2>
-      <p>王廷与世家在太阳的余晖里彼此结盟，又彼此算计。</p>
+    <!-- 斯特兰德家 -->
+    <div class="house reveal">
+      <div class="house-head">
+        <div class="crest">法尔托 · 珍珠与海 · 狼徽</div>
+        <h3 class="house-name">斯特兰德家</h3>
+        <p class="house-desc">已故家主埃德里克·斯特兰德公爵的世家——一个被旧案、放逐与隐瞒撕裂的家族。两个孩子被告知母亲死于海难，真相却埋在更深的地方。</p>
+      </div>
+      <div class="grid member-grid">
+        <div class="person reveal" onclick="openPlace(this)" data-img="char-kadren.png" data-crest="王之宰相" data-name="卡德伦·斯特兰德" data-desc="德拉维安最亲近之人，全书的道德锚点，死守那道誓言。他在冰原亲手刺穿寒霜长者的心脏，因而获得了「看见因果」之力——也因此被命运选中，成为灰烬腐败觊觎的高灵性容器。"><div class="frame"><img src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='400' height='534'&gt;&lt;rect width='400' height='534' fill='%23e9edf1'/&gt;&lt;text x='50%25' y='50%25' fill='%236b645d' font-family='serif' font-size='15' text-anchor='middle'&gt;卡德伦·斯特兰德 · 点击&lt;/text&gt;&lt;/svg&gt;"></div><div class="place-cap"><div class="crest">王之宰相</div><h3>卡德伦·斯特兰德</h3></div></div>
+        <div class="person reveal" onclick="openPlace(this)" data-img="char-kahn.png" data-crest="卡德伦之弟" data-name="卡恩·斯特兰德" data-desc="随哈维克在法尔托长大，唤他「父亲」，给了这个破碎的男人一份救赎；却始终不安——哈维克爱的究竟是他，还是他身上另一个亡儿的影子。"><div class="frame"><img src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='400' height='534'&gt;&lt;rect width='400' height='534' fill='%23e9edf1'/&gt;&lt;text x='50%25' y='50%25' fill='%236b645d' font-family='serif' font-size='15' text-anchor='middle'&gt;卡恩·斯特兰德 · 点击&lt;/text&gt;&lt;/svg&gt;"></div><div class="place-cap"><div class="crest">卡德伦之弟</div><h3>卡恩·斯特兰德</h3></div></div>
+        <div class="person reveal" onclick="openPlace(this)" data-img="char-havik.png" data-crest="法尔托领主 · 前海盗" data-name="哈维克·斯特兰德" data-desc="卡德伦与卡恩的叔叔。十五年前，他为一桩并非她所犯的罪，亲手杀了挚友的妻子。亡妻、亡子是他终生的创伤，而诺克斯在他梦里反复低语：你杀的，不是她。"><div class="frame"><img src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='400' height='534'&gt;&lt;rect width='400' height='534' fill='%23e9edf1'/&gt;&lt;text x='50%25' y='50%25' fill='%236b645d' font-family='serif' font-size='15' text-anchor='middle'&gt;哈维克·斯特兰德 · 点击&lt;/text&gt;&lt;/svg&gt;"></div><div class="place-cap"><div class="crest">法尔托领主 · 前海盗</div><h3>哈维克·斯特兰德</h3></div></div>
+      </div>
     </div>
-    <div class="grid">
-      <div class="card reveal"><div class="body"><div class="crest">王 廷</div><h3>太阳神王廷</h3>
-        <p>以德拉维安四世为首的中央政权，靠瑟拉斐的神迹维系着黄金时代。而瑟拉斐已在这位神王身上，悄悄播下了蚀印。</p></div></div>
-      <div class="card reveal"><div class="body"><div class="crest">法尔托 · 海与珍珠</div><h3>斯特兰德家族</h3>
-        <p>卡德伦与卡恩的家族，已故家主埃德里克·斯特兰德公爵。一个被旧案、放逐与隐瞒撕裂的世家——两个孩子被告知母亲死于海难，真相却埋在更深的地方。</p></div></div>
-      <div class="card reveal"><div class="body"><div class="crest">维丹 · 蜜蜂纹章</div><h3>格雷维尔家族</h3>
-        <p>维丹的统治家族，奥斯特克与西维奥拉的血脉。蜂蜜与麦浪的甜美门面之下，藏着一桩烧穿了三个家族的纵火旧案。</p></div></div>
-      <div class="card reveal"><div class="body"><div class="crest">古尔纳 · 银鹿纹章</div><h3>法维恩家族</h3>
-        <p>古尔纳的统治家族，葡萄酒与药材的掌管者。公爵科尔文、长姐尤莉安娜、幼弟塞拉诺——一桩联姻正将他们卷入维丹的秘密深处。</p></div></div>
+
+    <!-- 格雷维尔家 -->
+    <div class="house reveal">
+      <div class="house-head">
+        <div class="crest">维丹 · 蜜蜂纹章</div>
+        <h3 class="house-name">格雷维尔家</h3>
+        <p class="house-desc">维丹的统治家族。蜂蜜与麦浪的甜美门面之下，藏着一桩烧穿了三个家族的纵火旧案。</p>
+      </div>
+      <div class="grid member-grid">
+        <div class="person reveal" onclick="openPlace(this)" data-img="char-ostek.png" data-crest="侯爵 · 核心人物" data-name="奥斯特克·格雷维尔" data-desc="吝啬而野心勃勃的维丹侯爵。他的余生只剩两件事：守住一桩烧死了自己妻子的旧罪，以及——保护那个在火场里失去母亲的女儿。一个把最深的罪与最深的爱缝在一起的人。"><div class="frame"><img src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='400' height='534'&gt;&lt;rect width='400' height='534' fill='%23e9edf1'/&gt;&lt;text x='50%25' y='50%25' fill='%236b645d' font-family='serif' font-size='15' text-anchor='middle'&gt;奥斯特克·格雷维尔 · 点击&lt;/text&gt;&lt;/svg&gt;"></div><div class="place-cap"><div class="crest">侯爵 · 核心人物</div><h3>奥斯特克·格雷维尔</h3></div></div>
+        <div class="person reveal" onclick="openPlace(this)" data-img="char-xiviola.png" data-crest="奥斯特克之女" data-name="西维奥拉·格雷维尔" data-desc="抗拒被许配的命运。她与来自深渊的艾萨尔结契，换来看透人心的能力——代价是每一次使用，深渊都会折磨她直至死亡。她接受这一切，只为查清母亲死于何人之手。"><div class="frame"><img src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='400' height='534'&gt;&lt;rect width='400' height='534' fill='%23e9edf1'/&gt;&lt;text x='50%25' y='50%25' fill='%236b645d' font-family='serif' font-size='15' text-anchor='middle'&gt;西维奥拉·格雷维尔 · 点击&lt;/text&gt;&lt;/svg&gt;"></div><div class="place-cap"><div class="crest">奥斯特克之女</div><h3>西维奥拉·格雷维尔</h3></div></div>
+      </div>
     </div>
+
+    <!-- 法维恩家 -->
+    <div class="house reveal">
+      <div class="house-head">
+        <div class="crest">古尔纳 · 银鹿纹章</div>
+        <h3 class="house-name">法维恩家</h3>
+        <p class="house-desc">古尔纳的统治家族，葡萄酒与药材的掌管者。一桩政治联姻，正将他们卷入维丹的秘密深处。</p>
+      </div>
+      <div class="grid member-grid">
+        <div class="person reveal" onclick="openPlace(this)" data-img="char-corvin.png" data-crest="公 爵" data-name="科尔文·法维恩" data-desc="法维恩家的公爵、古尔纳之主。（占位描述，待作者补充。）"><div class="frame"><img src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='400' height='534'&gt;&lt;rect width='400' height='534' fill='%23e9edf1'/&gt;&lt;text x='50%25' y='50%25' fill='%236b645d' font-family='serif' font-size='15' text-anchor='middle'&gt;科尔文·法维恩 · 点击&lt;/text&gt;&lt;/svg&gt;"></div><div class="place-cap"><div class="crest">公 爵</div><h3>科尔文·法维恩</h3></div></div>
+        <div class="person reveal" onclick="openPlace(this)" data-img="char-juliana.png" data-crest="长 姐" data-name="尤莉安娜·法维恩" data-desc="精明务实的长姐，扛着家族的名声。（占位描述，待作者补充。）"><div class="frame"><img src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='400' height='534'&gt;&lt;rect width='400' height='534' fill='%23e9edf1'/&gt;&lt;text x='50%25' y='50%25' fill='%236b645d' font-family='serif' font-size='15' text-anchor='middle'&gt;尤莉安娜·法维恩 · 点击&lt;/text&gt;&lt;/svg&gt;"></div><div class="place-cap"><div class="crest">长 姐</div><h3>尤莉安娜·法维恩</h3></div></div>
+        <div class="person reveal" onclick="openPlace(this)" data-img="char-serano.png" data-crest="幼弟 · 王城医师" data-name="塞拉诺·法维恩" data-desc="法维恩家的幼弟，王城医师，卡德伦的恋人。在这座镀金王国的阴影里，他守着一份被默许、却步步惊心的感情。"><div class="frame"><img src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='400' height='534'&gt;&lt;rect width='400' height='534' fill='%23e9edf1'/&gt;&lt;text x='50%25' y='50%25' fill='%236b645d' font-family='serif' font-size='15' text-anchor='middle'&gt;塞拉诺·法维恩 · 点击&lt;/text&gt;&lt;/svg&gt;"></div><div class="place-cap"><div class="crest">幼弟 · 王城医师</div><h3>塞拉诺·法维恩</h3></div></div>
+      </div>
+    </div>
+
+    <!-- 阿斯塔林家 -->
+    <div class="house reveal">
+      <div class="house-head">
+        <div class="crest">希瑞伊 · 宗教圣城</div>
+        <h3 class="house-name">阿斯塔林家</h3>
+        <p class="house-desc">希瑞伊圣城的守护世家。（占位描述，待作者补充：家族的信仰职责、与王权和教团的关系等。）</p>
+      </div>
+      <div class="grid member-grid">
+        <div class="person reveal" onclick="openPlace(this)" data-img="char-ilrean.png" data-crest="阿斯塔林家" data-name="伊尔瑞安·阿斯塔林" data-desc="（占位描述，待作者补充：身份、性格、在故事中的位置。）"><div class="frame"><img src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='400' height='534'&gt;&lt;rect width='400' height='534' fill='%23e9edf1'/&gt;&lt;text x='50%25' y='50%25' fill='%236b645d' font-family='serif' font-size='15' text-anchor='middle'&gt;伊尔瑞安·阿斯塔林 · 点击&lt;/text&gt;&lt;/svg&gt;"></div><div class="place-cap"><div class="crest">阿斯塔林家</div><h3>伊尔瑞安·阿斯塔林</h3></div></div>
+        <div class="person reveal" onclick="openPlace(this)" data-img="char-ilkas.png" data-crest="阿斯塔林家" data-name="伊尔卡斯·阿斯塔林" data-desc="（占位描述，待作者补充：身份、性格、在故事中的位置。）"><div class="frame"><img src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='400' height='534'&gt;&lt;rect width='400' height='534' fill='%23e9edf1'/&gt;&lt;text x='50%25' y='50%25' fill='%236b645d' font-family='serif' font-size='15' text-anchor='middle'&gt;伊尔卡斯·阿斯塔林 · 点击&lt;/text&gt;&lt;/svg&gt;"></div><div class="place-cap"><div class="crest">阿斯塔林家</div><h3>伊尔卡斯·阿斯塔林</h3></div></div>
+      </div>
+    </div>
+
+    <!-- 平民 -->
+    <div class="house reveal">
+      <div class="house-head">
+        <div class="crest">无 纹 章</div>
+        <h3 class="house-name">平民</h3>
+        <p class="house-desc">没有纹章、不属于任何世家的人——黄金时代的尘埃里，他们一样在挣扎、相爱与求生。</p>
+      </div>
+      <div class="grid member-grid">
+        <div class="person reveal" onclick="openPlace(this)" data-img="char-elwina.png" data-crest="平 民" data-name="艾尔温娜" data-desc="（占位描述，待作者补充。）"><div class="frame"><img src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='400' height='534'&gt;&lt;rect width='400' height='534' fill='%23e9edf1'/&gt;&lt;text x='50%25' y='50%25' fill='%236b645d' font-family='serif' font-size='15' text-anchor='middle'&gt;艾尔温娜 · 点击&lt;/text&gt;&lt;/svg&gt;"></div><div class="place-cap"><div class="crest">平 民</div><h3>艾尔温娜</h3></div></div>
+        <div class="person reveal" onclick="openPlace(this)" data-img="char-sairil.png" data-crest="平 民" data-name="赛瑞丽" data-desc="（占位描述，待作者补充。）"><div class="frame"><img src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='400' height='534'&gt;&lt;rect width='400' height='534' fill='%23e9edf1'/&gt;&lt;text x='50%25' y='50%25' fill='%236b645d' font-family='serif' font-size='15' text-anchor='middle'&gt;赛瑞丽 · 点击&lt;/text&gt;&lt;/svg&gt;"></div><div class="place-cap"><div class="crest">平 民</div><h3>赛瑞丽</h3></div></div>
+        <div class="person reveal" onclick="openPlace(this)" data-img="char-lucas.png" data-crest="平 民" data-name="卢卡斯" data-desc="（占位描述，待作者补充。）"><div class="frame"><img src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='400' height='534'&gt;&lt;rect width='400' height='534' fill='%23e9edf1'/&gt;&lt;text x='50%25' y='50%25' fill='%236b645d' font-family='serif' font-size='15' text-anchor='middle'&gt;卢卡斯 · 点击&lt;/text&gt;&lt;/svg&gt;"></div><div class="place-cap"><div class="crest">平 民</div><h3>卢卡斯</h3></div></div>
+      </div>
+    </div>
+
   </section>
 
   <footer><div class="crest">埃登维尔追忆</div><p>日蚀 · 第一部</p></footer>
@@ -573,6 +671,24 @@
   function toggleOuter(){
     document.getElementById('outer-gods').classList.toggle('open');
   }
+  function openPlace(el){
+    var box=document.getElementById('placeBox');
+    document.getElementById('lbImg').src=el.dataset.img;
+    document.getElementById('lbImg').alt=el.dataset.name;
+    document.getElementById('lbCrest').textContent=el.dataset.crest;
+    document.getElementById('lbName').textContent=el.dataset.name;
+    document.getElementById('lbDesc').textContent=el.dataset.desc;
+    box.classList.add('show');
+  }
+  function closePlace(e,force){
+    // 点遮罩或关闭按钮才关；点内容区不关
+    if(force || e.target.id==='placeBox'){
+      document.getElementById('placeBox').classList.remove('show');
+    }
+  }
+  document.addEventListener('keydown',function(e){
+    if(e.key==='Escape') document.getElementById('placeBox').classList.remove('show');
+  });
 </script>
 </body>
 </html>
