@@ -258,6 +258,16 @@
   .lightbox.person-mode .lightbox-text{flex:1;display:flex;flex-direction:column;justify-content:flex-start;
     overflow-y:auto;max-height:80vh;padding:40px 38px;}
   .lightbox.person-mode .lightbox-text h3{font-size:1.9rem;}
+
+  /* 深渊灯箱：淡紫底 + 紫纹章 */
+  .lightbox.abyss-mode .lightbox-inner{
+    background:#f0ebf5;
+    background-image:radial-gradient(ellipse 70% 60% at 50% 40%, rgba(91,71,117,.10), transparent 70%);
+  }
+  .lightbox.abyss-mode .lightbox-img{background:transparent;}
+  .lightbox.abyss-mode .lightbox-text{background:transparent;}
+  .lightbox.abyss-mode .lightbox-text .crest{color:var(--abyss);}
+  .lightbox.abyss-mode .lb-desc .verse{color:#6f5b8f;}
   /* 窄屏回退为上下堆叠 */
   @media(max-width:680px){
     .lightbox.person-mode .lightbox-inner{flex-direction:column;}
@@ -661,8 +671,8 @@
         <p class="house-desc">来自达瑟利尔国度的外邦人，随圣座商队远赴埃登维尔。异乡的信仰与血祭，正悄然渗入这座镀金王国。</p>
       </div>
       <div class="grid member-grid">
-        <div class="person reveal" onclick="openPlace(this)" data-img="char-alonso.png" data-crest="圣座主教 · 商队领队" data-name="阿隆索" data-desc="达瑟利尔的圣座主教之一，率领圣座商队来到埃登维尔的领队。"><div class="frame"><img src="char-alonso"></div><div class="place-cap"><div class="crest">圣座主教 · 商队领队</div><h3>阿隆索</h3></div></div>
-        <div class="person reveal" onclick="openPlace(this)" data-img="char-ithaca.png" data-crest="血祭祀" data-name="伊莎卡" data-desc="来自达瑟利尔国度的血祭祀，随阿隆索的圣座商队一同抵达埃登维尔。"><div class="frame"><img src="char-ithaca"></div><div class="place-cap"><div class="crest">血祭祀</div><h3>伊莎卡</h3></div></div>
+        <div class="person reveal" onclick="openPlace(this)" data-img="char-alonso.png" data-crest="圣座主教 · 商队领队" data-name="阿隆索" data-desc="达瑟利尔的圣座主教之一，率领圣座商队来到埃登维尔的领队。"><div class="frame"><img src="char-alonso.png"></div><div class="place-cap"><div class="crest">圣座主教 · 商队领队</div><h3>阿隆索</h3></div></div>
+        <div class="person reveal" onclick="openPlace(this)" data-img="char-ithaca.png" data-crest="血祭祀" data-name="伊莎卡" data-desc="来自达瑟利尔国度的血祭祀，随阿隆索的圣座商队一同抵达埃登维尔。"><div class="frame"><img src="char-ithaca.png"></div><div class="place-cap"><div class="crest">血祭祀</div><h3>伊莎卡</h3></div></div>
       </div>
     </div>
 
@@ -674,7 +684,7 @@
         <p class="house-desc">不属于任何神、由人心汇成的深渊所遣之物。她沉默地等待着被人触碰，也索取着无法偿还的代价。</p>
       </div>
       <div class="grid member-grid">
-        <div class="person reveal" onclick="openPlace(this)" data-img="char-eisal.png" data-crest="深渊 · 契约之物" data-name="艾萨尔" data-desc="来自深渊。与西维奥拉结契，赐予她看透人心的能力——代价是每一次使用，深渊都会折磨她直至死亡。"><div class="frame"><img src="char-eisal"></div><div class="bio" style="display:none"><p class="verse">艾萨尔拥有过许多名字。</p><p>她曾经长久地凝望着太阳，直到那阳光开始刺眼，开始灼痛，甚至让她燃烧。</p><p>于是她去找了另一样东西，她走进了那片她长久窥探着的黑暗，深入其中探寻何谓恐怖，何谓孤寂，何谓寒冷。</p><p>她看着太阳，对自己说：如果我可以呢？</p><p>但那唯一一次的不可以带走了她的一切。</p><p>她在黑暗中潜游，直到在黑暗中再次看见一个女孩，一个手背带疤、眼里有火的女孩。</p><p>我们一起走向彼岸吧，我们一起越过那条线吧。</p><p>「她的债，还清了。」那片深紫的黑暗这样说。</p><p>最后艾萨尔听到了鱼群和海洋的潮汐声。</p></div><div class="place-cap"><div class="crest">深渊 · 契约之物</div><h3>艾萨尔</h3></div></div>
+        <div class="person reveal" onclick="openPlace(this)" data-img="char-eisal.png" data-crest="深渊 · 灵媒" data-name="艾萨尔" data-desc="来自深渊。与西维奥拉结契，赐予她看透人心的能力——代价是每一次使用，深渊都会折磨她直至死亡。"><div class="frame"><img src="char-eisal.png"></div><div class="bio" style="display:none"><p class="verse">艾萨尔拥有过许多名字。</p><p>她曾经长久地凝望着太阳，直到那阳光开始刺眼，开始灼痛，甚至让她燃烧。</p><p>于是她去找了另一样东西，她走进了那片她长久窥探着的黑暗，深入其中探寻何谓恐怖，何谓孤寂，何谓寒冷。</p><p>她看着太阳，对自己说：如果我可以呢？</p><p>但那唯一一次的不可以带走了她的一切。</p><p>她在黑暗中潜游，直到在黑暗中再次看见一个女孩，一个手背带疤、眼里有火的女孩。</p><p>我们一起走向彼岸吧，我们一起越过那条线吧。</p><p>「她的债，还清了。」那片深紫的黑暗这样说。</p><p>最后艾萨尔听到了鱼群和海洋的潮汐声。</p></div><div class="place-cap"><div class="crest">深渊 · 灵媒</div><h3>艾萨尔</h3></div></div>
       </div>
     </div>
 
@@ -737,6 +747,9 @@
     // 人物卡走左图右文布局，地点卡保持图上文下
     if(el.classList.contains('person')){ box.classList.add('person-mode'); }
     else { box.classList.remove('person-mode'); }
+    // 深渊簇成员：灯箱走紫色调
+    if(el.closest('.house-abyss')){ box.classList.add('abyss-mode'); }
+    else { box.classList.remove('abyss-mode'); }
     box.classList.add('show');
   }
   function closePlace(e,force){
