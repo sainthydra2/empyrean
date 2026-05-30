@@ -244,6 +244,21 @@
   .lightbox-text h3{font-family:var(--serif);font-size:2rem;font-weight:700;color:var(--ink);margin-bottom:14px;}
   .lightbox-text p{font-size:1.02rem;color:var(--ink);opacity:.85;line-height:1.85;}
 
+  /* 人物灯箱：左图右文，文字区与图等高、超长滚动 */
+  .lightbox.person-mode .lightbox-inner{max-width:1000px;}
+  .lightbox.person-mode .lightbox-inner{display:flex;align-items:stretch;}
+  .lightbox.person-mode .lightbox-img{flex:0 0 55%;max-width:55%;display:flex;align-items:center;justify-content:center;padding:18px;}
+  .lightbox.person-mode .lightbox-img img{max-height:80vh;}
+  .lightbox.person-mode .lightbox-text{flex:1;display:flex;flex-direction:column;justify-content:flex-start;
+    overflow-y:auto;max-height:88vh;padding:40px 38px;}
+  .lightbox.person-mode .lightbox-text h3{font-size:1.9rem;}
+  /* 窄屏回退为上下堆叠 */
+  @media(max-width:680px){
+    .lightbox.person-mode .lightbox-inner{flex-direction:column;}
+    .lightbox.person-mode .lightbox-img{flex:none;max-width:100%;}
+    .lightbox.person-mode .lightbox-text{max-height:none;}
+  }
+
   /* 家族簇 */
   .house{margin-bottom:60px;}
   .house:last-child{margin-bottom:0;}
@@ -552,8 +567,8 @@
         <p class="house-desc">以太阳神王为首的中央王权，靠瑟拉斐的神迹维系着黄金时代——而瑟拉斐已在这位神王身上，悄悄播下了蚀印。</p>
       </div>
       <div class="grid member-grid">
-        <div class="person reveal" onclick="openPlace(this)" data-img="char-draevian.png" data-crest="太阳神王 · 本名拉多米尔" data-name="德拉维安四世" data-desc="年轻的太阳神王。他靠瑟拉斐的神迹终结了险些灭国的寒冬，换来黄金时代。与卡德伦在橄榄树下立誓：即便失败，也不能被高于他们的存在所操控——而这正是他一生要对抗的诱惑。"><div class="frame"><img src="char-draevian.png"></div>
-        <div class="person reveal" onclick="openPlace(this)" data-img="char-Isolya.png" data-crest="王 后" data-name="伊索莉娅·埃登维尔" data-desc="太阳神王的王后，腹中怀着王嗣。（占位描述，待作者补充。）"><div class="frame"><img src="char-Isolya.png"></div>
+        <div class="person reveal" onclick="openPlace(this)" data-img="char-draevian.png" data-crest="太阳神王 · 本名拉多米尔" data-name="德拉维安四世" data-desc="年轻的太阳神王。他靠瑟拉斐的神迹终结了险些灭国的寒冬，换来黄金时代。与卡德伦在橄榄树下立誓：即便失败，也不能被高于他们的存在所操控——而这正是他一生要对抗的诱惑。"><div class="frame"><img src="char-draevian.png"></div><div class="place-cap"><div class="crest">太阳神王 · 本名拉多米尔</div><h3>德拉维安四世</h3></div></div>
+        <div class="person reveal" onclick="openPlace(this)" data-img="char-Isolya.png" data-crest="王 后" data-name="伊索莉娅·埃登维尔" data-desc="太阳神王的王后，腹中怀着王嗣。（占位描述，待作者补充。）"><div class="frame"><img src="char-Isolya.png"></div><div class="place-cap"><div class="crest">王 后</div><h3>伊索莉娅·埃登维尔</h3></div></div>
       </div>
     </div>
 
@@ -565,9 +580,9 @@
         <p class="house-desc">已故家主埃德里克·斯特兰德公爵的世家——一个被旧案、放逐与隐瞒撕裂的家族。两个孩子被告知母亲死于海难，真相却埋在更深的地方。</p>
       </div>
       <div class="grid member-grid">
-        <div class="person reveal" onclick="openPlace(this)" data-img="char-kadren.png" data-crest="王之宰相" data-name="卡德伦·斯特兰德" data-desc="德拉维安最亲近之人，全书的道德锚点，死守那道誓言。他在冰原亲手刺穿寒霜长者的心脏，因而获得了「看见因果」之力——也因此被命运选中，成为灰烬腐败觊觎的高灵性容器。"><div class="frame"><img src="char-kadren.png"></div>
-        <div class="person reveal" onclick="openPlace(this)" data-img="char-kahn.png" data-crest="卡德伦之弟" data-name="卡恩·斯特兰德" data-desc="随哈维克在法尔托长大，唤他「父亲」，给了这个破碎的男人一份救赎；却始终不安——哈维克爱的究竟是他，还是他身上另一个亡儿的影子。"><div class="frame"><img src="char-kahn.png"></div>
-        <div class="person reveal" onclick="openPlace(this)" data-img="char-havik.png" data-crest="法尔托领主 · 前海盗" data-name="哈维克·斯特兰德" data-desc="卡德伦与卡恩的叔叔。十五年前，他为一桩并非她所犯的罪，亲手杀了挚友的妻子。亡妻、亡子是他终生的创伤，而诺克斯在他梦里反复低语：你杀的，不是她。"><div class="frame"><img src="char-havik.png"></div>
+        <div class="person reveal" onclick="openPlace(this)" data-img="char-kadren.png" data-crest="王之宰相" data-name="卡德伦·斯特兰德" data-desc="德拉维安最亲近之人，全书的道德锚点，死守那道誓言。他在冰原亲手刺穿寒霜长者的心脏，因而获得了「看见因果」之力——也因此被命运选中，成为灰烬腐败觊觎的高灵性容器。"><div class="frame"><img src="char-kadren.png"></div><div class="place-cap"><div class="crest">王之宰相</div><h3>卡德伦·斯特兰德</h3></div></div>
+        <div class="person reveal" onclick="openPlace(this)" data-img="char-kahn.png" data-crest="卡德伦之弟" data-name="卡恩·斯特兰德" data-desc="随哈维克在法尔托长大，唤他「父亲」，给了这个破碎的男人一份救赎；却始终不安——哈维克爱的究竟是他，还是他身上另一个亡儿的影子。"><div class="frame"><img src="char-kahn.png"></div><div class="place-cap"><div class="crest">卡德伦之弟</div><h3>卡恩·斯特兰德</h3></div></div>
+        <div class="person reveal" onclick="openPlace(this)" data-img="char-havik.png" data-crest="法尔托领主 · 前海盗" data-name="哈维克·斯特兰德" data-desc="卡德伦与卡恩的叔叔。十五年前，他为一桩并非她所犯的罪，亲手杀了挚友的妻子。亡妻、亡子是他终生的创伤，而诺克斯在他梦里反复低语：你杀的，不是她。"><div class="frame"><img src="char-havik.png"></div><div class="place-cap"><div class="crest">法尔托领主 · 前海盗</div><h3>哈维克·斯特兰德</h3></div></div>
       </div>
     </div>
 
@@ -579,8 +594,8 @@
         <p class="house-desc">维丹的统治家族。蜂蜜与麦浪的甜美门面之下，藏着一桩烧穿了三个家族的纵火旧案。</p>
       </div>
       <div class="grid member-grid">
-        <div class="person reveal" onclick="openPlace(this)" data-img="char-ostek.png" data-crest="侯爵 · 核心人物" data-name="奥斯特克·格雷维尔" data-desc="吝啬而野心勃勃的维丹侯爵。他的余生只剩两件事：守住一桩烧死了自己妻子的旧罪，以及——保护那个在火场里失去母亲的女儿。一个把最深的罪与最深的爱缝在一起的人。"><div class="frame"><img src="char-ostek.png"></div>
-        <div class="person reveal" onclick="openPlace(this)" data-img="char-xiviola.png" data-crest="奥斯特克之女" data-name="西维奥拉·格雷维尔" data-desc="抗拒被许配的命运。她与来自深渊的艾萨尔结契，换来看透人心的能力——代价是每一次使用，深渊都会折磨她直至死亡。她接受这一切，只为查清母亲死于何人之手。"><div class="frame"><img src="char-xiviola.png"></div>
+        <div class="person reveal" onclick="openPlace(this)" data-img="char-ostek.png" data-crest="侯爵 · 核心人物" data-name="奥斯特克·格雷维尔" data-desc="吝啬而野心勃勃的维丹侯爵。他的余生只剩两件事：守住一桩烧死了自己妻子的旧罪，以及——保护那个在火场里失去母亲的女儿。一个把最深的罪与最深的爱缝在一起的人。"><div class="frame"><img src="char-ostek.png"></div><div class="place-cap"><div class="crest">侯爵 · 核心人物</div><h3>奥斯特克·格雷维尔</h3></div></div>
+        <div class="person reveal" onclick="openPlace(this)" data-img="char-xiviola.png" data-crest="奥斯特克之女" data-name="西维奥拉·格雷维尔" data-desc="抗拒被许配的命运。她与来自深渊的艾萨尔结契，换来看透人心的能力——代价是每一次使用，深渊都会折磨她直至死亡。她接受这一切，只为查清母亲死于何人之手。"><div class="frame"><img src="char-xiviola.png"></div><div class="place-cap"><div class="crest">奥斯特克之女</div><h3>西维奥拉·格雷维尔</h3></div></div>
       </div>
     </div>
 
@@ -592,9 +607,9 @@
         <p class="house-desc">古尔纳的统治家族，葡萄酒与药材的掌管者。一桩政治联姻，正将他们卷入维丹的秘密深处。</p>
       </div>
       <div class="grid member-grid">
-        <div class="person reveal" onclick="openPlace(this)" data-img="char-corvin.png" data-crest="公 爵" data-name="科尔文·法维恩" data-desc="法维恩家的公爵、古尔纳之主。（占位描述，待作者补充。）"><div class="frame"><img src="char-corvin.png"></div>
-        <div class="person reveal" onclick="openPlace(this)" data-img="char-juliana.png" data-crest="长 姐" data-name="尤莉安娜·法维恩" data-desc="精明务实的长姐，扛着家族的名声。（占位描述，待作者补充。）"><div class="frame"><img src="char-juliana.png"></div>
-        <div class="person reveal" onclick="openPlace(this)" data-img="char-serano.png" data-crest="幼弟 · 王城医师" data-name="塞拉诺·法维恩" data-desc="法维恩家的幼弟，王城医师，卡德伦的恋人。在这座镀金王国的阴影里，他守着一份被默许、却步步惊心的感情。"><div class="frame"><img src="char-serano.png"></div>
+        <div class="person reveal" onclick="openPlace(this)" data-img="char-corvin.png" data-crest="公 爵" data-name="科尔文·法维恩" data-desc="法维恩家的公爵、古尔纳之主。（占位描述，待作者补充。）"><div class="frame"><img src="char-corvin.png"></div><div class="place-cap"><div class="crest">公 爵</div><h3>科尔文·法维恩</h3></div></div>
+        <div class="person reveal" onclick="openPlace(this)" data-img="char-juliana.png" data-crest="长 姐" data-name="尤莉安娜·法维恩" data-desc="精明务实的长姐，扛着家族的名声。（占位描述，待作者补充。）"><div class="frame"><img src="char-juliana.png"></div><div class="place-cap"><div class="crest">长 姐</div><h3>尤莉安娜·法维恩</h3></div></div>
+        <div class="person reveal" onclick="openPlace(this)" data-img="char-serano.png" data-crest="幼弟 · 王城医师" data-name="塞拉诺·法维恩" data-desc="法维恩家的幼弟，王城医师，卡德伦的恋人。在这座镀金王国的阴影里，他守着一份被默许、却步步惊心的感情。"><div class="frame"><img src="char-serano.png"></div><div class="place-cap"><div class="crest">幼弟 · 王城医师</div><h3>塞拉诺·法维恩</h3></div></div>
       </div>
     </div>
 
@@ -606,9 +621,8 @@
         <p class="house-desc">希瑞伊圣城的守护世家。（占位描述，待作者补充：家族的信仰职责、与王权和教团的关系等。）</p>
       </div>
       <div class="grid member-grid">
-        <div class="person reveal" onclick="openPlace(this)" data-img="char-ilrean.png" data-crest="阿斯塔林家" data-name="伊尔瑞安·阿斯塔林" data-desc="（占位描述，待作者补充：身份、性格、在故事中的位置。）"><div class="frame"><img src="char-ilrean.png"></div>
-    </div>
-        <div class="person reveal" onclick="openPlace(this)" data-img="char-ilkas.png" data-crest="阿斯塔林家" data-name="伊尔卡斯·阿斯塔林" data-desc="（占位描述，待作者补充：身份、性格、在故事中的位置。）"><div class="frame"><img src="char-ilkas.png"></div>
+        <div class="person reveal" onclick="openPlace(this)" data-img="char-ilrean.png" data-crest="阿斯塔林家" data-name="伊尔瑞安·阿斯塔林" data-desc="（占位描述，待作者补充：身份、性格、在故事中的位置。）"><div class="frame"><img src="char-ilrean.png"></div><div class="place-cap"><div class="crest">阿斯塔林家</div><h3>伊尔瑞安·阿斯塔林</h3></div></div>
+        <div class="person reveal" onclick="openPlace(this)" data-img="char-ilkas.png" data-crest="阿斯塔林家" data-name="伊尔卡斯·阿斯塔林" data-desc="（占位描述，待作者补充：身份、性格、在故事中的位置。）"><div class="frame"><img src="char-ilkas.png"></div><div class="place-cap"><div class="crest">阿斯塔林家</div><h3>伊尔卡斯·阿斯塔林</h3></div></div>
       </div>
     </div>
 
@@ -679,6 +693,9 @@
     document.getElementById('lbCrest').textContent=el.dataset.crest;
     document.getElementById('lbName').textContent=el.dataset.name;
     document.getElementById('lbDesc').textContent=el.dataset.desc;
+    // 人物卡走左图右文布局，地点卡保持图上文下
+    if(el.classList.contains('person')){ box.classList.add('person-mode'); }
+    else { box.classList.remove('person-mode'); }
     box.classList.add('show');
   }
   function closePlace(e,force){
