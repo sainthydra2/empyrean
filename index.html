@@ -91,10 +91,12 @@
   .gates{display:grid;grid-template-columns:repeat(3,1fr);gap:30px;max-width:980px;width:100%;}
   .gate{background:rgba(250,251,252,.82);border:1px solid var(--line);border-radius:4px;
     padding:42px 30px;cursor:pointer;position:relative;overflow:hidden;text-align:center;
+    box-shadow:0 16px 30px -12px rgba(153,26,55,.4);
     transition:transform .5s, box-shadow .5s, border-color .5s;
     opacity:0;animation:rise .9s ease forwards;}
   .gate:nth-child(1){animation-delay:.7s;} .gate:nth-child(2){animation-delay:.85s;} .gate:nth-child(3){animation-delay:1s;}
-  .gate.open:hover{transform:translateY(-9px);border-color:var(--wine);box-shadow:0 22px 50px rgba(153,26,55,.16);}
+  .gate:hover{box-shadow:0 24px 40px -12px rgba(153,26,55,.55);}
+  .gate.open:hover{transform:translateY(-9px);border-color:var(--wine);box-shadow:0 24px 44px -10px rgba(153,26,55,.55);}
   /* 日蚀卡悬停：酒红从右下角柔和扩散铺满，文字+圆框反白 */
   .gate.open::before{content:"";position:absolute;inset:0;z-index:0;
     background:radial-gradient(circle at bottom right, var(--wine) 0%, var(--wine) 100%);
@@ -179,8 +181,16 @@
     overflow:hidden;background:var(--paper-3);transition:border-color .4s,box-shadow .4s;}
   .map-wrap:hover{border-color:var(--wine);box-shadow:0 18px 42px rgba(153,26,55,.12);}
   .map-wrap img{width:100%;display:block;}
+  /* 日蚀的宇宙 · 暗角 */
+  .map-wrap.cosmos{position:relative;}
+  .map-wrap.cosmos::after{content:"";position:absolute;inset:0;pointer-events:none;
+    background:radial-gradient(ellipse 75% 75% at 50% 45%, transparent 45%, rgba(10,6,14,.5) 85%, rgba(10,6,14,.78) 100%);}
+  .map-wrap.cosmos .map-title,.map-wrap.cosmos .map-hint{z-index:2;}
   .map-hint{position:absolute;right:16px;bottom:14px;background:rgba(124,20,43,.86);color:#fff;
     font-size:.8rem;letter-spacing:.1em;padding:6px 14px;border-radius:20px;}
+  .map-title{position:absolute;left:32px;bottom:26px;color:#fff;
+    font-family:var(--serif);font-size:clamp(1.6rem,3.5vw,2.4rem);font-weight:700;
+    text-shadow:0 2px 18px rgba(40,10,20,.85),0 1px 4px rgba(40,10,20,.8);letter-spacing:.04em;}
   .sec-head{margin-bottom:40px;text-align:center;}
   .sec-head .ornament{display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:10px;}
   .sec-head .ornament::before,.sec-head .ornament::after{content:"";height:1px;width:40px;background:var(--line);}
@@ -467,23 +477,17 @@
   <!-- 世界观面板 -->
   <div class="tab-panel active" id="panel-world">
 
-  <!-- 序章（世界观挂在系列层） -->
+  <!-- 日蚀的宇宙 · 横图入口 -->
   <section>
-    <div class="prologue reveal">
-      <div>
-        <div class="sec-head"><div class="ornament"><span class="m">☉ ☾</span></div></div>
-        <p class="verse">起初，世界是一座完整的宇宙——至高天。直到一支箭穿过了太阳的心脏。</p>
-        <p><span class="drop">三</span>位主神共执至高天：诺克斯、赛拉菲姆、艾欧斯。赛拉菲姆筑起无形的壁垒，将一切生命封锁其中；诺克斯不肯认同，一箭射穿核心的「太阳引擎」，引发了吞噬一切的大爆炸。</p>
-        <p>至高天被撕裂，壁垒随之崩毁——幸存的生命第一次重新望见群星。亿万年里，碎裂的能量与生命重新聚合成一颗星球；而诺克斯化作流星坠落，成了悬在它头顶的那轮月亮。</p>
-        <p>这是整个日蚀系列共享的世界——它的世界观自此不再更改，每一部故事，都发生在这片由神战余烬聚成的星球之上。</p>
-      </div>
-      <div class="scroll-frame">
-        <img src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='600' height='800'&gt;&lt;rect width='600' height='800' fill='%23e9edf1'/&gt;&lt;text x='50%25' y='50%25' fill='%236b645d' font-family='serif' font-size='22' text-anchor='middle'&gt;起源 · 插画位&lt;/text&gt;&lt;/svg&gt;" alt="">
-      </div>
+    <div class="map-wrap cosmos reveal" onclick="openPlace(this)"
+      data-img="eclipse-cosmos.png" data-crest="世界观 · 起源" data-name="日蚀的宇宙"
+      data-desc="placeholder-cosmos">
+      <div class="bio" style="display:none"><p class="verse">起初，世界是一座完整的宇宙——至高天。直到一支箭穿过了太阳的心脏。</p><p>三位主神共执至高天：诺克斯、赛拉菲姆、艾欧斯。赛拉菲姆筑起无形的壁垒，将一切生命封锁其中；诺克斯不肯认同，一箭射穿核心的「太阳引擎」，引发了吞噬一切的大爆炸。</p><p>至高天被撕裂，壁垒随之崩毁——幸存的生命第一次重新望见群星。亿万年里，碎裂的能量与生命重新聚合成一颗星球；而诺克斯化作流星坠落，成了悬在它头顶的那轮月亮。</p><p>这是整个日蚀系列共享的世界——它的世界观自此不再更改，每一部故事，都发生在这片由神战余烬聚成的星球之上。</p><p>（以上为占位文章，可自行补充与改写。）</p></div>
+      <img src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='1200' height='900'&gt;&lt;rect width='1200' height='900' fill='%23e9edf1'/&gt;&lt;text x='50%25' y='50%25' fill='%236b645d' font-family='serif' font-size='26' text-anchor='middle'&gt;日蚀的宇宙 · 横图位&lt;/text&gt;&lt;/svg&gt;" alt="日蚀的宇宙">
+      <span class="map-title">日蚀的宇宙</span>
+      <span class="map-hint">点击展开 ⤢</span>
     </div>
   </section>
-
-  <div class="divider"></div>
 
   <div class="divider"></div>
 
