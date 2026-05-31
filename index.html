@@ -158,14 +158,17 @@
   @keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
 
   /* banner 头图（埃登维尔追忆顶部）*/
-  .hero-banner{position:relative;padding:120px 40px 90px;border-radius:6px;overflow:hidden;color:#fff;}
+  .hero-banner{position:relative;padding:130px 40px 100px;margin:24px 40px 0;border-radius:6px;overflow:hidden;color:#fff;}
   .hero-banner::before{content:"";position:absolute;inset:0;z-index:0;
-    background-image:linear-gradient(180deg, rgba(31,28,26,.30), rgba(31,28,26,.45)), var(--banner-img);
+    background-image:
+      radial-gradient(ellipse 60% 70% at 50% 50%, rgba(20,16,14,.55), transparent 75%),
+      linear-gradient(180deg, rgba(20,16,14,.45), rgba(20,16,14,.55)),
+      var(--banner-img);
     background-size:cover;background-position:center;}
-  .hero-banner > *{position:relative;z-index:1;}
+  .hero-banner > *{position:relative;z-index:1;text-shadow:0 2px 16px rgba(0,0,0,.5);}
   .hero-banner h1{color:#fff;}
-  .hero-banner .label{color:#f0d9c0;}
-  .hero-banner .tag{color:rgba(255,255,255,.9);}
+  .hero-banner .label{color:#f3e2cc;}
+  .hero-banner .tag{color:rgba(255,255,255,.92);}
 
   /* 地图板块 */
   .map-wrap{position:relative;cursor:pointer;border:1px solid var(--line);border-radius:6px;
