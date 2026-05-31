@@ -287,7 +287,7 @@
   .card.placeholder .body{padding:28px 24px;}
 
   /* 地点 · 简洁卡（图+名，点击弹灯箱） */
-  .place-grid{grid-template-columns:repeat(auto-fill,minmax(240px,1fr));}
+  .place-grid{grid-template-columns:repeat(auto-fit,minmax(240px,280px));justify-content:center;}
 
   /* 美术 · 横向画廊 */
   .art-block{margin-bottom:40px;}
@@ -407,6 +407,10 @@
   .house-abyss .house-head .house-name{color:var(--abyss);}
   .house-abyss .person .crest{color:var(--abyss);}
   .house-abyss .person:hover{border-color:var(--abyss);box-shadow:0 18px 42px rgba(91,71,117,.18);}
+  /* 深渊簇名牌：紫底白字 */
+  .house-abyss .place-cap{background:var(--abyss);}
+  .house-abyss .place-cap .crest{color:rgba(255,255,255,.8);}
+  .house-abyss .place-cap h3{color:#fff;}
 
   .divider{height:1px;max-width:1080px;margin:0 auto;background:linear-gradient(90deg,transparent,var(--line),transparent);}
 
