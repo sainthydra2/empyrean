@@ -161,15 +161,15 @@
   .hero-banner{position:relative;padding:130px 40px 100px;margin:24px 40px 0;border-radius:6px;overflow:hidden;color:#fff;}
   .hero-banner::before{content:"";position:absolute;inset:0;z-index:0;
     background-image:
-      radial-gradient(circle at 0% 0%, rgba(153,26,55,.55), transparent 32%),
-      radial-gradient(circle at 100% 0%, rgba(153,26,55,.55), transparent 32%),
-      radial-gradient(circle at 0% 100%, rgba(153,26,55,.6), transparent 34%),
-      radial-gradient(circle at 100% 100%, rgba(153,26,55,.6), transparent 34%),
-      radial-gradient(ellipse 55% 60% at 50% 50%, rgba(20,16,14,.4), transparent 72%),
-      linear-gradient(180deg, rgba(20,16,14,.18), rgba(20,16,14,.28)),
+      radial-gradient(circle at 0% 0%, rgba(153,26,55,.5), transparent 32%),
+      radial-gradient(circle at 100% 0%, rgba(153,26,55,.5), transparent 32%),
+      radial-gradient(circle at 0% 100%, rgba(153,26,55,.55), transparent 34%),
+      radial-gradient(circle at 100% 100%, rgba(153,26,55,.55), transparent 34%),
+      radial-gradient(ellipse 55% 60% at 50% 50%, rgba(70,40,50,.28), transparent 72%),
+      linear-gradient(180deg, rgba(243,245,247,.55), rgba(243,245,247,.5)),
       var(--banner-img);
     background-size:cover;background-position:center;}
-  .hero-banner > *{position:relative;z-index:1;text-shadow:0 2px 16px rgba(0,0,0,.5);}
+  .hero-banner > *{position:relative;z-index:1;text-shadow:0 2px 14px rgba(40,10,20,.7),0 1px 3px rgba(40,10,20,.6);}
   .hero-banner h1{color:#fff;}
   .hero-banner .label{color:#f3e2cc;}
   .hero-banner .tag{color:rgba(255,255,255,.92);}
@@ -181,13 +181,12 @@
   .map-wrap img{width:100%;display:block;}
   .map-hint{position:absolute;right:16px;bottom:14px;background:rgba(124,20,43,.86);color:#fff;
     font-size:.8rem;letter-spacing:.1em;padding:6px 14px;border-radius:20px;}
-  .sec-head{margin-bottom:40px;}
-  .sec-head .ornament{display:flex;align-items:center;gap:14px;margin-bottom:10px;}
-  .sec-head .ornament::before,.sec-head .ornament::after{content:"";height:1px;background:var(--line);}
-  .sec-head .ornament::before{width:30px;} .sec-head .ornament::after{flex:1;}
+  .sec-head{margin-bottom:40px;text-align:center;}
+  .sec-head .ornament{display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:10px;}
+  .sec-head .ornament::before,.sec-head .ornament::after{content:"";height:1px;width:40px;background:var(--line);}
   .sec-head .ornament .m{color:var(--wine);font-size:.8rem;letter-spacing:.3em;}
   .sec-head h2{font-family:var(--serif);font-size:clamp(1.7rem,4vw,2.5rem);font-weight:700;margin:6px 0 12px;color:var(--ink);}
-  .sec-head p{color:var(--ink-soft);max-width:680px;}
+  .sec-head p{color:var(--ink-soft);max-width:680px;margin-left:auto;margin-right:auto;}
 
   /* 序章 */
   .prologue{display:grid;grid-template-columns:1.2fr .9fr;gap:50px;align-items:start;}
