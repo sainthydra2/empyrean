@@ -287,7 +287,8 @@
   .card.placeholder .body{padding:28px 24px;}
 
   /* 地点 · 简洁卡（图+名，点击弹灯箱） */
-  .place-grid{grid-template-columns:repeat(auto-fit,minmax(240px,280px));justify-content:center;}
+  .place-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:26px;}
+  .place-grid > .place{flex:0 0 280px;max-width:280px;}
 
   /* 美术 · 横向画廊 */
   .art-block{margin-bottom:40px;}
