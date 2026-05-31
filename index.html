@@ -355,21 +355,29 @@
   .lightbox.abyss-mode .lightbox-text .crest{color:var(--abyss);}
   .lightbox.abyss-mode .lb-desc .verse{color:#6f5b8f;}
 
-  /* 日蚀的宇宙灯箱：夜空黑底白字（不是纯黑，深蓝紫夜空感）*/
+  /* 日蚀的宇宙灯箱：低饱和深蓝夜空 + 星点（与深渊紫拉开）*/
   .lightbox.cosmos-mode .lightbox-inner{
-    background:#0d0a18;
+    background:#0c1119;
     background-image:
-      radial-gradient(ellipse 90% 70% at 50% 30%, rgba(60,40,90,.55), transparent 70%),
-      radial-gradient(ellipse 60% 50% at 80% 80%, rgba(40,30,70,.45), transparent 70%),
-      linear-gradient(180deg, #120e22, #0a0814);}
+      radial-gradient(1.5px 1.5px at 12% 18%, rgba(255,255,255,.7), transparent),
+      radial-gradient(1px 1px at 28% 42%, rgba(255,255,255,.55), transparent),
+      radial-gradient(1.5px 1.5px at 47% 12%, rgba(255,255,255,.65), transparent),
+      radial-gradient(1px 1px at 63% 33%, rgba(255,255,255,.5), transparent),
+      radial-gradient(1.5px 1.5px at 78% 22%, rgba(255,255,255,.7), transparent),
+      radial-gradient(1px 1px at 88% 55%, rgba(255,255,255,.5), transparent),
+      radial-gradient(1px 1px at 35% 72%, rgba(255,255,255,.45), transparent),
+      radial-gradient(1.5px 1.5px at 72% 82%, rgba(255,255,255,.6), transparent),
+      radial-gradient(1px 1px at 18% 88%, rgba(255,255,255,.45), transparent),
+      radial-gradient(ellipse 90% 70% at 50% 25%, rgba(45,62,90,.5), transparent 70%),
+      linear-gradient(180deg, #111826, #0a0e16);}
   .lightbox.cosmos-mode .lightbox-img{background:transparent;}
   .lightbox.cosmos-mode .lightbox-text{background:transparent;}
-  .lightbox.cosmos-mode .lightbox-text h3{color:#f3eefe;}
-  .lightbox.cosmos-mode .lightbox-text .crest{color:#b9a6e0;}
-  .lightbox.cosmos-mode .lb-desc{color:#d8d0ec;}
-  .lightbox.cosmos-mode .lb-desc p{color:#cfc6e6;opacity:.92;}
-  .lightbox.cosmos-mode .lb-desc .verse{color:#c9b8ec;}
-  .lightbox.cosmos-mode .lightbox-close{color:#b9a6e0;}
+  .lightbox.cosmos-mode .lightbox-text h3{color:#eef3fb;}
+  .lightbox.cosmos-mode .lightbox-text .crest{color:#9fb4d4;}
+  .lightbox.cosmos-mode .lb-desc{color:#cdd6e4;}
+  .lightbox.cosmos-mode .lb-desc p{color:#c2ccdc;opacity:.92;}
+  .lightbox.cosmos-mode .lb-desc .verse{color:#aabdda;}
+  .lightbox.cosmos-mode .lightbox-close{color:#9fb4d4;}
   .lightbox.cosmos-mode .lightbox-close:hover{color:#fff;}
   /* 窄屏回退为上下堆叠 */
   @media(max-width:680px){
@@ -735,19 +743,6 @@
     </div>
   </section>
 
-  <!-- 地点灯箱（点击卡片时弹出） -->
-  <div class="lightbox" id="placeBox" onclick="closePlace(event)">
-    <div class="lightbox-inner">
-      <span class="lightbox-close" onclick="closePlace(event,true)">×</span>
-      <div class="lightbox-img"><img id="lbImg" src="" alt=""></div>
-      <div class="lightbox-text">
-        <div class="crest" id="lbCrest"></div>
-        <h3 id="lbName"></h3>
-        <div id="lbDesc" class="lb-desc"></div>
-      </div>
-    </div>
-  </div>
-
   <div class="divider"></div>
 
   <!-- 人物 · 以家族为单位 -->
@@ -890,6 +885,19 @@
     <h1 style="font-family:var(--serif);font-weight:900;font-size:clamp(2.2rem,5vw,3.4rem);letter-spacing:.04em;margin:12px 0;color:var(--ink);">逐渐崩溃的甜蜜仙境</h1>
     <p class="verse" style="font-size:1.3rem;max-width:520px;">一座与日蚀无关的独立世界，正在另一条时间线里成形——敬请等待。</p>
     <p style="margin-top:24px;"><a onclick="go('hall')" style="cursor:pointer;color:var(--gild);letter-spacing:.1em;">‹ 返回世界</a></p>
+  </div>
+</div>
+
+<!-- 全局灯箱（所有页面共享，放在 view 之外）-->
+<div class="lightbox" id="placeBox" onclick="closePlace(event)">
+  <div class="lightbox-inner">
+    <span class="lightbox-close" onclick="closePlace(event,true)">×</span>
+    <div class="lightbox-img"><img id="lbImg" src="" alt=""></div>
+    <div class="lightbox-text">
+      <div class="crest" id="lbCrest"></div>
+      <h3 id="lbName"></h3>
+      <div id="lbDesc" class="lb-desc"></div>
+    </div>
   </div>
 </div>
 
