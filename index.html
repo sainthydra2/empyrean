@@ -161,6 +161,12 @@
 
   /* banner 头图（埃登维尔追忆顶部）*/
   .hero-banner{position:relative;padding:130px 40px 100px;margin:24px 0 0;overflow:hidden;color:#fff;}
+  /* 埃登维尔 banner 顶到导航下方，覆盖原面包屑区 */
+  .hero-banner.banner-top{margin-top:0;padding-top:96px;}
+  .crumbs-on-banner{position:relative;z-index:2;max-width:1080px;margin:0 auto 30px;padding:0 40px;
+    text-align:left;}
+  .crumbs-on-banner, .crumbs-on-banner .sep{color:#7a5560;}
+  .crumbs-on-banner span{color:var(--wine);}
   .hero-banner::before{content:"";position:absolute;inset:0;z-index:0;
     background-image:
       linear-gradient(to top, rgba(124,20,43,.62) 0%, rgba(124,20,43,.32) 28%, rgba(124,20,43,.08) 55%, transparent 75%),
@@ -169,7 +175,7 @@
     background-size:cover;background-position:center;}
   .hero-banner > *{position:relative;z-index:1;text-shadow:0 2px 14px rgba(40,10,20,.7),0 1px 3px rgba(40,10,20,.6);}
   .hero-banner h1{color:#fff;}
-  .hero-banner .label{color:var(--wine);}
+  .hero-banner .label{color:#f3e2cc;}
   .hero-banner .tag{color:rgba(255,255,255,.92);}
 
   /* 地图板块 */
@@ -657,12 +663,11 @@
 
 <!-- ========== 视图三 · 埃登维尔追忆（第一部内页） ========== -->
 <div class="view" id="view-edenvale">
-  <div class="crumbs">
-    <span onclick="go('hall')">世界</span><span class="sep">›</span>
-    <span onclick="go('eclipse')">日蚀</span><span class="sep">›</span>第一部 · 埃登维尔追忆
-  </div>
-
-  <div class="hero-band hero-banner" style="--banner-img:url('eden-banner.png')">
+  <div class="hero-band hero-banner banner-top" style="--banner-img:url('eden-banner.png')">
+    <div class="crumbs crumbs-on-banner">
+      <span onclick="go('hall')">世界</span><span class="sep">›</span>
+      <span onclick="go('eclipse')">日蚀</span><span class="sep">›</span>第一部 · 埃登维尔追忆
+    </div>
     <span class="label">日蚀 · 第一部</span>
     <h1>埃登维尔追忆</h1>
     <p class="tag">镀金王国，与它最后的黄金时代</p>
