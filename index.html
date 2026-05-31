@@ -127,6 +127,53 @@
   .hero-band h1{font-family:var(--serif);font-size:clamp(2.6rem,7vw,4.6rem);
     letter-spacing:.04em;color:var(--ink);font-weight:900;}
   .hero-band .tag{font-family:var(--script);font-style:italic;font-size:1.3rem;color:var(--ink-soft);margin-top:14px;}
+
+  /* 日蚀页三标签 */
+  .tabs{display:flex;justify-content:center;gap:60px;margin:10px 0 50px;flex-wrap:wrap;}
+  .tab{position:relative;cursor:pointer;text-align:center;padding:14px 22px 22px;
+    display:flex;flex-direction:column;align-items:center;gap:4px;transition:transform .4s;}
+  .tab .zh{font-family:var(--serif);font-size:1.7rem;font-weight:700;color:var(--ink);
+    transition:color .4s,text-shadow .5s;position:relative;}
+  .tab .en{font-family:var(--script);font-style:italic;font-size:.95rem;letter-spacing:.04em;
+    color:var(--ink-soft);transition:color .4s,text-shadow .5s;}
+  /* 下方小花纹+横杠标记（默认隐藏） */
+  .tab::after{content:"❦";position:absolute;bottom:-2px;left:50%;transform:translateX(-50%) scale(.6);
+    font-size:.8rem;color:var(--wine);opacity:0;transition:opacity .45s,transform .45s;}
+  .tab::before{content:"";position:absolute;bottom:10px;left:50%;width:0;height:1px;
+    background:var(--wine);transform:translateX(-50%);transition:width .45s;}
+  /* 悬停：淡红雾 + 标记浮现 */
+  .tab:hover .zh{color:var(--wine);text-shadow:0 0 18px rgba(153,26,55,.35);}
+  .tab:hover .en{color:var(--wine);}
+  .tab:hover::after{opacity:.7;transform:translateX(-50%) scale(.9);}
+  .tab:hover::before{width:40px;}
+  /* 选中：红雾加浓固定 + 标记固定 */
+  .tab.active .zh{color:var(--wine);text-shadow:0 0 26px rgba(153,26,55,.55),0 0 10px rgba(153,26,55,.4);}
+  .tab.active .en{color:var(--wine);}
+  .tab.active::after{opacity:1;transform:translateX(-50%) scale(1);}
+  .tab.active::before{width:56px;}
+
+  /* 面板：默认隐藏，激活才显示 */
+  .tab-panel{display:none;}
+  .tab-panel.active{display:block;animation:fadeIn .5s ease;}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+
+  /* banner 头图（埃登维尔追忆顶部）*/
+  .hero-banner{position:relative;padding:120px 40px 90px;border-radius:6px;overflow:hidden;color:#fff;}
+  .hero-banner::before{content:"";position:absolute;inset:0;z-index:0;
+    background-image:linear-gradient(180deg, rgba(31,28,26,.30), rgba(31,28,26,.45)), var(--banner-img);
+    background-size:cover;background-position:center;}
+  .hero-banner > *{position:relative;z-index:1;}
+  .hero-banner h1{color:#fff;}
+  .hero-banner .label{color:#f0d9c0;}
+  .hero-banner .tag{color:rgba(255,255,255,.9);}
+
+  /* 地图板块 */
+  .map-wrap{position:relative;cursor:pointer;border:1px solid var(--line);border-radius:6px;
+    overflow:hidden;background:var(--paper-3);transition:border-color .4s,box-shadow .4s;}
+  .map-wrap:hover{border-color:var(--wine);box-shadow:0 18px 42px rgba(153,26,55,.12);}
+  .map-wrap img{width:100%;display:block;}
+  .map-hint{position:absolute;right:16px;bottom:14px;background:rgba(124,20,43,.86);color:#fff;
+    font-size:.8rem;letter-spacing:.1em;padding:6px 14px;border-radius:20px;}
   .sec-head{margin-bottom:40px;}
   .sec-head .ornament{display:flex;align-items:center;gap:14px;margin-bottom:10px;}
   .sec-head .ornament::before,.sec-head .ornament::after{content:"";height:1px;background:var(--line);}
@@ -185,17 +232,24 @@
   .tome{width:200px;cursor:pointer;text-align:center;transition:transform .5s;}
   .tome.locked{cursor:default;}
   .tome:not(.locked):hover{transform:translateY(-10px);}
-  .tome .cover{aspect-ratio:2/3;border-radius:3px 6px 6px 3px;
+  .tome .cover{aspect-ratio:2/3;border-radius:3px 6px 6px 3px;position:relative;overflow:hidden;
     background:linear-gradient(125deg,#a52440,#7c142b);
     border:1px solid var(--wine-dk);border-left:6px solid var(--wine-dk);
     box-shadow:0 14px 34px rgba(153,26,55,.22);
-    display:flex;flex-direction:column;justify-content:center;align-items:center;padding:24px;gap:14px;}
-  .tome.locked .cover{background:linear-gradient(125deg,#e6e0d6,#d8d1c4);border-color:var(--line);
-    border-left-color:var(--ink-soft);box-shadow:0 8px 20px rgba(31,28,26,.10);opacity:.8;}
+    display:flex;flex-direction:column;justify-content:flex-end;align-items:flex-start;padding:22px;gap:6px;}
+  /* 自定义封面图：背景图 + 红色从左往右渐变叠加，书名压左下角 */
+  .tome .cover[style*="--cover-img"]{
+    background-image:
+      linear-gradient(90deg, rgba(124,20,43,.92) 0%, rgba(124,20,43,.55) 45%, rgba(124,20,43,.12) 100%),
+      var(--cover-img);
+    background-size:cover;background-position:center;}
+  .tome .cover.plain, .tome.locked .cover{background:linear-gradient(125deg,#e6e0d6,#d8d1c4);border-color:var(--line);
+    border-left-color:var(--ink-soft);box-shadow:0 8px 20px rgba(31,28,26,.10);opacity:.8;
+    justify-content:center;align-items:center;gap:14px;}
   .tome .vol{font-family:var(--roman);font-size:.68rem;letter-spacing:.24em;color:#f0d9c0;}
-  .tome .name{font-family:var(--serif);font-size:1.25rem;font-weight:700;color:#fdf6ef;line-height:1.4;}
+  .tome .name{font-family:var(--serif);font-size:1.4rem;font-weight:700;color:#fdf6ef;line-height:1.35;text-align:left;text-shadow:0 1px 6px rgba(60,8,20,.5);}
   .tome .deco{color:#e8c4ad;font-size:.9rem;letter-spacing:.4em;}
-  .tome.locked .vol{color:var(--ink-soft);} .tome.locked .name{color:var(--ink-soft);} .tome.locked .deco{color:var(--ink-soft);}
+  .tome.locked .vol{color:var(--ink-soft);} .tome.locked .name{color:var(--ink-soft);text-shadow:none;} .tome.locked .deco{color:var(--ink-soft);}
   .tome .caption{margin-top:12px;font-size:.82rem;color:var(--ink-soft);}
 
   /* 疆域/人物/势力卡片 */
@@ -216,6 +270,20 @@
 
   /* 地点 · 简洁卡（图+名，点击弹灯箱） */
   .place-grid{grid-template-columns:repeat(auto-fill,minmax(240px,1fr));}
+
+  /* 美术 · 横向画廊 */
+  .art-block{margin-bottom:40px;}
+  .art-block:last-child{margin-bottom:0;}
+  .art-title{font-family:var(--serif);font-size:1.4rem;font-weight:700;color:var(--ink);
+    margin-bottom:16px;padding-left:14px;border-left:3px solid var(--wine);}
+  .gallery{display:flex;gap:18px;overflow-x:auto;padding-bottom:14px;scroll-snap-type:x mandatory;}
+  .gallery::-webkit-scrollbar{height:8px;}
+  .gallery::-webkit-scrollbar-thumb{background:rgba(153,26,55,.3);border-radius:4px;}
+  .art-shot{flex:0 0 auto;width:360px;max-width:80vw;cursor:pointer;scroll-snap-align:start;
+    border:1px solid var(--line);border-radius:4px;overflow:hidden;background:var(--paper-3);
+    transition:transform .5s,border-color .5s,box-shadow .5s;}
+  .art-shot:hover{transform:translateY(-5px);border-color:var(--wine);box-shadow:0 16px 36px rgba(153,26,55,.12);}
+  .art-shot .frame{aspect-ratio:4/3;}
   .place{background:var(--paper-3);border:1px solid var(--line);border-radius:4px;overflow:hidden;
     cursor:pointer;transition:transform .5s,border-color .5s,box-shadow .5s;}
   .place:hover{transform:translateY(-6px);border-color:var(--wine);box-shadow:0 18px 42px rgba(153,26,55,.12);}
@@ -377,6 +445,22 @@
     <p class="tag">神祇在人间流下的传记和故事</p>
   </div>
 
+  <!-- 三个标签：世界观 / 故事 / 美术 -->
+  <div class="tabs">
+    <div class="tab active" data-tab="world" onclick="switchTab(this)">
+      <span class="zh">世界观</span><span class="en">World-building</span>
+    </div>
+    <div class="tab" data-tab="lore" onclick="switchTab(this)">
+      <span class="zh">故事</span><span class="en">Lore</span>
+    </div>
+    <div class="tab" data-tab="art" onclick="switchTab(this)">
+      <span class="zh">美术</span><span class="en">Art</span>
+    </div>
+  </div>
+
+  <!-- 世界观面板 -->
+  <div class="tab-panel active" id="panel-world">
+
   <!-- 序章（世界观挂在系列层） -->
   <section>
     <div class="prologue reveal">
@@ -392,6 +476,8 @@
       </div>
     </div>
   </section>
+
+  <div class="divider"></div>
 
   <div class="divider"></div>
 
@@ -456,8 +542,11 @@
   </section>
 
   <div class="divider"></div>
+  </div><!-- /panel-world -->
 
-  <!-- 卷册 -->
+  <!-- 故事面板 -->
+  <div class="tab-panel" id="panel-lore">
+  <!-- 卷册（故事）-->
   <section>
     <div class="sec-head reveal">
       <div class="ornament"><span class="m">卷 册</span></div>
@@ -466,15 +555,14 @@
     </div>
     <div class="shelf">
       <div class="tome reveal" onclick="go('edenvale')">
-        <div class="cover">
+        <div class="cover" style="--cover-img:url('cover-book1.png')">
           <span class="vol">第 一 部</span>
-          <span class="deco">❦</span>
           <span class="name">埃登维尔追忆</span>
         </div>
         <div class="caption">点开 · 进入设定 ›</div>
       </div>
       <div class="tome locked reveal">
-        <div class="cover">
+        <div class="cover plain">
           <span class="vol">第 二 部</span>
           <span class="deco">⸻</span>
           <span class="name">尚未启封</span>
@@ -483,6 +571,48 @@
       </div>
     </div>
   </section>
+
+  <div class="divider"></div>
+  </div><!-- /panel-lore -->
+
+  <!-- 美术面板 -->
+  <div class="tab-panel" id="panel-art">
+  <!-- 美术 · 埃登维尔风土 -->
+  <section>
+    <div class="sec-head reveal">
+      <div class="ornament"><span class="m">美 术</span></div>
+      <h2>埃登维尔风土</h2>
+      <p>镀金王国的生活、建筑与节庆——神战尺度之下，那些仍在发生的人间日常。横向滑动浏览，点击查看大图。</p>
+    </div>
+
+    <div class="art-block reveal">
+      <h3 class="art-title">生活</h3>
+      <div class="gallery">
+        <div class="art-shot" onclick="openPlace(this)" data-img="art-life-1.png" data-crest="生活" data-name="埃登维尔的生活" data-desc="（占位 · 待作者填充图片与描述。）"><div class="frame"><img src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='400' height='300'&gt;&lt;rect width='400' height='300' fill='%23e9edf1'/&gt;&lt;text x='50%25' y='50%25' fill='%236b645d' font-family='serif' font-size='14' text-anchor='middle'&gt;生活 · 图位&lt;/text&gt;&lt;/svg&gt;"></div></div>
+        <div class="art-shot" onclick="openPlace(this)" data-img="art-life-2.png" data-crest="生活" data-name="埃登维尔的生活" data-desc="（占位 · 待作者填充图片与描述。）"><div class="frame"><img src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='400' height='300'&gt;&lt;rect width='400' height='300' fill='%23e9edf1'/&gt;&lt;text x='50%25' y='50%25' fill='%236b645d' font-family='serif' font-size='14' text-anchor='middle'&gt;生活 · 图位&lt;/text&gt;&lt;/svg&gt;"></div></div>
+        <div class="art-shot" onclick="openPlace(this)" data-img="art-life-3.png" data-crest="生活" data-name="埃登维尔的生活" data-desc="（占位 · 待作者填充图片与描述。）"><div class="frame"><img src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='400' height='300'&gt;&lt;rect width='400' height='300' fill='%23e9edf1'/&gt;&lt;text x='50%25' y='50%25' fill='%236b645d' font-family='serif' font-size='14' text-anchor='middle'&gt;生活 · 图位&lt;/text&gt;&lt;/svg&gt;"></div></div>
+      </div>
+    </div>
+
+    <div class="art-block reveal">
+      <h3 class="art-title">建筑</h3>
+      <div class="gallery">
+        <div class="art-shot" onclick="openPlace(this)" data-img="art-arch-1.png" data-crest="建筑" data-name="埃登维尔的建筑" data-desc="（占位 · 待作者填充图片与描述。）"><div class="frame"><img src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='400' height='300'&gt;&lt;rect width='400' height='300' fill='%23e9edf1'/&gt;&lt;text x='50%25' y='50%25' fill='%236b645d' font-family='serif' font-size='14' text-anchor='middle'&gt;建筑 · 图位&lt;/text&gt;&lt;/svg&gt;"></div></div>
+        <div class="art-shot" onclick="openPlace(this)" data-img="art-arch-2.png" data-crest="建筑" data-name="埃登维尔的建筑" data-desc="（占位 · 待作者填充图片与描述。）"><div class="frame"><img src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='400' height='300'&gt;&lt;rect width='400' height='300' fill='%23e9edf1'/&gt;&lt;text x='50%25' y='50%25' fill='%236b645d' font-family='serif' font-size='14' text-anchor='middle'&gt;建筑 · 图位&lt;/text&gt;&lt;/svg&gt;"></div></div>
+        <div class="art-shot" onclick="openPlace(this)" data-img="art-arch-3.png" data-crest="建筑" data-name="埃登维尔的建筑" data-desc="（占位 · 待作者填充图片与描述。）"><div class="frame"><img src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='400' height='300'&gt;&lt;rect width='400' height='300' fill='%23e9edf1'/&gt;&lt;text x='50%25' y='50%25' fill='%236b645d' font-family='serif' font-size='14' text-anchor='middle'&gt;建筑 · 图位&lt;/text&gt;&lt;/svg&gt;"></div></div>
+      </div>
+    </div>
+
+    <div class="art-block reveal">
+      <h3 class="art-title">节庆</h3>
+      <div class="gallery">
+        <div class="art-shot" onclick="openPlace(this)" data-img="art-fest-1.png" data-crest="节庆" data-name="埃登维尔的节庆" data-desc="（占位 · 待作者填充图片与描述。）"><div class="frame"><img src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='400' height='300'&gt;&lt;rect width='400' height='300' fill='%23e9edf1'/&gt;&lt;text x='50%25' y='50%25' fill='%236b645d' font-family='serif' font-size='14' text-anchor='middle'&gt;节庆 · 图位&lt;/text&gt;&lt;/svg&gt;"></div></div>
+        <div class="art-shot" onclick="openPlace(this)" data-img="art-fest-2.png" data-crest="节庆" data-name="埃登维尔的节庆" data-desc="（占位 · 待作者填充图片与描述。）"><div class="frame"><img src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='400' height='300'&gt;&lt;rect width='400' height='300' fill='%23e9edf1'/&gt;&lt;text x='50%25' y='50%25' fill='%236b645d' font-family='serif' font-size='14' text-anchor='middle'&gt;节庆 · 图位&lt;/text&gt;&lt;/svg&gt;"></div></div>
+        <div class="art-shot" onclick="openPlace(this)" data-img="art-fest-3.png" data-crest="节庆" data-name="埃登维尔的节庆" data-desc="（占位 · 待作者填充图片与描述。）"><div class="frame"><img src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='400' height='300'&gt;&lt;rect width='400' height='300' fill='%23e9edf1'/&gt;&lt;text x='50%25' y='50%25' fill='%236b645d' font-family='serif' font-size='14' text-anchor='middle'&gt;节庆 · 图位&lt;/text&gt;&lt;/svg&gt;"></div></div>
+      </div>
+    </div>
+  </section>
+  </div><!-- /panel-art -->
 
   <footer>
     <div class="crest">日 蚀</div>
@@ -497,11 +627,28 @@
     <span onclick="go('eclipse')">日蚀</span><span class="sep">›</span>第一部 · 埃登维尔追忆
   </div>
 
-  <div class="hero-band">
+  <div class="hero-band hero-banner" style="--banner-img:url('eden-banner.png')">
     <span class="label">日蚀 · 第一部</span>
     <h1>埃登维尔追忆</h1>
     <p class="tag">镀金王国，与它最后的黄金时代</p>
   </div>
+
+  <!-- 埃登维尔的世界 · 地图 -->
+  <section>
+    <div class="sec-head reveal">
+      <div class="ornament"><span class="m">舆 图</span></div>
+      <h2>埃登维尔的世界</h2>
+      <p>五郡王国的全貌——王城、四郡与圣城，皆在这片疆域之内。点击展开大图。</p>
+    </div>
+    <div class="map-wrap reveal" onclick="openPlace(this)"
+      data-img="eden-map.png" data-crest="舆图 · 埃登维尔" data-name="埃登维尔全图"
+      data-desc="埃登维尔五郡王国的完整地图。">
+      <img src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='1200' height='560'&gt;&lt;rect width='1200' height='560' fill='%23e9edf1'/&gt;&lt;text x='50%25' y='50%25' fill='%236b645d' font-family='serif' font-size='22' text-anchor='middle'&gt;埃登维尔地图 · 点击查看大图&lt;/text&gt;&lt;/svg&gt;" alt="埃登维尔地图">
+      <span class="map-hint">点击查看大图 ⤢</span>
+    </div>
+  </section>
+
+  <div class="divider"></div>
 
   <!-- 王国与疆域 -->
   <section>
@@ -513,7 +660,7 @@
     <div class="grid place-grid">
 
       <div class="place reveal" onclick="openPlace(this)"
-        data-img=""everitel.png""
+        data-img="everitel.png"
         data-crest="王 都"
         data-name="王城伊维特里"
         data-desc="王国的心脏与太阳神王的座所。德拉维安四世在此立朝，王后伊索莉娅怀着王嗣，宰相卡德伦执掌政务，沉默如石的雷恩哈特统领军队。荣光与裂痕都从这里生长。">
@@ -725,6 +872,14 @@
     const t=document.getElementById('view-'+id);
     if(!t) return;
     t.classList.add('active');
+    // 进入日蚀页时重置标签到「世界观」
+    if(id==='eclipse'){
+      document.querySelectorAll('#view-eclipse .tab').forEach(function(x){x.classList.remove('active');});
+      document.querySelectorAll('#view-eclipse .tab-panel').forEach(function(x){x.classList.remove('active');});
+      var dt=document.querySelector('#view-eclipse .tab[data-tab="world"]');
+      var dp=document.getElementById('panel-world');
+      if(dt) dt.classList.add('active'); if(dp) dp.classList.add('active');
+    }
     window.scrollTo({top:0,behavior:'auto'});
     // 触发该视图内的浮现动画
     const items=t.querySelectorAll('.reveal');
@@ -735,6 +890,15 @@
   }
   function toggleOuter(){
     document.getElementById('outer-gods').classList.toggle('open');
+  }
+  function switchTab(el){
+    var key=el.dataset.tab;
+    document.querySelectorAll('#view-eclipse .tab').forEach(function(t){t.classList.remove('active');});
+    el.classList.add('active');
+    var map={world:'panel-world',lore:'panel-lore',art:'panel-art'};
+    document.querySelectorAll('#view-eclipse .tab-panel').forEach(function(p){p.classList.remove('active');});
+    var panel=document.getElementById(map[key]);
+    if(panel) panel.classList.add('active');
   }
   function openPlace(el){
     var box=document.getElementById('placeBox');
