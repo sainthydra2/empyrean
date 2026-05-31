@@ -354,6 +354,23 @@
   .lightbox.abyss-mode .lightbox-text{background:transparent;}
   .lightbox.abyss-mode .lightbox-text .crest{color:var(--abyss);}
   .lightbox.abyss-mode .lb-desc .verse{color:#6f5b8f;}
+
+  /* 日蚀的宇宙灯箱：夜空黑底白字（不是纯黑，深蓝紫夜空感）*/
+  .lightbox.cosmos-mode .lightbox-inner{
+    background:#0d0a18;
+    background-image:
+      radial-gradient(ellipse 90% 70% at 50% 30%, rgba(60,40,90,.55), transparent 70%),
+      radial-gradient(ellipse 60% 50% at 80% 80%, rgba(40,30,70,.45), transparent 70%),
+      linear-gradient(180deg, #120e22, #0a0814);}
+  .lightbox.cosmos-mode .lightbox-img{background:transparent;}
+  .lightbox.cosmos-mode .lightbox-text{background:transparent;}
+  .lightbox.cosmos-mode .lightbox-text h3{color:#f3eefe;}
+  .lightbox.cosmos-mode .lightbox-text .crest{color:#b9a6e0;}
+  .lightbox.cosmos-mode .lb-desc{color:#d8d0ec;}
+  .lightbox.cosmos-mode .lb-desc p{color:#cfc6e6;opacity:.92;}
+  .lightbox.cosmos-mode .lb-desc .verse{color:#c9b8ec;}
+  .lightbox.cosmos-mode .lightbox-close{color:#b9a6e0;}
+  .lightbox.cosmos-mode .lightbox-close:hover{color:#fff;}
   /* 窄屏回退为上下堆叠 */
   @media(max-width:680px){
     .lightbox.person-mode .lightbox-inner{flex-direction:column;}
@@ -479,7 +496,7 @@
 
   <!-- 日蚀的宇宙 · 横图入口 -->
   <section>
-    <div class="map-wrap cosmos reveal" onclick="openPlace(this)"
+    <div class="map-wrap cosmos" onclick="openPlace(this)"
       data-img="eclipse-cosmos.png" data-crest="世界观 · 起源" data-name="日蚀的宇宙"
       data-desc="placeholder-cosmos">
       <div class="bio" style="display:none"><p class="verse">起初，世界是一座完整的宇宙——至高天。直到一支箭穿过了太阳的心脏。</p><p>三位主神共执至高天：诺克斯、赛拉菲姆、艾欧斯。赛拉菲姆筑起无形的壁垒，将一切生命封锁其中；诺克斯不肯认同，一箭射穿核心的「太阳引擎」，引发了吞噬一切的大爆炸。</p><p>至高天被撕裂，壁垒随之崩毁——幸存的生命第一次重新望见群星。亿万年里，碎裂的能量与生命重新聚合成一颗星球；而诺克斯化作流星坠落，成了悬在它头顶的那轮月亮。</p><p>这是整个日蚀系列共享的世界——它的世界观自此不再更改，每一部故事，都发生在这片由神战余烬聚成的星球之上。</p><p>（以上为占位文章，可自行补充与改写。）</p></div>
@@ -926,16 +943,26 @@
     // 深渊簇成员：灯箱走紫色调
     if(el.closest('.house-abyss')){ box.classList.add('abyss-mode'); }
     else { box.classList.remove('abyss-mode'); }
+    // 日蚀的宇宙：灯箱走夜空黑底
+    if(el.classList.contains('cosmos')){ box.classList.add('cosmos-mode'); }
+    else { box.classList.remove('cosmos-mode'); }
     box.classList.add('show');
+    box.style.display='flex';
   }
   function closePlace(e,force){
     // 点遮罩或关闭按钮才关；点内容区不关
     if(force || e.target.id==='placeBox'){
-      document.getElementById('placeBox').classList.remove('show');
+      var box=document.getElementById('placeBox');
+      box.classList.remove('show');
+      box.style.display='none';
     }
   }
   document.addEventListener('keydown',function(e){
-    if(e.key==='Escape') document.getElementById('placeBox').classList.remove('show');
+    if(e.key==='Escape'){
+      var box=document.getElementById('placeBox');
+      box.classList.remove('show');
+      box.style.display='none';
+    }
   });
 </script>
 </body>
