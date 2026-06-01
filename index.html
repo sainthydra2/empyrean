@@ -190,27 +190,22 @@
   .region-cap{font-size:.82rem;color:var(--ink-soft);margin-top:8px;}
 
   /* 埃登维尔的世界 · 大地图背景 + 右侧红雾目录 */
-  .eden-hub{position:relative;min-height:520px;
-    background-image:var(--map-img);
-    background-size:cover;background-position:center;overflow:hidden;
-    display:flex;justify-content:flex-end;align-items:center;}
-  /* 顶部红雾：与 banner 底部红雾呼应，柔化两图衔接 */
-  .eden-hub::after{content:"";position:absolute;left:0;right:0;top:0;height:120px;z-index:0;pointer-events:none;
-    background:linear-gradient(to bottom, rgba(124,20,43,.55), transparent);}
-  /* 右往左的红雾（右浓左透，地图主体在左不被遮）*/
-  .eden-hub::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
-    background:linear-gradient(to left, rgba(95,16,35,.92) 0%, rgba(124,20,43,.7) 22%, rgba(124,20,43,.32) 42%, transparent 62%);}
-  .eden-hub-menu{position:relative;z-index:1;display:flex;flex-direction:column;align-items:flex-end;
-    color:#fff;padding:0 7% 0 0;text-align:right;}
+  .eden-hub{position:relative;width:100%;height:520px;overflow:hidden;}
+  .eden-hub .hub-map{position:absolute;inset:0;background-image:var(--map-img);
+    background-size:cover;background-position:center;z-index:0;}
+  .eden-hub .hub-fog{position:absolute;inset:0;z-index:1;pointer-events:none;
+    background:linear-gradient(to left, rgba(95,16,35,.92) 0%, rgba(124,20,43,.72) 22%, rgba(124,20,43,.34) 42%, transparent 62%);}
+  .eden-hub-menu{position:absolute;top:0;right:0;height:100%;z-index:2;
+    display:flex;flex-direction:column;justify-content:center;align-items:flex-end;
+    padding:0 7%;text-align:right;}
   .hub-nav{display:flex;flex-direction:column;gap:0;}
   .hub-nav a{display:block;cursor:pointer;font-family:var(--serif);font-size:1.35rem;font-weight:700;
-    color:rgba(255,255,255,.82);padding:20px 0;letter-spacing:.08em;
+    color:rgba(255,255,255,.85);padding:20px 0;letter-spacing:.08em;
     transition:color .35s,letter-spacing .35s,text-shadow .35s;
     text-shadow:0 1px 10px rgba(40,8,16,.7);}
   .hub-nav a:hover{color:#fff;letter-spacing:.18em;text-shadow:0 0 18px rgba(255,255,255,.5);}
   @media(max-width:680px){
-    .eden-hub{min-height:380px;}
-    .eden-hub-menu{padding-right:8%;}
+    .eden-hub{height:380px;}
     .hub-nav a{font-size:1.15rem;}
   }
 
@@ -676,7 +671,9 @@
   </div>
 
   <!-- 埃登维尔的世界 · 大地图背景 + 目录 -->
-  <div class="eden-hub" style="--map-img:url('eden-map.webp')">
+  <div class="eden-hub">
+    <div class="hub-map" style="--map-img:url('eden-map.webp')"></div>
+    <div class="hub-fog"></div>
     <div class="eden-hub-menu">
       <nav class="hub-nav">
         <a onclick="scrollToSec('sec-geo')">地理 · 五郡</a>
