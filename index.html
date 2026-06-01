@@ -160,23 +160,17 @@
   @keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
 
   /* banner 头图（埃登维尔追忆顶部）*/
-  .hero-banner{position:relative;padding:130px 40px 100px;margin:24px 0 0;overflow:hidden;color:#fff;}
-  /* 埃登维尔 banner 顶到导航下方，覆盖原面包屑区 */
-  .hero-banner.banner-top{margin-top:0;padding-top:96px;}
+  .hero-banner{position:relative;padding:70px 40px 50px;margin:0;overflow:hidden;}
+  /* 埃登维尔 banner：纯净浅底，无图无红雾 */
+  .hero-banner.banner-top{padding-top:50px;}
   .crumbs-on-banner{position:relative;z-index:2;max-width:1080px;margin:0 auto 30px;padding:0 40px;
     text-align:left;}
-  .crumbs-on-banner, .crumbs-on-banner .sep{color:#7a5560;}
+  .crumbs-on-banner, .crumbs-on-banner .sep{color:var(--ink-soft);}
   .crumbs-on-banner span{color:var(--wine);}
-  .hero-banner::before{content:"";position:absolute;inset:0;z-index:0;
-    background-image:
-      linear-gradient(to top, rgba(124,20,43,.62) 0%, rgba(124,20,43,.32) 28%, rgba(124,20,43,.08) 55%, transparent 75%),
-      linear-gradient(180deg, rgba(243,245,247,.45), rgba(243,245,247,.35)),
-      var(--banner-img);
-    background-size:cover;background-position:center;}
-  .hero-banner > *{position:relative;z-index:1;text-shadow:0 2px 14px rgba(40,10,20,.7),0 1px 3px rgba(40,10,20,.6);}
-  .hero-banner h1{color:#fff;}
+  .hero-banner > *{position:relative;z-index:1;}
+  .hero-banner h1{color:var(--wine);}
   .hero-banner .label{color:var(--wine);}
-  .hero-banner .tag{color:rgba(255,255,255,.92);}
+  .hero-banner .tag{color:var(--wine);opacity:.85;}
 
   /* 地区 · 圆形LOGO列表 */
   .region-list{display:flex;flex-wrap:wrap;justify-content:center;gap:50px;}
@@ -195,25 +189,29 @@
   .region.locked .region-name{color:var(--ink-soft);}
   .region-cap{font-size:.82rem;color:var(--ink-soft);margin-top:8px;}
 
-  /* 埃登维尔的世界 · 大地图背景 + 居中目录 */
-  .eden-divider{height:5px;background:var(--wine);width:100%;}
+  /* 埃登维尔的世界 · 大地图背景 + 右侧红雾目录 */
   .eden-hub{position:relative;min-height:520px;
-    background-image:linear-gradient(180deg, rgba(20,12,16,.55), rgba(20,12,16,.42) 40%, rgba(95,16,35,.5)), var(--map-img);
+    background-image:var(--map-img);
     background-size:cover;background-position:center;overflow:hidden;
-    display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:70px 24px;}
-  .eden-hub-menu{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;
-    color:#fff;width:min(440px,90%);background:rgba(20,10,14,.32);
-    padding:40px 44px;border-radius:8px;backdrop-filter:blur(2px);}
-  .eden-hub-menu .hub-label{font-family:var(--serif);font-size:clamp(1.9rem,4vw,2.8rem);font-weight:700;
-    color:#fff;margin-bottom:30px;text-shadow:0 2px 16px rgba(20,8,12,.85);letter-spacing:.05em;}
-  .hub-nav{display:flex;flex-direction:column;gap:0;width:100%;}
-  .hub-nav a{display:block;cursor:pointer;font-family:var(--serif);font-size:1.2rem;color:rgba(255,255,255,.94);
-    padding:18px 0;border-top:1px solid rgba(255,255,255,.28);transition:letter-spacing .35s,color .35s;
-    text-shadow:0 1px 8px rgba(20,8,12,.8);text-align:center;}
-  .hub-nav a:last-child{border-bottom:1px solid rgba(255,255,255,.28);}
-  .hub-nav a:hover{color:#fff;letter-spacing:.2em;}
+    display:flex;justify-content:flex-end;align-items:center;}
+  /* 顶部红雾：与 banner 底部红雾呼应，柔化两图衔接 */
+  .eden-hub::after{content:"";position:absolute;left:0;right:0;top:0;height:120px;z-index:0;pointer-events:none;
+    background:linear-gradient(to bottom, rgba(124,20,43,.55), transparent);}
+  /* 右往左的红雾（右浓左透，地图主体在左不被遮）*/
+  .eden-hub::before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+    background:linear-gradient(to left, rgba(95,16,35,.92) 0%, rgba(124,20,43,.7) 22%, rgba(124,20,43,.32) 42%, transparent 62%);}
+  .eden-hub-menu{position:relative;z-index:1;display:flex;flex-direction:column;align-items:flex-end;
+    color:#fff;padding:0 7% 0 0;text-align:right;}
+  .hub-nav{display:flex;flex-direction:column;gap:0;}
+  .hub-nav a{display:block;cursor:pointer;font-family:var(--serif);font-size:1.35rem;font-weight:700;
+    color:rgba(255,255,255,.82);padding:20px 0;letter-spacing:.08em;
+    transition:color .35s,letter-spacing .35s,text-shadow .35s;
+    text-shadow:0 1px 10px rgba(40,8,16,.7);}
+  .hub-nav a:hover{color:#fff;letter-spacing:.18em;text-shadow:0 0 18px rgba(255,255,255,.5);}
   @media(max-width:680px){
-    .eden-hub{min-height:400px;}
+    .eden-hub{min-height:380px;}
+    .eden-hub-menu{padding-right:8%;}
+    .hub-nav a{font-size:1.15rem;}
   }
 
   /* 地图板块 */
@@ -667,7 +665,7 @@
 
 <!-- ========== 视图三 · 埃登维尔追忆（第一部内页） ========== -->
 <div class="view" id="view-edenvale">
-  <div class="hero-band hero-banner banner-top" style="--banner-img:url('eden-banner.png')">
+  <div class="hero-band hero-banner banner-top">
     <div class="crumbs crumbs-on-banner">
       <span onclick="go('hall')">世界</span><span class="sep">›</span>
       <span onclick="go('eclipse')">日蚀</span><span class="sep">›</span>第一部 · 埃登维尔追忆
@@ -678,10 +676,8 @@
   </div>
 
   <!-- 埃登维尔的世界 · 大地图背景 + 目录 -->
-  <div class="eden-divider"></div>
   <div class="eden-hub" style="--map-img:url('eden-map.webp')">
     <div class="eden-hub-menu">
-      <div class="hub-label">埃登维尔的世界</div>
       <nav class="hub-nav">
         <a onclick="scrollToSec('sec-geo')">地理 · 五郡</a>
         <a onclick="scrollToSec('sec-people')">家族与人物</a>
