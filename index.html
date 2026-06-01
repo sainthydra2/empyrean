@@ -195,23 +195,25 @@
   .region.locked .region-name{color:var(--ink-soft);}
   .region-cap{font-size:.82rem;color:var(--ink-soft);margin-top:8px;}
 
-  /* 埃登维尔的世界 · 大地图背景 + 右侧红雾目录 */
-  .eden-hub{position:relative;min-height:420px;display:flex;justify-content:flex-end;align-items:stretch;
-    background-image:linear-gradient(90deg, rgba(243,245,247,.1) 0%, rgba(243,245,247,.1) 45%, rgba(124,20,43,.4) 70%, rgba(95,16,35,.78) 100%), var(--map-img);
-    background-size:cover;background-position:center;overflow:hidden;}
-  .eden-hub-menu{position:relative;z-index:1;width:min(420px,46%);padding:54px 48px;
-    display:flex;flex-direction:column;justify-content:center;color:#fff;}
-  .eden-hub-menu .hub-label{font-family:var(--serif);font-size:clamp(1.6rem,3vw,2.2rem);font-weight:700;
-    color:#fff;margin-bottom:26px;text-shadow:0 2px 12px rgba(40,10,20,.6);letter-spacing:.04em;}
-  .hub-nav{display:flex;flex-direction:column;gap:4px;}
-  .hub-nav a{display:block;cursor:pointer;font-family:var(--serif);font-size:1.15rem;color:rgba(255,255,255,.92);
-    padding:14px 0;border-top:1px solid rgba(255,255,255,.22);transition:color .35s,padding-left .35s;
-    text-shadow:0 1px 6px rgba(40,10,20,.5);}
-  .hub-nav a:last-child{border-bottom:1px solid rgba(255,255,255,.22);}
-  .hub-nav a:hover{color:#fff;padding-left:12px;}
+  /* 埃登维尔的世界 · 大地图背景 + 居中目录 */
+  .eden-divider{height:5px;background:var(--wine);width:100%;}
+  .eden-hub{position:relative;min-height:520px;
+    background-image:linear-gradient(180deg, rgba(20,12,16,.55), rgba(20,12,16,.42) 40%, rgba(95,16,35,.5)), var(--map-img);
+    background-size:cover;background-position:center;overflow:hidden;
+    display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:70px 24px;}
+  .eden-hub-menu{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;
+    color:#fff;width:min(440px,90%);background:rgba(20,10,14,.32);
+    padding:40px 44px;border-radius:8px;backdrop-filter:blur(2px);}
+  .eden-hub-menu .hub-label{font-family:var(--serif);font-size:clamp(1.9rem,4vw,2.8rem);font-weight:700;
+    color:#fff;margin-bottom:30px;text-shadow:0 2px 16px rgba(20,8,12,.85);letter-spacing:.05em;}
+  .hub-nav{display:flex;flex-direction:column;gap:0;width:100%;}
+  .hub-nav a{display:block;cursor:pointer;font-family:var(--serif);font-size:1.2rem;color:rgba(255,255,255,.94);
+    padding:18px 0;border-top:1px solid rgba(255,255,255,.28);transition:letter-spacing .35s,color .35s;
+    text-shadow:0 1px 8px rgba(20,8,12,.8);text-align:center;}
+  .hub-nav a:last-child{border-bottom:1px solid rgba(255,255,255,.28);}
+  .hub-nav a:hover{color:#fff;letter-spacing:.2em;}
   @media(max-width:680px){
-    .eden-hub{min-height:340px;}
-    .eden-hub-menu{width:70%;padding:30px 26px;}
+    .eden-hub{min-height:400px;}
   }
 
   /* 地图板块 */
@@ -676,6 +678,7 @@
   </div>
 
   <!-- 埃登维尔的世界 · 大地图背景 + 目录 -->
+  <div class="eden-divider"></div>
   <div class="eden-hub" style="--map-img:url('eden-map.webp')">
     <div class="eden-hub-menu">
       <div class="hub-label">埃登维尔的世界</div>
