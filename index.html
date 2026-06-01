@@ -178,6 +178,42 @@
   .hero-banner .label{color:var(--wine);}
   .hero-banner .tag{color:rgba(255,255,255,.92);}
 
+  /* 地区 · 圆形LOGO列表 */
+  .region-list{display:flex;flex-wrap:wrap;justify-content:center;gap:50px;}
+  .region{display:flex;flex-direction:column;align-items:center;cursor:pointer;width:200px;}
+  .region.locked{cursor:default;}
+  .region-logo{width:160px;height:160px;border-radius:50%;overflow:hidden;
+    background-color:var(--paper-3);background-size:cover;background-position:center;
+    background-image:var(--logo-img);
+    border:1px solid var(--line);box-shadow:0 14px 30px -12px rgba(153,26,55,.45);
+    transition:transform .5s,box-shadow .5s,border-color .5s;}
+  .region:not(.locked):hover .region-logo{transform:translateY(-6px);border-color:var(--wine);
+    box-shadow:0 22px 40px -10px rgba(153,26,55,.55);}
+  .region-logo.plain{background-image:none;background:linear-gradient(135deg,#e6e0d6,#d8d1c4);
+    opacity:.7;box-shadow:0 8px 20px rgba(31,28,26,.1);}
+  .region-name{font-family:var(--serif);font-size:1.3rem;font-weight:700;color:var(--ink);margin-top:18px;}
+  .region.locked .region-name{color:var(--ink-soft);}
+  .region-cap{font-size:.82rem;color:var(--ink-soft);margin-top:8px;}
+
+  /* 埃登维尔的世界 · 大地图背景 + 右侧红雾目录 */
+  .eden-hub{position:relative;min-height:420px;display:flex;justify-content:flex-end;align-items:stretch;
+    background-image:linear-gradient(90deg, rgba(243,245,247,.1) 0%, rgba(243,245,247,.1) 45%, rgba(124,20,43,.4) 70%, rgba(95,16,35,.78) 100%), var(--map-img);
+    background-size:cover;background-position:center;overflow:hidden;}
+  .eden-hub-menu{position:relative;z-index:1;width:min(420px,46%);padding:54px 48px;
+    display:flex;flex-direction:column;justify-content:center;color:#fff;}
+  .eden-hub-menu .hub-label{font-family:var(--serif);font-size:clamp(1.6rem,3vw,2.2rem);font-weight:700;
+    color:#fff;margin-bottom:26px;text-shadow:0 2px 12px rgba(40,10,20,.6);letter-spacing:.04em;}
+  .hub-nav{display:flex;flex-direction:column;gap:4px;}
+  .hub-nav a{display:block;cursor:pointer;font-family:var(--serif);font-size:1.15rem;color:rgba(255,255,255,.92);
+    padding:14px 0;border-top:1px solid rgba(255,255,255,.22);transition:color .35s,padding-left .35s;
+    text-shadow:0 1px 6px rgba(40,10,20,.5);}
+  .hub-nav a:last-child{border-bottom:1px solid rgba(255,255,255,.22);}
+  .hub-nav a:hover{color:#fff;padding-left:12px;}
+  @media(max-width:680px){
+    .eden-hub{min-height:340px;}
+    .eden-hub-menu{width:70%;padding:30px 26px;}
+  }
+
   /* 地图板块 */
   .map-wrap{position:relative;cursor:pointer;border:1px solid var(--line);border-radius:6px;
     overflow:hidden;background:var(--paper-3);transition:border-color .4s,box-shadow .4s;}
@@ -500,13 +536,10 @@
   <!-- 三个标签：世界观 / 故事 / 美术 -->
   <div class="tabs">
     <div class="tab active" data-tab="world" onclick="switchTab(this)">
-      <span class="zh">世界观</span><span class="en">World-building</span>
+      <span class="zh">宇宙</span><span class="en">Cosmos</span>
     </div>
     <div class="tab" data-tab="lore" onclick="switchTab(this)">
-      <span class="zh">故事</span><span class="en">Lore</span>
-    </div>
-    <div class="tab" data-tab="art" onclick="switchTab(this)">
-      <span class="zh">美术</span><span class="en">Art</span>
+      <span class="zh">地区</span><span class="en">Regions</span>
     </div>
   </div>
 
@@ -592,28 +625,28 @@
 
   <!-- 故事面板 -->
   <div class="tab-panel" id="panel-lore">
-  <!-- 卷册（故事）-->
+  <!-- 地区 -->
   <section>
     <div class="sec-head reveal">
-      <div class="ornament"><span class="m">卷 册</span></div>
-      <h2>系列卷目</h2>
-      <p>日蚀系列共享同一片世界。翻开下面的卷册，进入每一部各自的故事与设定。</p>
+      <div class="ornament"><span class="m">地 区</span></div>
+      <h2>日蚀的地区</h2>
+      <p>日蚀系列共享同一片世界。每一个地区，都有各自的故事与设定。</p>
     </div>
-    <div class="shelf">
-      <div class="tome reveal" onclick="go('edenvale')">
-        <div class="cover" style="--cover-img:url('cover-book1.png')">
-          <span class="vol">第 一 部</span>
-          <span class="name">埃登维尔追忆</span>
-        </div>
-        <div class="caption">点开 · 进入设定 ›</div>
+    <div class="region-list">
+      <div class="region reveal" onclick="go('edenvale')">
+        <div class="region-logo" style="--logo-img:url('region-edenvale.png')"></div>
+        <div class="region-name">埃登维尔</div>
+        <div class="region-cap">点开 · 进入设定 ›</div>
       </div>
-      <div class="tome locked reveal">
-        <div class="cover plain">
-          <span class="vol">第 二 部</span>
-          <span class="deco">⸻</span>
-          <span class="name">尚未启封</span>
-        </div>
-        <div class="caption">筹备中</div>
+      <div class="region locked reveal">
+        <div class="region-logo plain"></div>
+        <div class="region-name">暂未展开</div>
+        <div class="region-cap">筹备中</div>
+      </div>
+      <div class="region locked reveal">
+        <div class="region-logo plain"></div>
+        <div class="region-name">暂未展开</div>
+        <div class="region-cap">筹备中</div>
       </div>
     </div>
   </section>
@@ -622,43 +655,7 @@
   </div><!-- /panel-lore -->
 
   <!-- 美术面板 -->
-  <div class="tab-panel" id="panel-art">
-  <!-- 美术 · 埃登维尔风土 -->
-  <section>
-    <div class="sec-head reveal">
-      <div class="ornament"><span class="m">美 术</span></div>
-      <h2>埃登维尔风土</h2>
-      <p>镀金王国的生活、建筑与节庆——神战尺度之下，那些仍在发生的人间日常。横向滑动浏览，点击查看大图。</p>
-    </div>
 
-    <div class="art-block reveal">
-      <h3 class="art-title">生活</h3>
-      <div class="gallery">
-        <div class="art-shot" onclick="openPlace(this)" data-img="art-life-1.png" data-crest="生活" data-name="埃登维尔的生活" data-desc="（占位 · 待作者填充图片与描述。）"><div class="frame"><img src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='400' height='300'&gt;&lt;rect width='400' height='300' fill='%23e9edf1'/&gt;&lt;text x='50%25' y='50%25' fill='%236b645d' font-family='serif' font-size='14' text-anchor='middle'&gt;生活 · 图位&lt;/text&gt;&lt;/svg&gt;"></div></div>
-        <div class="art-shot" onclick="openPlace(this)" data-img="art-life-2.png" data-crest="生活" data-name="埃登维尔的生活" data-desc="（占位 · 待作者填充图片与描述。）"><div class="frame"><img src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='400' height='300'&gt;&lt;rect width='400' height='300' fill='%23e9edf1'/&gt;&lt;text x='50%25' y='50%25' fill='%236b645d' font-family='serif' font-size='14' text-anchor='middle'&gt;生活 · 图位&lt;/text&gt;&lt;/svg&gt;"></div></div>
-        <div class="art-shot" onclick="openPlace(this)" data-img="art-life-3.png" data-crest="生活" data-name="埃登维尔的生活" data-desc="（占位 · 待作者填充图片与描述。）"><div class="frame"><img src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='400' height='300'&gt;&lt;rect width='400' height='300' fill='%23e9edf1'/&gt;&lt;text x='50%25' y='50%25' fill='%236b645d' font-family='serif' font-size='14' text-anchor='middle'&gt;生活 · 图位&lt;/text&gt;&lt;/svg&gt;"></div></div>
-      </div>
-    </div>
-
-    <div class="art-block reveal">
-      <h3 class="art-title">建筑</h3>
-      <div class="gallery">
-        <div class="art-shot" onclick="openPlace(this)" data-img="art-arch-1.png" data-crest="建筑" data-name="埃登维尔的建筑" data-desc="（占位 · 待作者填充图片与描述。）"><div class="frame"><img src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='400' height='300'&gt;&lt;rect width='400' height='300' fill='%23e9edf1'/&gt;&lt;text x='50%25' y='50%25' fill='%236b645d' font-family='serif' font-size='14' text-anchor='middle'&gt;建筑 · 图位&lt;/text&gt;&lt;/svg&gt;"></div></div>
-        <div class="art-shot" onclick="openPlace(this)" data-img="art-arch-2.png" data-crest="建筑" data-name="埃登维尔的建筑" data-desc="（占位 · 待作者填充图片与描述。）"><div class="frame"><img src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='400' height='300'&gt;&lt;rect width='400' height='300' fill='%23e9edf1'/&gt;&lt;text x='50%25' y='50%25' fill='%236b645d' font-family='serif' font-size='14' text-anchor='middle'&gt;建筑 · 图位&lt;/text&gt;&lt;/svg&gt;"></div></div>
-        <div class="art-shot" onclick="openPlace(this)" data-img="art-arch-3.png" data-crest="建筑" data-name="埃登维尔的建筑" data-desc="（占位 · 待作者填充图片与描述。）"><div class="frame"><img src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='400' height='300'&gt;&lt;rect width='400' height='300' fill='%23e9edf1'/&gt;&lt;text x='50%25' y='50%25' fill='%236b645d' font-family='serif' font-size='14' text-anchor='middle'&gt;建筑 · 图位&lt;/text&gt;&lt;/svg&gt;"></div></div>
-      </div>
-    </div>
-
-    <div class="art-block reveal">
-      <h3 class="art-title">节庆</h3>
-      <div class="gallery">
-        <div class="art-shot" onclick="openPlace(this)" data-img="art-fest-1.png" data-crest="节庆" data-name="埃登维尔的节庆" data-desc="（占位 · 待作者填充图片与描述。）"><div class="frame"><img src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='400' height='300'&gt;&lt;rect width='400' height='300' fill='%23e9edf1'/&gt;&lt;text x='50%25' y='50%25' fill='%236b645d' font-family='serif' font-size='14' text-anchor='middle'&gt;节庆 · 图位&lt;/text&gt;&lt;/svg&gt;"></div></div>
-        <div class="art-shot" onclick="openPlace(this)" data-img="art-fest-2.png" data-crest="节庆" data-name="埃登维尔的节庆" data-desc="（占位 · 待作者填充图片与描述。）"><div class="frame"><img src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='400' height='300'&gt;&lt;rect width='400' height='300' fill='%23e9edf1'/&gt;&lt;text x='50%25' y='50%25' fill='%236b645d' font-family='serif' font-size='14' text-anchor='middle'&gt;节庆 · 图位&lt;/text&gt;&lt;/svg&gt;"></div></div>
-        <div class="art-shot" onclick="openPlace(this)" data-img="art-fest-3.png" data-crest="节庆" data-name="埃登维尔的节庆" data-desc="（占位 · 待作者填充图片与描述。）"><div class="frame"><img src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='400' height='300'&gt;&lt;rect width='400' height='300' fill='%23e9edf1'/&gt;&lt;text x='50%25' y='50%25' fill='%236b645d' font-family='serif' font-size='14' text-anchor='middle'&gt;节庆 · 图位&lt;/text&gt;&lt;/svg&gt;"></div></div>
-      </div>
-    </div>
-  </section>
-  </div><!-- /panel-art -->
 
   <footer>
     <div class="crest">日 蚀</div>
@@ -678,25 +675,20 @@
     <p class="tag">橄榄树下的一切</p>
   </div>
 
-  <!-- 埃登维尔的世界 · 地图 -->
-  <section>
-    <div class="sec-head reveal">
-      <div class="ornament"><span class="m">舆 图</span></div>
-      <h2>埃登维尔的世界</h2>
-      <p>五郡王国的全貌：王城与四郡，皆在这片疆域之内。点击展开大图。</p>
+  <!-- 埃登维尔的世界 · 大地图背景 + 目录 -->
+  <div class="eden-hub" style="--map-img:url('eden-map.webp')">
+    <div class="eden-hub-menu">
+      <div class="hub-label">埃登维尔的世界</div>
+      <nav class="hub-nav">
+        <a onclick="scrollToSec('sec-geo')">地理 · 五郡</a>
+        <a onclick="scrollToSec('sec-people')">家族与人物</a>
+        <a onclick="scrollToSec('sec-art')">美术 · 风土</a>
+      </nav>
     </div>
-    <div class="map-wrap reveal" onclick="openPlace(this)"
-      data-img="eden-map.webp" data-crest="舆图 · 埃登维尔" data-name="埃登维尔全图"
-      data-desc="埃登维尔王国的完整地图。">
-      <img src="eden-map.webp">
-      <span class="map-hint">点击查看大图 ⤢</span>
-    </div>
-  </section>
-
-  <div class="divider"></div>
+  </div>
 
   <!-- 王国与疆域 -->
-  <section>
+  <section id="sec-geo">
     <div class="sec-head reveal">
       <div class="ornament"><span class="m">疆 域</span></div>
       <h2>埃登维尔 · 五郡王国</h2>
@@ -756,7 +748,7 @@
   <div class="divider"></div>
 
   <!-- 人物 · 以家族为单位 -->
-  <section>
+  <section id="sec-people">
     <div class="sec-head reveal">
       <div class="ornament"><span class="m">名 册</span></div>
       <h2>家族与人物</h2>
@@ -871,6 +863,44 @@
 
   </section>
 
+  <div class="divider"></div>
+
+  <!-- 美术 · 埃登维尔风土 -->
+  <section id="sec-art">
+    <div class="sec-head reveal">
+      <div class="ornament"><span class="m">美 术</span></div>
+      <h2>埃登维尔风土</h2>
+      <p>镀金王国的生活、建筑与节庆——神战尺度之下，那些仍在发生的人间日常。横向滑动浏览，点击查看大图。</p>
+    </div>
+
+    <div class="art-block reveal">
+      <h3 class="art-title">生活</h3>
+      <div class="gallery">
+        <div class="art-shot" onclick="openPlace(this)" data-img="art-life-1.png" data-crest="生活" data-name="埃登维尔的生活" data-desc="（占位 · 待作者填充图片与描述。）"><div class="frame"><img src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='400' height='300'&gt;&lt;rect width='400' height='300' fill='%23e9edf1'/&gt;&lt;text x='50%25' y='50%25' fill='%236b645d' font-family='serif' font-size='14' text-anchor='middle'&gt;生活 · 图位&lt;/text&gt;&lt;/svg&gt;"></div></div>
+        <div class="art-shot" onclick="openPlace(this)" data-img="art-life-2.png" data-crest="生活" data-name="埃登维尔的生活" data-desc="（占位 · 待作者填充图片与描述。）"><div class="frame"><img src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='400' height='300'&gt;&lt;rect width='400' height='300' fill='%23e9edf1'/&gt;&lt;text x='50%25' y='50%25' fill='%236b645d' font-family='serif' font-size='14' text-anchor='middle'&gt;生活 · 图位&lt;/text&gt;&lt;/svg&gt;"></div></div>
+        <div class="art-shot" onclick="openPlace(this)" data-img="art-life-3.png" data-crest="生活" data-name="埃登维尔的生活" data-desc="（占位 · 待作者填充图片与描述。）"><div class="frame"><img src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='400' height='300'&gt;&lt;rect width='400' height='300' fill='%23e9edf1'/&gt;&lt;text x='50%25' y='50%25' fill='%236b645d' font-family='serif' font-size='14' text-anchor='middle'&gt;生活 · 图位&lt;/text&gt;&lt;/svg&gt;"></div></div>
+      </div>
+    </div>
+
+    <div class="art-block reveal">
+      <h3 class="art-title">建筑</h3>
+      <div class="gallery">
+        <div class="art-shot" onclick="openPlace(this)" data-img="art-arch-1.png" data-crest="建筑" data-name="埃登维尔的建筑" data-desc="（占位 · 待作者填充图片与描述。）"><div class="frame"><img src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='400' height='300'&gt;&lt;rect width='400' height='300' fill='%23e9edf1'/&gt;&lt;text x='50%25' y='50%25' fill='%236b645d' font-family='serif' font-size='14' text-anchor='middle'&gt;建筑 · 图位&lt;/text&gt;&lt;/svg&gt;"></div></div>
+        <div class="art-shot" onclick="openPlace(this)" data-img="art-arch-2.png" data-crest="建筑" data-name="埃登维尔的建筑" data-desc="（占位 · 待作者填充图片与描述。）"><div class="frame"><img src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='400' height='300'&gt;&lt;rect width='400' height='300' fill='%23e9edf1'/&gt;&lt;text x='50%25' y='50%25' fill='%236b645d' font-family='serif' font-size='14' text-anchor='middle'&gt;建筑 · 图位&lt;/text&gt;&lt;/svg&gt;"></div></div>
+        <div class="art-shot" onclick="openPlace(this)" data-img="art-arch-3.png" data-crest="建筑" data-name="埃登维尔的建筑" data-desc="（占位 · 待作者填充图片与描述。）"><div class="frame"><img src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='400' height='300'&gt;&lt;rect width='400' height='300' fill='%23e9edf1'/&gt;&lt;text x='50%25' y='50%25' fill='%236b645d' font-family='serif' font-size='14' text-anchor='middle'&gt;建筑 · 图位&lt;/text&gt;&lt;/svg&gt;"></div></div>
+      </div>
+    </div>
+
+    <div class="art-block reveal">
+      <h3 class="art-title">节庆</h3>
+      <div class="gallery">
+        <div class="art-shot" onclick="openPlace(this)" data-img="art-fest-1.png" data-crest="节庆" data-name="埃登维尔的节庆" data-desc="（占位 · 待作者填充图片与描述。）"><div class="frame"><img src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='400' height='300'&gt;&lt;rect width='400' height='300' fill='%23e9edf1'/&gt;&lt;text x='50%25' y='50%25' fill='%236b645d' font-family='serif' font-size='14' text-anchor='middle'&gt;节庆 · 图位&lt;/text&gt;&lt;/svg&gt;"></div></div>
+        <div class="art-shot" onclick="openPlace(this)" data-img="art-fest-2.png" data-crest="节庆" data-name="埃登维尔的节庆" data-desc="（占位 · 待作者填充图片与描述。）"><div class="frame"><img src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='400' height='300'&gt;&lt;rect width='400' height='300' fill='%23e9edf1'/&gt;&lt;text x='50%25' y='50%25' fill='%236b645d' font-family='serif' font-size='14' text-anchor='middle'&gt;节庆 · 图位&lt;/text&gt;&lt;/svg&gt;"></div></div>
+        <div class="art-shot" onclick="openPlace(this)" data-img="art-fest-3.png" data-crest="节庆" data-name="埃登维尔的节庆" data-desc="（占位 · 待作者填充图片与描述。）"><div class="frame"><img src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='400' height='300'&gt;&lt;rect width='400' height='300' fill='%23e9edf1'/&gt;&lt;text x='50%25' y='50%25' fill='%236b645d' font-family='serif' font-size='14' text-anchor='middle'&gt;节庆 · 图位&lt;/text&gt;&lt;/svg&gt;"></div></div>
+      </div>
+    </div>
+  </section>
+
   <footer><div class="crest">埃登维尔追忆</div><p>日蚀 · 第一部</p></footer>
 </div>
 
@@ -936,11 +966,15 @@
   function toggleOuter(){
     document.getElementById('outer-gods').classList.toggle('open');
   }
+  function scrollToSec(id){
+    var el=document.getElementById(id);
+    if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
+  }
   function switchTab(el){
     var key=el.dataset.tab;
     document.querySelectorAll('#view-eclipse .tab').forEach(function(t){t.classList.remove('active');});
     el.classList.add('active');
-    var map={world:'panel-world',lore:'panel-lore',art:'panel-art'};
+    var map={world:'panel-world',lore:'panel-lore'};
     document.querySelectorAll('#view-eclipse .tab-panel').forEach(function(p){p.classList.remove('active');});
     var panel=document.getElementById(map[key]);
     if(panel) panel.classList.add('active');
