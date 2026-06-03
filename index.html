@@ -192,18 +192,18 @@
   /* 埃登维尔的世界 · 大地图背景 + 右侧红雾目录 */
   .eden-hub{position:relative;width:100%;min-height:520px;
     background-image:linear-gradient(to left, rgba(95,16,35,.92) 0%, rgba(124,20,43,.72) 22%, rgba(124,20,43,.34) 42%, transparent 62%), var(--map-img);
-    background-size:cover;background-position:center;
-    display:flex;justify-content:flex-end;align-items:center;}
-  .eden-hub-menu{padding:0 7%;text-align:right;}
+    background-size:cover;background-position:center;}
+  .eden-hub-menu{position:absolute;top:50%;right:7%;transform:translateY(-50%);
+    text-align:right;z-index:2;}
   .hub-nav{display:flex;flex-direction:column;gap:0;}
-  .hub-nav a{display:block;cursor:pointer;font-family:var(--serif);font-size:1.35rem;font-weight:700;
-    color:rgba(255,255,255,.85);padding:20px 0;letter-spacing:.08em;
+  .hub-nav a{display:block;cursor:pointer;font-family:var(--serif);font-size:1.5rem;font-weight:700;
+    color:rgba(255,255,255,.88);padding:22px 0;letter-spacing:.1em;white-space:nowrap;
     transition:color .35s,letter-spacing .35s,text-shadow .35s;
-    text-shadow:0 1px 10px rgba(40,8,16,.7);}
-  .hub-nav a:hover{color:#fff;letter-spacing:.18em;text-shadow:0 0 18px rgba(255,255,255,.5);}
+    text-shadow:0 1px 12px rgba(40,8,16,.8);}
+  .hub-nav a:hover{color:#fff;letter-spacing:.22em;text-shadow:0 0 20px rgba(255,255,255,.6);}
   @media(max-width:680px){
     .eden-hub{min-height:380px;}
-    .hub-nav a{font-size:1.15rem;}
+    .hub-nav a{font-size:1.2rem;}
   }
 
   /* 地图板块 */
