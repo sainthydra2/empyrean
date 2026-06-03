@@ -211,6 +211,44 @@
     overflow:hidden;background:var(--paper-3);transition:border-color .4s,box-shadow .4s;}
   .map-wrap:hover{border-color:var(--wine);box-shadow:0 18px 42px rgba(153,26,55,.12);}
   .map-wrap img{width:100%;display:block;}
+  /* ===== 宇宙手风琴 ===== */
+  .cosmos-accordion{max-width:1080px;margin:0 auto;padding:64px 40px;}
+  .acc-block{border-top:1px solid var(--line);}
+  .acc-block:last-child{border-bottom:1px solid var(--line);}
+  .acc-head{display:flex;align-items:baseline;gap:18px;cursor:pointer;padding:32px 6px;
+    transition:background .35s,padding-left .35s;}
+  .acc-head:hover{background:rgba(153,26,55,.05);padding-left:18px;}
+  .acc-title{font-family:var(--serif);font-size:1.9rem;font-weight:700;color:var(--ink);letter-spacing:.06em;}
+  .acc-head:hover .acc-title{color:var(--wine);}
+  .acc-sub{font-family:var(--script);font-style:italic;font-size:1.1rem;color:var(--ink-soft);flex:1;}
+  .acc-chev{font-size:1.6rem;color:var(--wine);transition:transform .4s;line-height:1;}
+  .acc-block.open .acc-chev{transform:rotate(90deg);}
+  .acc-body{max-height:0;overflow:hidden;transition:max-height .55s cubic-bezier(.4,0,.2,1);}
+  .acc-block.open .acc-body{max-height:4000px;}
+  .acc-inner{padding:8px 6px 44px;}
+  .layer-intro{font-size:1rem;color:var(--ink-soft);margin-bottom:26px;line-height:1.9;max-width:760px;}
+
+  /* 内层六层手风琴 */
+  .layer-acc{border:1px solid var(--line);border-radius:6px;overflow:hidden;background:var(--paper-3);}
+  .layer{border-bottom:1px solid var(--line);}
+  .layer:last-child{border-bottom:none;}
+  .layer-head{display:flex;align-items:center;justify-content:space-between;cursor:pointer;
+    padding:20px 28px;transition:background .3s,padding-left .3s;}
+  .layer-head:hover{background:rgba(153,26,55,.06);padding-left:36px;}
+  .layer-name{font-family:var(--serif);font-size:1.25rem;font-weight:700;color:var(--ink);letter-spacing:.08em;}
+  .layer-head:hover .layer-name{color:var(--wine);}
+  .layer-chev{font-size:1.2rem;color:var(--wine);transition:transform .35s;}
+  .layer.open .layer-chev{transform:rotate(90deg);}
+  .layer-body{max-height:0;overflow:hidden;transition:max-height .45s ease;background:var(--paper-2);}
+  .layer.open .layer-body{max-height:600px;}
+  .layer-inner{padding:22px 28px 26px;}
+  .layer-inner p{font-size:.95rem;line-height:1.9;color:var(--ink);}
+  /* 深渊层紫调 */
+  .layer-abyss .layer-name{color:var(--abyss);}
+  .layer-abyss .layer-chev{color:var(--abyss);}
+  .layer-abyss .layer-head:hover{background:rgba(91,71,117,.08);}
+  .layer-abyss.open .layer-body{background:rgba(91,71,117,.06);}
+
   /* 日蚀的宇宙 · 暗角 */
   .map-wrap.cosmos{position:relative;}
   .map-wrap.cosmos::after{content:"";position:absolute;inset:0;pointer-events:none;
@@ -538,81 +576,129 @@
   <!-- 世界观面板 -->
   <div class="tab-panel active" id="panel-world">
 
-  <!-- 日蚀的宇宙 · 横图入口 -->
-  <section>
-    <div class="map-wrap cosmos" onclick="openPlace(this)"
-      data-img="eclipse-cosmos.png" data-crest="世界观 · 起源" data-name="日蚀的宇宙"
-      data-desc="placeholder-cosmos">
-      <div class="bio" style="display:none"><p class="verse">宇宙寂静无声。</p><p>在时间存在之前，宇宙黑暗，冰冷，只有一颗巨大的太阳游荡在黑暗中。</p><p>在不知何时，那颗太阳爆裂了。它的毁灭在寂静中发生。</p><p>那颗太阳化作了星系，化作了神祇，它的一切——火焰、阴影、生长从躯壳中脱出，获得了各自的意志。那些神圣的存在们不知晓他们的来处，也不问去处。</p><p>宇宙诞生的第一夜，一万颗流星一起坠落，没有目的地奔向黑暗深处。光与暗，冷与热，以及那些暗中生长的沉默存在。</p><p>在这其中，某个文明诞生在宇宙的中心，被三位神圣存在守护，那个文明被后世称作至高天。</p><p>一切的故事，从这里开始发生。</p></div>
-      <img src="eclipse-cosmos.png">
-      <span class="map-title">日蚀的宇宙</span>
-      <span class="map-hint">点击展开 ⤢</span>
-    </div>
-  </section>
+  <!-- ===== 宇宙 · 三块手风琴 ===== -->
+  <section class="cosmos-accordion">
 
-  <div class="divider"></div>
-
-  <!-- 神祇体系 -->
-  <section>
-    <div class="sec-head reveal">
-      <div class="ornament"><span class="m">神 系</span></div>
-      <h2>神祇体系</h2>
-      <p>原处太阳破碎的那一夜，其中最为璀璨的三位诸神获得了自己的名讳，从此成为三主神。</p>
-    </div>
-
-    <div class="pantheon">
-      <div class="deity d-nox reveal">
-        <span class="sigil">☾</span><h3>诺克斯</h3>
-        <div class="domain">梦境 · 死亡 · 预言</div>
-        <p>诞生于纯粹阴影中的神祇，继承了原初太阳的阴影和黑暗，肆意变化，潜游梦境，蛇身长出的羽翼昭示着祂与塞拉菲姆的双生关系</p>
+    <!-- 块一：起源 -->
+    <div class="acc-block">
+      <div class="acc-head" onclick="toggleAcc(this)">
+        <span class="acc-title">起 源</span>
+        <span class="acc-sub">Genesis</span>
+        <span class="acc-chev">›</span>
       </div>
-      <div class="deity d-sera reveal">
-        <span class="sigil">☉</span><h3>赛拉菲姆</h3>
-        <div class="domain">日冕 · 神王</div>
-        <p>诞生于纯粹光明中的神之王，继承了原初太阳的光辉，生出羽翼，升向高空，肆意变形的能力昭示着祂与诺克斯的双生关系</p>
-      </div>
-      <div class="deity d-aios reveal">
-        <span class="sigil">✦</span><h3>艾欧斯</h3>
-        <div class="domain">众生之母</div>
-        <p>群星中开出花朵的女神，绽放的本质昭示了其联结塞拉菲姆与诺克斯的关系。</p>
-      </div>
-    </div>
-
-    <!-- 外神 · 点击展开 -->
-    <div class="outer reveal" id="outer-gods">
-      <div class="outer-head" onclick="toggleOuter()">
-        <h3>外神 · 旧日的余烬</h3>
-        <span class="hint">点击展开 <span class="chev">›</span></span>
-      </div>
-      <div class="outer-body">
-        <div class="outer-inner">
-          <div class="one">
-            <div class="ph">灰烬腐败</div>
-            <h4>凋零之母</h4>
-            <p>张开双翼的凋零之母，羽翼煽动即代表灰烬腐败的散播。</p>
-          </div>
-          <div class="one">
-            <div class="ph">永冬</div>
-            <h4>寒霜长者</h4>
-            <p>没有意识的绝对凝结本身，历史可以追溯到原初太阳爆出裂痕的那一刻，甚至比三神的诞生更遥远。</p>
+      <div class="acc-body">
+        <div class="acc-inner">
+          <div class="map-wrap cosmos" onclick="openPlace(this)"
+            data-img="eclipse-cosmos.png" data-crest="宇宙 · 起源" data-name="日蚀的宇宙"
+            data-desc="placeholder-cosmos">
+            <div class="bio" style="display:none"><p class="verse">宇宙寂静无声。</p><p>在时间存在之前，宇宙黑暗，冰冷，只有一颗巨大的太阳游荡在黑暗中。</p><p>在不知何时，那颗太阳爆裂了。它的毁灭在寂静中发生。</p><p>那颗太阳化作了星系，化作了神祇，它的一切——火焰、阴影、生长从躯壳中脱出，获得了各自的意志。那些神圣的存在们不知晓他们的来处，也不问去处。</p><p>宇宙诞生的第一夜，一万颗流星一起坠落，没有目的地奔向黑暗深处。光与暗，冷与热，以及那些暗中生长的沉默存在。</p><p>在这其中，某个文明诞生在宇宙的中心，被三位神圣存在守护，那个文明被后世称作至高天。</p><p>一切的故事，从这里开始发生。</p></div>
+            <img src="eclipse-cosmos.png">
+            <span class="map-title">日蚀的宇宙</span>
+            <span class="map-hint">点击展开 ⤢</span>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- 意识之海 & 深渊 -->
-    <div class="abyss-card reveal">
-      <h3>意识之海</h3>
-      <div class="kind">意识维度</div>
-      <p>由人类的意识汇聚而成，一片没有海面、也没有海底的巨大海洋，每一颗起落的气泡，都是透明、毫无秘密的人。它静默地悬在世界之外。</p>
-      <div style="margin-top:18px;padding-top:18px;border-top:1px solid rgba(91,71,117,.4);">
-        <h4 style="font-family:var(--serif);font-size:1.1rem;font-weight:700;color:var(--abyss);margin-bottom:6px;">深渊 · 意识的最深处</h4>
-        <p style="font-size:.92rem;">意识之海的最外层，对应着众生的潜意识，古老、粘稠、泛着紫光，代表了一切恐怖、欲望和黑暗。</p>
+    <!-- 块二：世界层级（内含六层嵌套手风琴） -->
+    <div class="acc-block">
+      <div class="acc-head" onclick="toggleAcc(this)">
+        <span class="acc-title">世界层级</span>
+        <span class="acc-sub">The Layers</span>
+        <span class="acc-chev">›</span>
+      </div>
+      <div class="acc-body">
+        <div class="acc-inner">
+          <p class="layer-intro">世界由数个层级嵌套构成，自最外的宇宙，至最深的深渊。点击每一层，展开它的详情。</p>
+
+          <div class="layer-acc">
+            <div class="layer">
+              <div class="layer-head" onclick="toggleLayer(this)"><span class="layer-name">宇宙</span><span class="layer-chev">›</span></div>
+              <div class="layer-body"><div class="layer-inner"><p>（待补充）</p></div></div>
+            </div>
+            <div class="layer">
+              <div class="layer-head" onclick="toggleLayer(this)"><span class="layer-name">至高天</span><span class="layer-chev">›</span></div>
+              <div class="layer-body"><div class="layer-inner"><p>（待补充）</p></div></div>
+            </div>
+            <div class="layer">
+              <div class="layer-head" onclick="toggleLayer(this)"><span class="layer-name">人间</span><span class="layer-chev">›</span></div>
+              <div class="layer-body"><div class="layer-inner"><p>（待补充）</p></div></div>
+            </div>
+            <div class="layer">
+              <div class="layer-head" onclick="toggleLayer(this)"><span class="layer-name">冥界</span><span class="layer-chev">›</span></div>
+              <div class="layer-body"><div class="layer-inner"><p>（待补充）</p></div></div>
+            </div>
+            <div class="layer">
+              <div class="layer-head" onclick="toggleLayer(this)"><span class="layer-name">意识之海</span><span class="layer-chev">›</span></div>
+              <div class="layer-body"><div class="layer-inner">
+                <p>由人类的意识汇聚而成，一片没有海面、也没有海底的巨大海洋，每一颗起落的气泡，都是透明、毫无秘密的人。它静默地悬在世界之外。</p>
+              </div></div>
+            </div>
+            <div class="layer layer-abyss">
+              <div class="layer-head" onclick="toggleLayer(this)"><span class="layer-name">深渊</span><span class="layer-chev">›</span></div>
+              <div class="layer-body"><div class="layer-inner">
+                <p>意识之海的最外层，对应着众生的潜意识，古老、粘稠、泛着紫光，代表了一切恐怖、欲望和黑暗。</p>
+              </div></div>
+            </div>
+          </div>
+
+        </div>
       </div>
     </div>
+
+    <!-- 块三：神祇 -->
+    <div class="acc-block">
+      <div class="acc-head" onclick="toggleAcc(this)">
+        <span class="acc-title">神 祇</span>
+        <span class="acc-sub">The Divine</span>
+        <span class="acc-chev">›</span>
+      </div>
+      <div class="acc-body">
+        <div class="acc-inner">
+          <p class="layer-intro">原初太阳破碎的那一夜，其中最为璀璨的三位诸神获得了自己的名讳，从此成为三主神。</p>
+          <div class="pantheon">
+            <div class="deity d-nox">
+              <span class="sigil">☾</span><h3>诺克斯</h3>
+              <div class="domain">梦境 · 死亡 · 预言</div>
+              <p>诞生于纯粹阴影中的神祇，继承了原初太阳的阴影和黑暗，肆意变化，潜游梦境，蛇身长出的羽翼昭示着祂与塞拉菲姆的双生关系</p>
+            </div>
+            <div class="deity d-sera">
+              <span class="sigil">☉</span><h3>赛拉菲姆</h3>
+              <div class="domain">日冕 · 神王</div>
+              <p>诞生于纯粹光明中的神之王，继承了原初太阳的光辉，生出羽翼，升向高空，肆意变形的能力昭示着祂与诺克斯的双生关系</p>
+            </div>
+            <div class="deity d-aios">
+              <span class="sigil">✦</span><h3>艾欧斯</h3>
+              <div class="domain">众生之母</div>
+              <p>群星中开出花朵的女神，绽放的本质昭示了其联结塞拉菲姆与诺克斯的关系。</p>
+            </div>
+          </div>
+          <div class="outer" id="outer-gods">
+            <div class="outer-head" onclick="toggleOuter()">
+              <h3>外神 · 旧日的余烬</h3>
+              <span class="hint">点击展开 <span class="chev">›</span></span>
+            </div>
+            <div class="outer-body">
+              <div class="outer-inner">
+                <div class="one">
+                  <div class="ph">灰烬腐败</div>
+                  <h4>凋零之母</h4>
+                  <p>张开双翼的凋零之母，羽翼煽动即代表灰烬腐败的散播。</p>
+                </div>
+                <div class="one">
+                  <div class="ph">永冬</div>
+                  <h4>寒霜长者</h4>
+                  <p>没有意识的绝对凝结本身，历史可以追溯到原初太阳爆出裂痕的那一刻，甚至比三神的诞生更遥远。</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </section>
 
-  <div class="divider"></div>
   </div><!-- /panel-world -->
 
   <!-- 故事面板 -->
@@ -960,6 +1046,21 @@
   function scrollToSec(id){
     var el=document.getElementById(id);
     if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
+  }
+  function toggleAcc(head){
+    var block=head.parentElement;
+    var open=block.classList.contains('open');
+    // 一次只展开一个：先收起同级所有
+    var all=block.parentElement.querySelectorAll('.acc-block');
+    all.forEach(function(b){b.classList.remove('open');});
+    if(!open) block.classList.add('open');
+  }
+  function toggleLayer(head){
+    var layer=head.parentElement;
+    var open=layer.classList.contains('open');
+    var all=layer.parentElement.querySelectorAll('.layer');
+    all.forEach(function(l){l.classList.remove('open');});
+    if(!open) layer.classList.add('open');
   }
   function switchTab(el){
     var key=el.dataset.tab;
