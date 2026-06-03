@@ -58,7 +58,8 @@
     border-bottom:1px solid rgba(255,255,255,.12);
     box-shadow:0 2px 12px rgba(0,0,0,.12);}
   nav .brand{font-family:var(--display);font-size:1.5rem;letter-spacing:.02em;
-    color:#fff;cursor:pointer;line-height:1;}
+    color:#fff;cursor:pointer;line-height:1;display:flex;align-items:center;gap:12px;}
+  nav .brand-logo{height:38px;width:auto;display:block;}
   nav ul{display:flex;gap:28px;list-style:none;}
   nav a{color:rgba(255,255,255,.82);text-decoration:none;font-size:.82rem;
     letter-spacing:.18em;cursor:pointer;transition:color .3s;border-bottom:1px solid transparent;padding-bottom:2px;}
@@ -109,7 +110,7 @@
   .gate.open:hover p{color:#fff;transition:color .45s ease;}
   .gate.open:hover .seal{border-color:rgba(255,255,255,.7);color:#fff;transition:border-color .45s,color .45s;}
   .gate .seal{width:78px;height:78px;margin:0 auto 18px;display:flex;align-items:center;justify-content:center;
-    border:1px dashed var(--line);border-radius:50%;color:var(--ink-soft);font-size:.66rem;letter-spacing:.1em;overflow:hidden;}
+    border-radius:50%;color:var(--ink-soft);font-size:.66rem;letter-spacing:.1em;overflow:hidden;}
   .gate .seal img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
   .gate h2{font-family:var(--serif);font-size:1.7rem;font-weight:700;margin-bottom:8px;color:var(--ink);}
   .gate .en{font-family:var(--roman);font-size:.66rem;letter-spacing:.26em;text-transform:uppercase;color:var(--wine);margin-bottom:14px;}
@@ -503,8 +504,10 @@
 
 <!-- ========== 导航 ========== -->
 <nav>
-  <!-- ↓ 改成你的名字/笔名 ↓ -->
-  <div class="brand" onclick="go('hall')">SaintHydra</div>
+  <div class="brand" onclick="go('hall')">
+    <img class="brand-logo" src="hydra-logo.webp" alt="SaintHydra">
+    <span>SaintHydra</span>
+  </div>
   <ul>
     <li><a onclick="go('eclipse')">日蚀</a></li>
     <li><a onclick="go('supreme')">至高天</a></li>
