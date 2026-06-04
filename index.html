@@ -498,6 +498,54 @@
     section,.crumbs{padding-left:22px;padding-right:22px;}
     body{font-size:17px;}
   }
+
+  /* ====== 五郡 · 展开式详情 ====== */
+  /* 舞台：装「五郡卡片」和「单郡详情」两层 */
+  .county-stage{position:relative;max-width:1080px;margin:0 auto;padding:0 40px;min-height:560px;}
+  /* 卡片层：沿用 .place 卡外观，这里只加切换动画 */
+  .county-grid{transition:opacity .5s ease, transform .55s cubic-bezier(.4,0,.2,1);}
+  .county-stage.open .county-grid{opacity:0;transform:translateY(-26px);pointer-events:none;}
+  /* 单郡详情：大图铺底 + 下→上红雾 + 顶部白字 + 三板块 */
+  .county-detail{position:absolute;inset:0;border-radius:6px;overflow:hidden;
+    opacity:0;transform:translateY(30px);pointer-events:none;
+    transition:opacity .55s ease, transform .55s cubic-bezier(.4,0,.2,1);
+    box-shadow:0 24px 60px -18px rgba(153,26,55,.5);display:flex;flex-direction:column;}
+  .county-stage.open .county-detail{opacity:1;transform:none;pointer-events:auto;}
+  .county-detail .bg{position:absolute;inset:0;background-size:cover;background-position:center;background-color:#3a2b24;}
+  .county-detail .fog{position:absolute;inset:0;pointer-events:none;
+    background:linear-gradient(to top, rgba(95,16,35,.95) 0%, rgba(124,20,43,.72) 32%, rgba(124,20,43,.30) 58%, rgba(20,10,14,.18) 100%);}
+  .county-detail .inner{position:relative;z-index:2;display:flex;flex-direction:column;height:100%;min-height:560px;padding:40px 44px 38px;}
+  .county-detail .cty-close{position:absolute;top:16px;right:22px;z-index:3;
+    width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    font-size:1.7rem;line-height:1;color:#fff;cursor:pointer;
+    background:rgba(40,8,16,.45);border:1px solid rgba(255,255,255,.4);transition:background .3s,transform .3s;}
+  .county-detail .cty-close:hover{background:rgba(124,20,43,.85);transform:rotate(90deg);}
+  .county-detail .cty-crest{font-family:var(--roman);font-size:.66rem;letter-spacing:.24em;text-transform:uppercase;
+    color:rgba(255,255,255,.85);margin-bottom:8px;text-shadow:0 1px 10px rgba(40,8,16,.8);}
+  .county-detail .cty-name{font-family:var(--serif);font-size:clamp(2rem,4.5vw,3rem);font-weight:900;color:#fff;
+    letter-spacing:.04em;text-shadow:0 2px 18px rgba(40,10,20,.9);margin-bottom:22px;line-height:1.15;}
+  .county-tabs{display:flex;gap:34px;margin-bottom:18px;flex-wrap:wrap;}
+  .county-tab{position:relative;cursor:pointer;font-family:var(--serif);font-size:1.18rem;font-weight:700;
+    color:rgba(255,255,255,.6);padding-bottom:8px;letter-spacing:.08em;
+    transition:color .35s,text-shadow .35s;text-shadow:0 1px 8px rgba(40,8,16,.7);}
+  .county-tab:hover{color:#fff;}
+  .county-tab::after{content:"";position:absolute;left:0;bottom:0;width:0;height:2px;background:#fff;transition:width .4s;}
+  .county-tab.active{color:#fff;text-shadow:0 0 16px rgba(255,255,255,.5);}
+  .county-tab.active::after{width:100%;}
+  .county-body{flex:1;min-height:0;overflow-y:auto;padding-right:16px;
+    color:rgba(255,255,255,.92);font-size:1rem;line-height:1.95;max-width:680px;text-shadow:0 1px 8px rgba(20,6,12,.7);}
+  .county-body::-webkit-scrollbar{width:8px;}
+  .county-body::-webkit-scrollbar-track{background:rgba(255,255,255,.08);border-radius:4px;}
+  .county-body::-webkit-scrollbar-thumb{background:rgba(182,50,79,.75);border-radius:4px;}
+  .county-body p{margin:0 0 1.05em;} .county-body p:last-child{margin-bottom:0;}
+  .county-body .verse{font-family:var(--script);font-style:italic;color:rgba(255,255,255,.82);font-size:1.12rem;}
+  .county-body .panel{display:none;animation:ctyFade .45s ease;}
+  .county-body .panel.active{display:block;}
+  @keyframes ctyFade{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+  @media(max-width:680px){
+    .county-detail .inner{padding:32px 22px 30px;}
+    .county-tabs{gap:22px;} .county-tab{font-size:1.05rem;}
+  }
 </style>
 </head>
 <body>
@@ -774,55 +822,94 @@
       <h2>埃登维尔 · 五郡王国</h2>
       <p>位于尤洛斐亚大陆中部的国家，王徽风铃草，连接着西部的德尔沃恩王国和南部的达瑟利尔王国。</p>
     </div>
-    <div class="grid place-grid">
+    <!-- ===== 五郡展开式舞台 =====
+         点一个郡 → 其余滑走 → 该郡大图铺底 + 红雾 + 概述/经济/文化三板块。
+         · 卡片大图：改 data-img 的文件名（同时改 frame 里 <img src>，那是小预览图）
+         · 三板块正文：改每张卡片 .cdata 里的 .overview / .economy / .culture
+           三段中文，可写多段 <p>…</p>；想要斜体引文用 <p class="verse">…</p>
+         · 内容写多长都行，详情框会自动出现上下滚动条，背景图不动 -->
+    <div class="county-stage" id="county-stage">
+      <div class="grid place-grid county-grid">
 
-      <div class="place reveal" onclick="openPlace(this)"
-        data-img="everitel.png"
-        data-crest="王 都"
-        data-name="王城伊维特里"
-        data-desc="王国的心脏与天顶之光降临的都城，一世德拉维安在此开辟王朝，自此埃登维尔人在此定居。">
-        <!-- ↓ 把 data-img 换成你的大图文件名（如 erveitel.png），下面 frame 的小预览图同理 ↓ -->
-        <div class="frame"><img src="everitel.png"></div>
-        <div class="place-cap"><div class="crest">王 都</div><h3>王城伊维特里</h3></div>
+        <div class="place reveal" onclick="openCounty(this)"
+          data-img="everitel.png" data-crest="王 都" data-name="王城伊维特里">
+          <div class="frame"><img src="everitel.png"></div>
+          <div class="place-cap"><div class="crest">王 都</div><h3>王城伊维特里</h3></div>
+          <div class="cdata" style="display:none">
+            <div class="overview"><p>王国的心脏与天顶之光降临的都城，一世德拉维安在此开辟王朝，自此埃登维尔人在此定居。</p></div>
+            <div class="economy"><p>（经济 · 待你填写）</p></div>
+            <div class="culture"><p>（文化 · 待你填写）</p></div>
+          </div>
+        </div>
+
+        <div class="place reveal" onclick="openCounty(this)"
+          data-img="vidan.png" data-crest="蜜蜂纹章 · 格雷维尔家" data-name="维丹郡">
+          <div class="frame"><img src="vidan.png"></div>
+          <div class="place-cap"><div class="crest">蜜蜂纹章 · 格雷维尔家</div><h3>维丹郡</h3></div>
+          <div class="cdata" style="display:none">
+            <div class="overview"><p>小麦、苹果与蜂蜜的农业之郡，格雷维尔家族的封地，由奥斯特克侯爵执掌。甜美的麦浪如海，蔬果牛乳供养着整个埃登维尔。</p></div>
+            <div class="economy"><p>（经济 · 待你填写）</p></div>
+            <div class="culture"><p>（文化 · 待你填写）</p></div>
+          </div>
+        </div>
+
+        <div class="place reveal" onclick="openCounty(this)"
+          data-img="falto.png" data-crest="霜狼纹章 · 斯特兰德家" data-name="法尔托郡">
+          <div class="frame"><img src="falto.png"></div>
+          <div class="place-cap"><div class="crest">霜狼纹章 · 斯特兰德家</div><h3>法尔托郡</h3></div>
+          <div class="cdata" style="display:none">
+            <div class="overview"><p>位于埃登维尔北部靠海处，渔业与珍珠的海港之郡，斯特兰德家族的封地，由埃德里克·斯特兰德公爵执掌，先交由哈维克·斯特兰德守望。海上战场成为与德尔沃恩交战的第二战场。</p></div>
+            <div class="economy"><p>（经济 · 待你填写）</p></div>
+            <div class="culture"><p>（文化 · 待你填写）</p></div>
+          </div>
+        </div>
+
+        <div class="place reveal" onclick="openCounty(this)"
+          data-img="qurna.png" data-crest="银鹿纹章 · 法维恩家" data-name="古尔纳郡">
+          <div class="frame"><img src="qurna.png"></div>
+          <div class="place-cap"><div class="crest">银鹿纹章 · 法维恩家</div><h3>古尔纳郡</h3></div>
+          <div class="cdata" style="display:none">
+            <div class="overview"><p>葡萄酒与药材之郡，由科尔文公爵执掌。精明的长姐尤莉安娜扛着家族名声，幼弟塞拉诺则是王城的医师。一桩政治联姻，正把它与维丹的秘密缠在一起。</p></div>
+            <div class="economy"><p>（经济 · 待你填写）</p></div>
+            <div class="culture"><p>（文化 · 待你填写）</p></div>
+          </div>
+        </div>
+
+        <div class="place reveal" onclick="openCounty(this)"
+          data-img="shirei.png" data-crest="红钥纹章 · 阿斯塔林家" data-name="希瑞伊郡">
+          <div class="frame"><img src="shirei.png"></div>
+          <div class="place-cap"><div class="crest">红钥纹章 · 阿斯塔林家</div><h3>希瑞伊郡</h3></div>
+          <div class="cdata" style="display:none">
+            <div class="overview"><p>位于埃登维尔最南部宗教圣城，出产大理石和其他矿产，由阿斯塔林家世代守护，现任族长伊尔瑞安·阿斯塔林为埃登维尔的大主教。</p></div>
+            <div class="economy"><p>（经济 · 待你填写）</p></div>
+            <div class="culture"><p>（文化 · 待你填写）</p></div>
+          </div>
+        </div>
+
+      </div><!-- /county-grid -->
+
+      <!-- 单郡详情（内容由脚本注入，不用手改这一段）-->
+      <div class="county-detail" id="county-detail">
+        <div class="bg" id="ctyBg"></div>
+        <div class="fog"></div>
+        <div class="cty-close" onclick="closeCounty()">×</div>
+        <div class="inner">
+          <div class="cty-crest" id="ctyCrest"></div>
+          <h2 class="cty-name" id="ctyName"></h2>
+          <div class="county-tabs">
+            <span class="county-tab active" data-k="overview" onclick="switchCounty(this)">概述</span>
+            <span class="county-tab" data-k="economy" onclick="switchCounty(this)">经济</span>
+            <span class="county-tab" data-k="culture" onclick="switchCounty(this)">文化</span>
+          </div>
+          <div class="county-body">
+            <div class="panel active" id="cty-overview"></div>
+            <div class="panel" id="cty-economy"></div>
+            <div class="panel" id="cty-culture"></div>
+          </div>
+        </div>
       </div>
 
-      <div class="place reveal" onclick="openPlace(this)"
-        data-img="vidan.png"
-        data-crest="蜜蜂纹章 · 格雷维尔家"
-        data-name="维丹郡"
-        data-desc="小麦、苹果与蜂蜜的农业之郡，格雷维尔家族的封地，由奥斯特克侯爵执掌。甜美的麦浪如海，蔬果牛乳供养着整个埃登维尔。">
-        <div class="frame"><img src="vidan.png"></div>
-        <div class="place-cap"><div class="crest">蜜蜂纹章 · 格雷维尔家</div><h3>维丹郡</h3></div>
-      </div>
-
-      <div class="place reveal" onclick="openPlace(this)"
-        data-img="falto.png"
-        data-crest="霜狼纹章 · 斯特兰德家"
-        data-name="法尔托郡"
-        data-desc="位于埃登维尔北部靠海处，渔业与珍珠的海港之郡，斯特兰德家族的封地，由埃德里克·斯特兰德公爵执掌，先交由哈维克·斯特兰德守望。海上战场成为与德尔沃恩交战的第二战场。">
-        <div class="frame"><img src="falto.png"></div>
-        <div class="place-cap"><div class="crest">霜狼纹章 · 斯特兰德家</div><h3>法尔托郡</h3></div>
-      </div>
-
-      <div class="place reveal" onclick="openPlace(this)"
-        data-img="qurna.png"
-        data-crest="银鹿纹章 · 法维恩家"
-        data-name="古尔纳郡"
-        data-desc="葡萄酒与药材之郡，由科尔文公爵执掌。精明的长姐尤莉安娜扛着家族名声，幼弟塞拉诺则是王城的医师。一桩政治联姻，正把它与维丹的秘密缠在一起。">
-        <div class="frame"><img src="qurna.png"></div>
-        <div class="place-cap"><div class="crest">银鹿纹章 · 法维恩家</div><h3>古尔纳郡</h3></div>
-      </div>
-
-      <div class="place reveal" onclick="openPlace(this)"
-        data-img="shirei.png"
-        data-crest="红钥纹章 · 阿斯塔林家"
-        data-name="希瑞伊郡"
-        data-desc="位于埃登维尔最南部宗教圣城，出产大理石和其他矿产，由阿斯塔林家世代守护，现任族长伊尔瑞安·阿斯塔林为埃登维尔的大主教。">
-        <div class="frame"><img src="shirei.png"></div>
-        <div class="place-cap"><div class="crest">红钥纹章 · 阿斯塔林家</div><h3>希瑞伊郡</h3></div>
-      </div>
-
-    </div>
+    </div><!-- /county-stage -->
   </section>
 
   <div class="divider"></div>
@@ -1035,6 +1122,8 @@
       var dp=document.getElementById('panel-world');
       if(dt) dt.classList.add('active'); if(dp) dp.classList.add('active');
     }
+    // 切换视图时，复位任何已展开的郡详情
+    document.querySelectorAll('.county-stage').forEach(function(s){s.classList.remove('open');});
     window.scrollTo({top:0,behavior:'auto'});
     // 触发该视图内的浮现动画
     const items=t.querySelectorAll('.reveal');
@@ -1104,11 +1193,41 @@
       box.style.display='none';
     }
   }
+  /* ===== 五郡展开式 ===== */
+  function openCounty(card){
+    var d = card.querySelector('.cdata');
+    document.getElementById('ctyCrest').textContent = card.dataset.crest || '';
+    document.getElementById('ctyName').textContent  = card.dataset.name  || '';
+    var bg = document.getElementById('ctyBg');
+    if(card.dataset.img){ bg.style.backgroundImage = "url('"+card.dataset.img+"')"; }
+    else { bg.style.backgroundImage = 'none'; }
+    document.getElementById('cty-overview').innerHTML = d.querySelector('.overview').innerHTML;
+    document.getElementById('cty-economy').innerHTML  = d.querySelector('.economy').innerHTML;
+    document.getElementById('cty-culture').innerHTML  = d.querySelector('.culture').innerHTML;
+    // 复位到「概述」
+    document.querySelectorAll('.county-tab').forEach(function(t,i){t.classList.toggle('active', i===0);});
+    document.querySelectorAll('.county-body .panel').forEach(function(p){p.classList.remove('active');});
+    document.getElementById('cty-overview').classList.add('active');
+    document.querySelector('.county-body').scrollTop = 0;
+    document.getElementById('county-stage').classList.add('open');
+  }
+  function closeCounty(){
+    var s=document.getElementById('county-stage'); if(s) s.classList.remove('open');
+  }
+  function switchCounty(tab){
+    var k = tab.dataset.k;
+    document.querySelectorAll('.county-tab').forEach(function(t){t.classList.remove('active');});
+    tab.classList.add('active');
+    document.querySelectorAll('.county-body .panel').forEach(function(p){p.classList.remove('active');});
+    var panel=document.getElementById('cty-'+k); if(panel) panel.classList.add('active');
+    document.querySelector('.county-body').scrollTop = 0;
+  }
   document.addEventListener('keydown',function(e){
     if(e.key==='Escape'){
       var box=document.getElementById('placeBox');
       box.classList.remove('show');
       box.style.display='none';
+      closeCounty();
     }
   });
 </script>
