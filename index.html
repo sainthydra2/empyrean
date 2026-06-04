@@ -513,7 +513,9 @@
   .county-stage.open .county-detail{opacity:1;transform:none;pointer-events:auto;}
   .county-detail .bg{position:absolute;inset:0;background-size:cover;background-position:center;background-color:#3a2b24;}
   .county-detail .fog{position:absolute;inset:0;pointer-events:none;
-    background:linear-gradient(to top, rgba(95,16,35,.95) 0%, rgba(124,20,43,.72) 32%, rgba(124,20,43,.30) 58%, rgba(20,10,14,.18) 100%);}
+    background:
+      linear-gradient(to right, rgba(18,8,12,.72) 0%, rgba(18,8,12,.40) 34%, rgba(18,8,12,.10) 56%, transparent 70%),
+      linear-gradient(to top, rgba(95,16,35,.95) 0%, rgba(124,20,43,.72) 32%, rgba(124,20,43,.34) 58%, rgba(20,10,14,.26) 100%);}
   .county-detail .inner{position:relative;z-index:2;display:flex;flex-direction:column;height:100%;min-height:560px;padding:40px 44px 38px;}
   .county-detail .cty-close{position:absolute;top:16px;right:22px;z-index:3;
     width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;
@@ -521,24 +523,24 @@
     background:rgba(40,8,16,.45);border:1px solid rgba(255,255,255,.4);transition:background .3s,transform .3s;}
   .county-detail .cty-close:hover{background:rgba(124,20,43,.85);transform:rotate(90deg);}
   .county-detail .cty-crest{font-family:var(--roman);font-size:.66rem;letter-spacing:.24em;text-transform:uppercase;
-    color:rgba(255,255,255,.85);margin-bottom:8px;text-shadow:0 1px 10px rgba(40,8,16,.8);}
+    color:rgba(255,255,255,.92);margin-bottom:8px;text-shadow:0 1px 3px rgba(0,0,0,.9),0 2px 12px rgba(20,6,12,.85);}
   .county-detail .cty-name{font-family:var(--serif);font-size:clamp(2rem,4.5vw,3rem);font-weight:900;color:#fff;
-    letter-spacing:.04em;text-shadow:0 2px 18px rgba(40,10,20,.9);margin-bottom:22px;line-height:1.15;}
+    letter-spacing:.04em;text-shadow:0 2px 6px rgba(0,0,0,.92),0 4px 22px rgba(20,6,12,.9);margin-bottom:22px;line-height:1.15;}
   .county-tabs{display:flex;gap:34px;margin-bottom:18px;flex-wrap:wrap;}
   .county-tab{position:relative;cursor:pointer;font-family:var(--serif);font-size:1.18rem;font-weight:700;
-    color:rgba(255,255,255,.6);padding-bottom:8px;letter-spacing:.08em;
-    transition:color .35s,text-shadow .35s;text-shadow:0 1px 8px rgba(40,8,16,.7);}
+    color:rgba(255,255,255,.72);padding-bottom:8px;letter-spacing:.08em;
+    transition:color .35s,text-shadow .35s;text-shadow:0 1px 3px rgba(0,0,0,.9),0 2px 10px rgba(20,6,12,.8);}
   .county-tab:hover{color:#fff;}
   .county-tab::after{content:"";position:absolute;left:0;bottom:0;width:0;height:2px;background:#fff;transition:width .4s;}
   .county-tab.active{color:#fff;text-shadow:0 0 16px rgba(255,255,255,.5);}
   .county-tab.active::after{width:100%;}
   .county-body{flex:1;min-height:0;overflow-y:auto;padding-right:16px;
-    color:rgba(255,255,255,.92);font-size:1rem;line-height:1.95;max-width:680px;text-shadow:0 1px 8px rgba(20,6,12,.7);}
+    color:#fff;font-size:1rem;line-height:1.95;max-width:680px;text-shadow:0 1px 3px rgba(0,0,0,.92),0 2px 12px rgba(20,6,12,.8);}
   .county-body::-webkit-scrollbar{width:8px;}
   .county-body::-webkit-scrollbar-track{background:rgba(255,255,255,.08);border-radius:4px;}
   .county-body::-webkit-scrollbar-thumb{background:rgba(182,50,79,.75);border-radius:4px;}
   .county-body p{margin:0 0 1.05em;} .county-body p:last-child{margin-bottom:0;}
-  .county-body .verse{font-family:var(--script);font-style:italic;color:rgba(255,255,255,.82);font-size:1.12rem;}
+  .county-body .verse{font-family:var(--script);font-style:italic;color:rgba(255,255,255,.92);font-size:1.12rem;}
   .county-body .panel{display:none;animation:ctyFade .45s ease;}
   .county-body .panel.active{display:block;}
   @keyframes ctyFade{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
