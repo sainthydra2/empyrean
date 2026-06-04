@@ -514,31 +514,37 @@
   .county-detail .bg{position:absolute;inset:0;background-size:cover;background-position:center;background-color:#3a2b24;}
   .county-detail .fog{position:absolute;inset:0;pointer-events:none;
     background:linear-gradient(to top, rgba(95,16,35,.95) 0%, rgba(124,20,43,.72) 32%, rgba(124,20,43,.30) 58%, rgba(20,10,14,.18) 100%);}
-  .county-detail .inner{position:relative;z-index:2;display:flex;flex-direction:column;height:100%;min-height:560px;padding:40px 44px 38px;}
+  .county-detail .inner{position:relative;z-index:2;display:flex;flex-direction:column;justify-content:flex-start;align-items:flex-start;height:100%;min-height:560px;padding:40px 44px 38px;}
+  /* 半透明白牌：只框住文字，浮在大图上，淡阴影 */
+  .cty-card{display:flex;flex-direction:column;align-self:flex-start;width:min(600px,100%);max-height:100%;min-height:0;
+    background:rgba(248,250,252,.86);backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px);
+    border:1px solid rgba(255,255,255,.72);border-radius:12px;
+    box-shadow:0 14px 40px -16px rgba(40,12,22,.38), 0 2px 6px rgba(40,12,22,.14);
+    padding:28px 32px 26px;}
   .county-detail .cty-close{position:absolute;top:16px;right:22px;z-index:3;
     width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;
     font-size:1.7rem;line-height:1;color:#fff;cursor:pointer;
     background:rgba(40,8,16,.45);border:1px solid rgba(255,255,255,.4);transition:background .3s,transform .3s;}
   .county-detail .cty-close:hover{background:rgba(124,20,43,.85);transform:rotate(90deg);}
   .county-detail .cty-crest{font-family:var(--roman);font-size:.66rem;letter-spacing:.24em;text-transform:uppercase;
-    color:rgba(255,255,255,.92);margin-bottom:8px;text-shadow:0 1px 3px rgba(0,0,0,.9),0 2px 12px rgba(20,6,12,.85);}
-  .county-detail .cty-name{font-family:var(--serif);font-size:clamp(2rem,4.5vw,3rem);font-weight:900;color:#fff;
-    letter-spacing:.04em;text-shadow:0 2px 6px rgba(0,0,0,.92),0 4px 22px rgba(20,6,12,.9);margin-bottom:22px;line-height:1.15;}
-  .county-tabs{display:flex;gap:34px;margin-bottom:18px;flex-wrap:wrap;}
-  .county-tab{position:relative;cursor:pointer;font-family:var(--serif);font-size:1.18rem;font-weight:700;
-    color:rgba(255,255,255,.72);padding-bottom:8px;letter-spacing:.08em;
-    transition:color .35s,text-shadow .35s;text-shadow:0 1px 3px rgba(0,0,0,.9),0 2px 10px rgba(20,6,12,.8);}
-  .county-tab:hover{color:#fff;}
-  .county-tab::after{content:"";position:absolute;left:0;bottom:0;width:0;height:2px;background:#fff;transition:width .4s;}
-  .county-tab.active{color:#fff;text-shadow:0 0 16px rgba(255,255,255,.5);}
+    color:var(--wine);margin-bottom:8px;}
+  .county-detail .cty-name{font-family:var(--serif);font-size:clamp(1.8rem,4vw,2.6rem);font-weight:900;color:var(--ink);
+    letter-spacing:.04em;margin-bottom:18px;line-height:1.15;}
+  .county-tabs{display:flex;gap:30px;margin-bottom:14px;flex-wrap:wrap;}
+  .county-tab{position:relative;cursor:pointer;font-family:var(--serif);font-size:1.12rem;font-weight:700;
+    color:var(--ink-soft);padding-bottom:8px;letter-spacing:.08em;transition:color .35s;}
+  .county-tab:hover{color:var(--ink);}
+  .county-tab::after{content:"";position:absolute;left:0;bottom:0;width:0;height:2px;background:var(--wine);transition:width .4s;}
+  .county-tab.active{color:var(--wine);}
   .county-tab.active::after{width:100%;}
-  .county-body{flex:1;min-height:0;overflow-y:auto;padding-right:16px;
-    color:#fff;font-size:1rem;line-height:1.95;max-width:680px;text-shadow:0 1px 3px rgba(0,0,0,.92),0 2px 12px rgba(20,6,12,.8);}
+  .county-body{flex:1;min-height:0;overflow-y:auto;padding-right:14px;
+    color:var(--ink);font-size:1rem;line-height:1.95;width:100%;}
   .county-body::-webkit-scrollbar{width:8px;}
-  .county-body::-webkit-scrollbar-track{background:rgba(255,255,255,.08);border-radius:4px;}
-  .county-body::-webkit-scrollbar-thumb{background:rgba(182,50,79,.75);border-radius:4px;}
+  .county-body::-webkit-scrollbar-track{background:rgba(31,28,26,.08);border-radius:4px;}
+  .county-body::-webkit-scrollbar-thumb{background:rgba(153,26,55,.78);border-radius:4px;}
+  .county-body::-webkit-scrollbar-thumb:hover{background:var(--wine);}
   .county-body p{margin:0 0 1.05em;} .county-body p:last-child{margin-bottom:0;}
-  .county-body .verse{font-family:var(--script);font-style:italic;color:rgba(255,255,255,.92);font-size:1.12rem;}
+  .county-body .verse{font-family:var(--script);font-style:italic;color:var(--wine);font-size:1.14rem;}
   .county-body .panel{display:none;animation:ctyFade .45s ease;}
   .county-body .panel.active{display:block;}
   @keyframes ctyFade{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
@@ -913,17 +919,19 @@
         <div class="fog"></div>
         <div class="cty-close" onclick="closeCounty()">×</div>
         <div class="inner">
-          <div class="cty-crest" id="ctyCrest"></div>
-          <h2 class="cty-name" id="ctyName"></h2>
-          <div class="county-tabs">
-            <span class="county-tab active" data-k="overview" onclick="switchCounty(this)">概述</span>
-            <span class="county-tab" data-k="economy" onclick="switchCounty(this)">经济</span>
-            <span class="county-tab" data-k="culture" onclick="switchCounty(this)">文化</span>
-          </div>
-          <div class="county-body">
-            <div class="panel active" id="cty-overview"></div>
-            <div class="panel" id="cty-economy"></div>
-            <div class="panel" id="cty-culture"></div>
+          <div class="cty-card">
+            <div class="cty-crest" id="ctyCrest"></div>
+            <h2 class="cty-name" id="ctyName"></h2>
+            <div class="county-tabs">
+              <span class="county-tab active" data-k="overview" onclick="switchCounty(this)">概述</span>
+              <span class="county-tab" data-k="economy" onclick="switchCounty(this)">经济</span>
+              <span class="county-tab" data-k="culture" onclick="switchCounty(this)">文化</span>
+            </div>
+            <div class="county-body">
+              <div class="panel active" id="cty-overview"></div>
+              <div class="panel" id="cty-economy"></div>
+              <div class="panel" id="cty-culture"></div>
+            </div>
           </div>
         </div>
       </div>
