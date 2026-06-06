@@ -506,14 +506,16 @@
   /* ===== 全屏百科式郡页 view-county ===== */
   /* 顶部 banner：固定 16:9，填满裁切（物料按 16:9 制作即可完美铺满）*/
   .cv-banner{position:relative;width:100%;aspect-ratio:16/9;max-height:74vh;background:#1c2030;overflow:hidden;}
-  .cv-banner img{display:block;width:100%;height:100%;object-fit:cover;background:#1c2030;cursor:zoom-in;}
+  .cv-banner img{display:block;width:100%;height:100%;object-fit:cover;background:#1c2030;}
   .cv-banner-scrim{position:absolute;left:0;right:0;bottom:0;height:62%;pointer-events:none;
     background:linear-gradient(to top, rgba(124,20,43,.92) 0%, rgba(124,20,43,.55) 38%, rgba(124,20,43,.18) 70%, transparent 100%);}
-  .cv-back,.cv-zoom{position:absolute;top:80px;z-index:3;cursor:pointer;font-family:var(--roman);
-    font-size:.72rem;letter-spacing:.16em;color:#fff;padding:8px 18px;border-radius:30px;
-    background:rgba(18,8,14,.55);border:1px solid rgba(255,255,255,.4);transition:background .3s,border-color .3s;}
-  .cv-back{left:24px;} .cv-zoom{right:24px;}
-  .cv-back:hover,.cv-zoom:hover{background:rgba(124,20,43,.92);border-color:rgba(255,255,255,.72);}
+  .cv-back{position:absolute;top:80px;left:24px;z-index:3;cursor:pointer;
+    font-family:var(--serif);font-weight:700;font-size:.95rem;letter-spacing:.14em;color:#fff;
+    padding:11px 24px;border-radius:30px;background:var(--wine);
+    border:1px solid rgba(255,255,255,.55);box-shadow:0 8px 22px -6px rgba(20,6,12,.7);
+    transition:background .3s,transform .3s,box-shadow .3s;}
+  .cv-back::before{content:"‹ ";}
+  .cv-back:hover{background:var(--wine-dk);transform:translateX(-3px);box-shadow:0 10px 26px -6px rgba(20,6,12,.8);}
   .cv-title{position:absolute;left:0;right:0;bottom:0;z-index:2;padding:34px 44px 30px;max-width:1080px;margin:0 auto;}
   .cv-crest{font-family:var(--roman);font-size:.72rem;letter-spacing:.24em;text-transform:uppercase;
     color:rgba(255,255,255,.9);margin-bottom:8px;text-shadow:0 1px 6px rgba(0,0,0,.85);}
@@ -920,9 +922,6 @@
               <div class="cv-row"><span class="k">纹章</span><span class="v">蜜蜂</span></div>
               <div class="cv-row"><span class="k">领主</span><span class="v">奥斯特克·格雷维尔</span></div>
               <div class="cv-row"><span class="k">俗语</span><span class="v">付该付的价钱</span></div>
-              <div class="cv-row col"><span class="k">物产</span><span class="v">小麦 · 苹果 · 蜂蜜 · 毛皮</span></div>
-              <div class="cv-row col"><span class="k">名产区</span><span class="v">丰收农庄 · 桃林谷</span></div>
-              <div class="cv-row col"><span class="k">毗邻</span><span class="v">王城 · 古尔纳 · 希瑞伊</span></div>
             </div>
           </div>
         </div>
@@ -954,9 +953,6 @@
               <div class="cv-row"><span class="k">纹章</span><span class="v">霜狼</span></div>
               <div class="cv-row"><span class="k">领主</span><span class="v">哈维克·斯特兰德</span></div>
               <div class="cv-row"><span class="k">俗语</span><span class="v">心如寒铁</span></div>
-              <div class="cv-row col"><span class="k">港口</span><span class="v">盐风港 · 王国唯一深水商港</span></div>
-              <div class="cv-row col"><span class="k">物产</span><span class="v">盐鱼 · 霜珠 · 海贸</span></div>
-              <div class="cv-row col"><span class="k">毗邻</span><span class="v">古尔纳 · 王城辖地</span></div>
             </div>
           </div>
         </div>
@@ -986,8 +982,6 @@
               <div class="cv-row"><span class="k">纹章</span><span class="v">银鹿</span></div>
               <div class="cv-row"><span class="k">领主</span><span class="v">科尔文·法维恩</span></div>
               <div class="cv-row"><span class="k">俗语</span><span class="v">生生不息</span></div>
-              <div class="cv-row col"><span class="k">物产</span><span class="v">药材 · 葡萄酒</span></div>
-              <div class="cv-row col"><span class="k">毗邻</span><span class="v">王城 · 维丹 · 法尔托</span></div>
             </div>
           </div>
         </div>
@@ -1022,9 +1016,6 @@
               <div class="cv-row"><span class="k">纹章</span><span class="v">红钥</span></div>
               <div class="cv-row col"><span class="k">领主</span><span class="v">大主教 伊尔瑞安·阿斯塔林（世俗事务由代理人执掌）</span></div>
               <div class="cv-row"><span class="k">俗语</span><span class="v">静如止水</span></div>
-              <div class="cv-row col"><span class="k">圣地</span><span class="v">圣镜湖 · 希瑞伊大教堂</span></div>
-              <div class="cv-row col"><span class="k">物产</span><span class="v">大理石 · 宝石 · 手抄本</span></div>
-              <div class="cv-row col"><span class="k">毗邻</span><span class="v">维丹 · 达瑟利尔边境</span></div>
             </div>
           </div>
         </div>
@@ -1196,10 +1187,9 @@
 <!-- ========== 全屏百科式 · 单郡页（内容由脚本注入，无需手改本段）========== -->
 <div class="view" id="view-county">
   <div class="cv-banner">
-    <img id="cvImg" src="" alt="" onclick="zoomCounty()">
+    <img id="cvImg" src="" alt="">
     <div class="cv-banner-scrim"></div>
-    <div class="cv-back" onclick="backToCounties()">‹ 返回五郡</div>
-    <div class="cv-zoom" onclick="zoomCounty()">原画</div>
+    <div class="cv-back" onclick="backToCounties()">返回</div>
     <div class="cv-title">
       <div class="cv-crest" id="cvCrest"></div>
       <div class="cv-name" id="cvName"></div>
