@@ -500,69 +500,63 @@
   }
 
   /* ====== 五郡 · 展开式详情 ====== */
-  /* 舞台：装「五郡卡片」和「单郡详情」两层 */
-  .county-stage{position:relative;max-width:1080px;margin:0 auto;padding:0 40px;min-height:560px;}
-  /* 卡片层：沿用 .place 卡外观，这里只加切换动画 */
-  .county-grid{transition:opacity .5s ease, transform .55s cubic-bezier(.4,0,.2,1);}
-  .county-stage.open .county-grid{opacity:0;transform:translateY(-26px);pointer-events:none;}
-  /* 单郡详情：大图铺底 + 下→上红雾 + 顶部白字 + 三板块 */
-  .county-detail{position:absolute;inset:0;border-radius:6px;overflow:hidden;
-    opacity:0;transform:translateY(30px);pointer-events:none;
-    transition:opacity .55s ease, transform .55s cubic-bezier(.4,0,.2,1);
-    box-shadow:0 24px 60px -18px rgba(153,26,55,.5);display:flex;flex-direction:column;}
-  .county-stage.open .county-detail{opacity:1;transform:none;pointer-events:auto;}
-  .county-detail .bg{position:absolute;inset:0;background-size:cover;background-position:center;background-color:#3a2b24;}
-  .county-detail .fog{position:absolute;inset:0;pointer-events:none;transition:opacity .5s ease;
-    background:linear-gradient(to top, rgba(95,16,35,.95) 0%, rgba(124,20,43,.72) 32%, rgba(124,20,43,.30) 58%, rgba(20,10,14,.18) 100%);}
-  .county-detail .inner{position:relative;z-index:2;display:flex;flex-direction:column;height:100%;min-height:560px;padding:46px 52px;transition:opacity .5s ease;}
-  /* 原画/设定 切换按钮 */
-  .cty-art-toggle{position:absolute;top:16px;left:22px;z-index:3;cursor:pointer;
-    font-family:var(--roman);font-size:.72rem;letter-spacing:.18em;color:#fff;
-    padding:8px 18px;border-radius:30px;
-    background:rgba(40,8,16,.5);border:1px solid rgba(255,255,255,.42);
-    transition:background .3s,border-color .3s;}
-  .cty-art-toggle:hover{background:rgba(124,20,43,.9);border-color:rgba(255,255,255,.7);}
-  /* 原画态：红雾 + 文字层淡出，只留底图 */
-  .county-detail.art-mode .fog{opacity:0;}
-  .county-detail.art-mode .inner{opacity:0;pointer-events:none;}
-  /* 半透明白牌：铺满详情区、四周留边，真透出底图，淡阴影 */
-  .cty-card{display:flex;flex-direction:column;flex:1;width:100%;min-height:0;
-    background:rgba(255,255,255,.28);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);
-    border:1px solid rgba(255,255,255,.42);border-radius:12px;
-    box-shadow:0 16px 44px -18px rgba(40,12,22,.42), 0 2px 6px rgba(40,12,22,.16);
-    padding:34px 40px 32px;}
-  .county-detail .cty-close{position:absolute;top:14px;right:18px;z-index:3;
-    width:42px;height:42px;border-radius:50%;display:flex;align-items:center;justify-content:center;
-    font-size:1.7rem;line-height:1;color:#fff;cursor:pointer;
-    background:rgba(40,8,16,.5);border:1px solid rgba(255,255,255,.4);transition:background .3s,transform .3s;}
-  .county-detail .cty-close:hover{background:rgba(124,20,43,.9);transform:rotate(90deg);}
-  .county-detail .cty-crest{font-family:var(--roman);font-size:.66rem;letter-spacing:.24em;text-transform:uppercase;
-    color:rgba(255,255,255,.95);margin-bottom:8px;text-shadow:0 1px 3px rgba(0,0,0,.85),0 2px 12px rgba(20,6,12,.8);}
-  .county-detail .cty-name{font-family:var(--serif);font-size:clamp(1.9rem,4.2vw,2.8rem);font-weight:900;color:#fff;
-    letter-spacing:.04em;margin-bottom:18px;line-height:1.15;text-shadow:0 2px 6px rgba(0,0,0,.9),0 4px 22px rgba(20,6,12,.85);}
-  .county-tabs{display:flex;gap:30px;margin-bottom:14px;flex-wrap:wrap;}
-  .county-tab{position:relative;cursor:pointer;font-family:var(--serif);font-size:1.12rem;font-weight:700;
-    color:rgba(255,255,255,.72);padding-bottom:8px;letter-spacing:.08em;transition:color .35s;
-    text-shadow:0 1px 3px rgba(0,0,0,.85),0 2px 10px rgba(20,6,12,.75);}
-  .county-tab:hover{color:#fff;}
-  .county-tab::after{content:"";position:absolute;left:0;bottom:0;width:0;height:2px;background:#fff;transition:width .4s;}
-  .county-tab.active{color:#fff;}
-  .county-tab.active::after{width:100%;}
-  .county-body{flex:1;min-height:0;overflow-y:auto;padding-right:14px;
-    color:#fff;font-size:1rem;line-height:1.95;width:100%;text-shadow:0 1px 3px rgba(0,0,0,.88),0 2px 12px rgba(20,6,12,.75);}
-  .county-body::-webkit-scrollbar{width:8px;}
-  .county-body::-webkit-scrollbar-track{background:rgba(255,255,255,.12);border-radius:4px;}
-  .county-body::-webkit-scrollbar-thumb{background:rgba(255,255,255,.78);border-radius:4px;}
-  .county-body::-webkit-scrollbar-thumb:hover{background:#fff;}
-  .county-body p{margin:0 0 1.05em;} .county-body p:last-child{margin-bottom:0;}
-  .county-body .verse{font-family:var(--script);font-style:italic;color:rgba(255,255,255,.92);font-size:1.14rem;}
-  .county-body .panel{display:none;animation:ctyFade .45s ease;}
-  .county-body .panel.active{display:block;}
-  @keyframes ctyFade{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
-  @media(max-width:680px){
-    .county-detail .inner{padding:34px 22px;}
-    .cty-card{padding:24px 22px;}
-    .county-tabs{gap:22px;} .county-tab{font-size:1.05rem;}
+  /* 五郡卡片网格（入口）*/
+  .county-stage{position:relative;max-width:1080px;margin:0 auto;padding:0 40px;}
+
+  /* ===== 全屏百科式郡页 view-county ===== */
+  /* 顶部 banner：原画按原比例展示 */
+  .cv-banner{position:relative;width:100%;background:#1c2030;overflow:hidden;}
+  .cv-banner img{display:block;width:100%;height:auto;max-height:68vh;object-fit:contain;background:#1c2030;cursor:zoom-in;}
+  .cv-banner-scrim{position:absolute;left:0;right:0;bottom:0;height:58%;pointer-events:none;
+    background:linear-gradient(to top, rgba(18,9,13,.85) 0%, rgba(18,9,13,.38) 46%, transparent 100%);}
+  .cv-back,.cv-zoom{position:absolute;top:18px;z-index:3;cursor:pointer;font-family:var(--roman);
+    font-size:.72rem;letter-spacing:.16em;color:#fff;padding:8px 18px;border-radius:30px;
+    background:rgba(18,8,14,.55);border:1px solid rgba(255,255,255,.4);transition:background .3s,border-color .3s;}
+  .cv-back{left:24px;} .cv-zoom{right:24px;}
+  .cv-back:hover,.cv-zoom:hover{background:rgba(124,20,43,.92);border-color:rgba(255,255,255,.72);}
+  .cv-title{position:absolute;left:0;right:0;bottom:0;z-index:2;padding:34px 44px 30px;max-width:1080px;margin:0 auto;}
+  .cv-crest{font-family:var(--roman);font-size:.72rem;letter-spacing:.24em;text-transform:uppercase;
+    color:rgba(255,255,255,.9);margin-bottom:8px;text-shadow:0 1px 6px rgba(0,0,0,.85);}
+  .cv-name{font-family:var(--serif);font-size:clamp(2rem,5vw,3.2rem);font-weight:900;color:#fff;
+    letter-spacing:.04em;line-height:1.1;text-shadow:0 2px 14px rgba(0,0,0,.85);}
+
+  /* 正文区：左文右档案 */
+  .cv-wrap{max-width:1080px;margin:0 auto;padding:42px 40px 64px;display:flex;gap:42px;align-items:flex-start;}
+  .cv-main{flex:1;min-width:0;}
+  .cv-side{flex:0 0 290px;width:290px;}
+
+  .cv-tabs{display:flex;gap:30px;border-bottom:1px solid var(--line);}
+  .cv-tab{position:relative;cursor:pointer;font-family:var(--serif);font-size:1.15rem;font-weight:700;
+    color:var(--ink-soft);padding:0 2px 12px;letter-spacing:.06em;transition:color .3s;}
+  .cv-tab:hover{color:var(--ink);}
+  .cv-tab::after{content:"";position:absolute;left:0;bottom:-1px;width:0;height:2px;background:var(--wine);transition:width .35s;}
+  .cv-tab.active{color:var(--wine);}
+  .cv-tab.active::after{width:100%;}
+
+  .cv-body{padding-top:26px;color:var(--ink);font-size:1.02rem;line-height:2;}
+  .cv-panel{display:none;animation:cvFade .4s ease;}
+  .cv-panel.active{display:block;}
+  @keyframes cvFade{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+  .cv-body p{margin:0 0 1.15em;} .cv-body p:last-child{margin-bottom:0;}
+  .cv-body .verse{display:block;font-family:var(--script);font-style:italic;font-size:1.2rem;color:var(--wine-dk);
+    border-left:3px solid var(--wine);background:var(--paper-2);padding:14px 20px;margin:0 0 1.4em;border-radius:0 4px 4px 0;}
+
+  /* 档案信息框 */
+  .cv-archive{background:var(--paper-2);border:1px solid var(--line);border-radius:8px;padding:22px 24px;position:sticky;top:92px;}
+  .cv-archive-head{font-family:var(--serif);font-weight:700;color:var(--wine);font-size:1.02rem;letter-spacing:.3em;
+    text-align:center;padding-bottom:14px;margin-bottom:4px;border-bottom:1px solid var(--line);}
+  .cv-row{display:flex;justify-content:space-between;gap:14px;padding:11px 0;border-bottom:1px solid rgba(31,28,26,.08);}
+  .cv-row:last-child{border-bottom:none;}
+  .cv-row .k{color:var(--ink-soft);font-size:.92rem;white-space:nowrap;}
+  .cv-row .v{color:var(--ink);font-weight:600;text-align:right;}
+  .cv-row.col{flex-direction:column;gap:6px;}
+  .cv-row.col .v{text-align:left;font-weight:500;line-height:1.7;}
+
+  @media(max-width:820px){
+    .cv-wrap{flex-direction:column;padding:30px 22px 50px;gap:28px;}
+    .cv-side{width:100%;flex:none;}
+    .cv-archive{position:static;}
+    .cv-title{padding:26px 24px 22px;}
   }
 </style>
 </head>
@@ -876,6 +870,15 @@
               <p>万灵节在深秋、万物凋敝之际到来，是教廷历法中追悼亡者的圣日。埃登维尔人相信，深秋的夜晚是天国与人间最为贴近的时刻，逝者的灵魂会在薄暮中短暂归来探望生者。家家户户在门前摆放亡者生前喜爱的食物与一盏油灯，不锁门扉，以迎故人。教堂在黄昏时分举行安魂弥撒，钟声从日落敲至午夜，声声低沉，不为驱散亡灵，而为引领他们找到回家的路。孩子们被允许戴上面具在街巷间穿行，扮作幽灵与恶鬼，向邻人讨取蜂蜜糕与果脯——教士们对此睁一只眼闭一只眼，毕竟那些面具卖得最好的，恰恰是教堂旁边的小贩。万灵节是埃登维尔一年中最安静的节日，没有篝火，没有长歌，只有烛光与低声念出的名字。</p>
               <p>冬至圣日是一年中最后的盛典，在隆冬最短的白昼举行，纪念圣典所载的神圣诞生——光明于最深的黑暗中降世，宣告世间不会永陷长夜。王城大教堂在这一日点燃所有烛台，光芒从彩窗中倾泻而出，照亮冬夜的街道。大主教主持午夜弥撒，王室成员与四郡来使同席礼拜。王室向全城分发冬粮与蜡烛，贵族与平民在同一片烛光下用餐，饮热酒，交换以常青枝编成的小礼物。各郡领地也遵循同样的习俗，但会加入各自的地方传统——法尔托人在港口燃起灯塔上的冬火，维丹人用蜂蜡铸造太阳形烛台，古尔纳人以当年最好的陈酿敬先祖，希瑞伊的教士则在大理石圣殿中彻夜诵经，直到第一缕日光重新照入殿堂。这一夜被称为"最长之夜"，埃登维尔人相信：只要人间的火不灭，黎明就一定会降临。</p>
             </div>
+            <div class="cmeta">
+              <div class="cv-row"><span class="k">类型</span><span class="v">王都</span></div>
+              <div class="cv-row"><span class="k">王徽</span><span class="v">风铃草</span></div>
+              <div class="cv-row"><span class="k">王朝</span><span class="v">埃登维尔</span></div>
+              <div class="cv-row"><span class="k">始建</span><span class="v">一世德拉维安</span></div>
+              <div class="cv-row"><span class="k">政体</span><span class="v">王座集权 · 四郡封建</span></div>
+              <div class="cv-row col"><span class="k">城内</span><span class="v">王宫 · 索恩议书馆 · 王家军械库 · 中央粮仓</span></div>
+              <div class="cv-row col"><span class="k">地理</span><span class="v">四面环山，唯东面敞向维丹平原</span></div>
+            </div>
           </div>
         </div>
 
@@ -898,6 +901,16 @@
               <p>畜牧与狩猎为维丹提供了王国中最丰富的毛皮与纤维原料：羊毛、亚麻、鹿皮、狐裘乃至野猪鬃，几乎一切可以裁剪缝制的材料都可以在维丹的市集上找到。由此催生出一个庞大而骄傲的裁缝行会。维丹的裁缝师不自称匠人，而自称"剪裁者"，他们将衣物视为对人体的第二次塑造——不是装饰，而是表达。维丹式的剪裁以结构利落、线条干净著称，拒绝王城贵族偏爱的繁复刺绣和层叠褶皱，转而追求面料本身的质地与剪裁的精准贴合。一件上好的维丹猎装，缝线平直到可以用来校准铅垂。</p>
               <p>这种审美渗透了维丹人生活的方方面面。即便是田间的农夫，工服也讲究接缝齐整、扣件牢靠；牧羊人的斗篷用本地粗纺羊毛制成，厚实防雨，但领口的收边必定细密匀称。维丹人以穿着判断一个人的品性——衣衫邋遢者在维丹得不到信任，不是因为虚荣，而是因为维丹人相信：一个人怎样对待自己身上的针脚，就会怎样对待手里的契约。</p>
               <p>每年仲夏节期间，维丹的裁缝行会会在丰收农庄举办"剪裁大会"，各地裁缝师携自己最得意的作品参展，由行会长老与格雷维尔家指定的评判共同评鉴。获胜者将获得"金针"荣衬，并有资格承接格雷维尔家族来年的全部定制衣物——这既是最高荣誉，也是最丰厚的商业合同。王城的贵族们近年来也开始竞相聘请维丹裁缝，维丹式剪裁正悄然取代王城旧有的繁缛风尚，成为上流社会的新宠。</p>
+            </div>
+            <div class="cmeta">
+              <div class="cv-row"><span class="k">类型</span><span class="v">农业之郡</span></div>
+              <div class="cv-row"><span class="k">家族</span><span class="v">格雷维尔家</span></div>
+              <div class="cv-row"><span class="k">纹章</span><span class="v">蜜蜂</span></div>
+              <div class="cv-row"><span class="k">领主</span><span class="v">奥斯特克·格雷维尔</span></div>
+              <div class="cv-row"><span class="k">俗语</span><span class="v">付该付的价钱</span></div>
+              <div class="cv-row col"><span class="k">物产</span><span class="v">小麦 · 苹果 · 蜂蜜 · 毛皮</span></div>
+              <div class="cv-row col"><span class="k">名产区</span><span class="v">丰收农庄 · 桃林谷</span></div>
+              <div class="cv-row col"><span class="k">毗邻</span><span class="v">王城 · 古尔纳 · 希瑞伊</span></div>
             </div>
           </div>
         </div>
@@ -923,6 +936,16 @@
               <p>值得注意的是，法尔托的宴会传统并不局限于贵族阶层。斯特兰德家历代领主都默许甚至鼓励平民自行组织冬季宴饮——渔民在码头仓库里搭起临时长桌，矿工在坑道入口的棚屋中围炉而坐，猎户把自己腌的鹿肉和私酿的烈酒带到邻居家。这种跨阶层的聚饮习俗有着朴素的实用逻辑：漫长的冬夜里，独自待着的人容易发疯。法尔托人深谙这一点，所以他们用噪音、热量和酒精筑起一道对抗黑暗的墙。在法尔托，拒绝一次宴会邀请比拒绝一次决斗更令人不齿。</p>
               <p>冬至圣日的法尔托版本是全年最盛大的宴会。盐风港的灯塔在那一夜燃起冬火，火光从港口一直烧到海面上，渔船在桅杆上挂满油灯，整个海湾变成一片浮动的星海。斯特兰德家在港口广场设开放长席，从公爵到搬鱼的苦力同桌而饮，没有人在那一晚讲究身份。法尔托人把这一夜叫作"燃海之夜"——他们说，北海想冻死我们，我们就把海点着。</p>
             </div>
+            <div class="cmeta">
+              <div class="cv-row"><span class="k">类型</span><span class="v">海港之郡</span></div>
+              <div class="cv-row"><span class="k">家族</span><span class="v">斯特兰德家</span></div>
+              <div class="cv-row"><span class="k">纹章</span><span class="v">霜狼</span></div>
+              <div class="cv-row"><span class="k">领主</span><span class="v">哈维克·斯特兰德</span></div>
+              <div class="cv-row"><span class="k">俗语</span><span class="v">心如寒铁</span></div>
+              <div class="cv-row col"><span class="k">港口</span><span class="v">盐风港 · 王国唯一深水商港</span></div>
+              <div class="cv-row col"><span class="k">物产</span><span class="v">盐鱼 · 霜珠 · 海贸</span></div>
+              <div class="cv-row col"><span class="k">毗邻</span><span class="v">古尔纳 · 王城辖地</span></div>
+            </div>
           </div>
         </div>
 
@@ -944,6 +967,15 @@
               <p>古尔纳人常被其他郡的人形容为"慢半拍"，但这不是迟钝，而是一种有意识的从容。丘陵的地形让人无法急行，林间的雾气让人习惯等待视野自行清晰，药草的生长周期教会了古尔纳人一件事——催熟的东西没有药效。这种由气候、地理与产业共同塑造出的节奏感渗透在古尔纳生活的每一个角落，使得这个郡的民风在四郡之中最为平和沉稳。古尔纳人不急于争论，不热衷站队，也很少在王城的政治风暴中第一个表态——但这并不意味着他们没有立场，只是他们更愿意等所有人把话说完，再开口。</p>
               <p>这种气质在古尔纳最引以为傲的文化传统中体现得淋漓尽致——酿酒与品酒。古尔纳的酿酒师行会是四郡中历史最悠久的行会之一，其地位在本郡几乎与教堂比肩。酿酒在古尔纳不仅仅是一门手艺，而是一套关于时间与耐心的完整哲学。从葡萄的采摘时机、压榨的力度、发酵桶所用橡木的年份，到陈酿的时长，每一个环节都有严格的行会规范，但最终的判断权永远留给酿酒师本人的舌头和鼻子——"规矩告诉你什么时候不能开桶，但只有你自己知道什么时候该开桶"，这是行会学徒入门时听到的第一句话。</p>
               <p>品酒则是古尔纳社交生活的核心仪式。无论是贵族议事、商约签订还是邻里调解，古尔纳人的第一反应都是先开一瓶酒。品酒的礼仪繁复而不做作——持杯的角度、观色的顺序、闻香时的呼吸节奏都有讲究，但目的不在炫耀，而在于让所有在场的人放慢到同一个速度。古尔纳人相信，愿意坐下来认真喝完一杯酒的人，不会是坏人；而一个在品酒时表现出急躁的人，不值得签任何契约。法维恩家的宴席上永远不会催促客人，科尔文公爵本人虽然年轻，据说已经能在盲品中分辨出古尔纳七个主要酒庄的年份——这在郡内比任何政治头衔都更能赢得尊敬。</p>
+            </div>
+            <div class="cmeta">
+              <div class="cv-row"><span class="k">类型</span><span class="v">药材与酒之郡</span></div>
+              <div class="cv-row"><span class="k">家族</span><span class="v">法维恩家</span></div>
+              <div class="cv-row"><span class="k">纹章</span><span class="v">银鹿</span></div>
+              <div class="cv-row"><span class="k">领主</span><span class="v">科尔文·法维恩</span></div>
+              <div class="cv-row"><span class="k">俗语</span><span class="v">生生不息</span></div>
+              <div class="cv-row col"><span class="k">物产</span><span class="v">药材 · 葡萄酒</span></div>
+              <div class="cv-row col"><span class="k">毗邻</span><span class="v">王城 · 维丹 · 法尔托</span></div>
             </div>
           </div>
         </div>
@@ -972,34 +1004,20 @@
               <p>世俗方面，大理石雕刻自然是希瑞伊最具代表性的艺术形式。石匠行会与教会的合作关系根深蒂固——大教堂外墙上的浮雕叙事带、圣徒雕像、墓碑上的铭文装饰，全部出自本郡石匠之手。希瑞伊的雕刻风格追求一种克制的庄严：人物比例严格遵循教廷范式，面部表情宁静而超脱，衣裳的处理极度细腻，但绝不追求动态与戏剧感。这种审美与维丹裁缝对剪裁的执着有异曲同工之处，只是维丹人塑造的是活人的轮廓，希瑞伊人雕刻的是永恒的面容。</p>
               <p>圣镜湖畔每年万灵节的前夜会举行"静湖祭"——教士与平民共同在湖岸排列数千盏油灯，灯火倒映在蓝色湖面上，形成一片与夜空对称的光海。整个仪式期间不许出声，不许走动，所有人静立湖畔，为亡者默祷。法尔托人的万灵节是宴会和烈酒，维丹人的万灵节是蜂蜜糕和面具，而希瑞伊的万灵节只有沉默和光。这座圣城用它自己的方式说出了那句俗语——静如止水。</p>
             </div>
+            <div class="cmeta">
+              <div class="cv-row"><span class="k">类型</span><span class="v">宗教圣郡</span></div>
+              <div class="cv-row"><span class="k">家族</span><span class="v">阿斯塔林家</span></div>
+              <div class="cv-row"><span class="k">纹章</span><span class="v">红钥</span></div>
+              <div class="cv-row col"><span class="k">领主</span><span class="v">大主教 伊尔瑞安·阿斯塔林（世俗事务由代理人执掌）</span></div>
+              <div class="cv-row"><span class="k">俗语</span><span class="v">静如止水</span></div>
+              <div class="cv-row col"><span class="k">圣地</span><span class="v">圣镜湖 · 希瑞伊大教堂</span></div>
+              <div class="cv-row col"><span class="k">物产</span><span class="v">大理石 · 宝石 · 手抄本</span></div>
+              <div class="cv-row col"><span class="k">毗邻</span><span class="v">维丹 · 达瑟利尔边境</span></div>
+            </div>
           </div>
         </div>
 
       </div><!-- /county-grid -->
-
-      <!-- 单郡详情（内容由脚本注入，不用手改这一段）-->
-      <div class="county-detail" id="county-detail">
-        <div class="bg" id="ctyBg"></div>
-        <div class="fog"></div>
-        <div class="cty-art-toggle" id="ctyArtBtn" onclick="toggleArt(this)">原画</div>
-        <div class="cty-close" onclick="closeCounty()">×</div>
-        <div class="inner">
-          <div class="cty-card">
-            <div class="cty-crest" id="ctyCrest"></div>
-            <h2 class="cty-name" id="ctyName"></h2>
-            <div class="county-tabs">
-              <span class="county-tab active" data-k="overview" onclick="switchCounty(this)">概述</span>
-              <span class="county-tab" data-k="economy" onclick="switchCounty(this)">经济</span>
-              <span class="county-tab" data-k="culture" onclick="switchCounty(this)">文化</span>
-            </div>
-            <div class="county-body">
-              <div class="panel active" id="cty-overview"></div>
-              <div class="panel" id="cty-economy"></div>
-              <div class="panel" id="cty-culture"></div>
-            </div>
-          </div>
-        </div>
-      </div>
 
     </div><!-- /county-stage -->
   </section>
@@ -1163,7 +1181,42 @@
   <footer><div class="crest">埃登维尔追忆</div><p>日蚀 · 第一部</p></footer>
 </div>
 
-<!-- ========== 占位视图 · 至高天 ========== -->
+<!-- ========== 全屏百科式 · 单郡页（内容由脚本注入，无需手改本段）========== -->
+<div class="view" id="view-county">
+  <div class="cv-banner">
+    <img id="cvImg" src="" alt="" onclick="zoomCounty()">
+    <div class="cv-banner-scrim"></div>
+    <div class="cv-back" onclick="backToCounties()">‹ 返回五郡</div>
+    <div class="cv-zoom" onclick="zoomCounty()">原画</div>
+    <div class="cv-title">
+      <div class="cv-crest" id="cvCrest"></div>
+      <div class="cv-name" id="cvName"></div>
+    </div>
+  </div>
+  <div class="cv-wrap">
+    <div class="cv-main">
+      <div class="cv-tabs">
+        <span class="cv-tab active" data-k="overview" onclick="switchCounty(this)">概述</span>
+        <span class="cv-tab" data-k="economy" onclick="switchCounty(this)">经济</span>
+        <span class="cv-tab" data-k="culture" onclick="switchCounty(this)">文化</span>
+      </div>
+      <div class="cv-body">
+        <div class="cv-panel active" id="cv-overview"></div>
+        <div class="cv-panel" id="cv-economy"></div>
+        <div class="cv-panel" id="cv-culture"></div>
+      </div>
+    </div>
+    <div class="cv-side">
+      <div class="cv-archive">
+        <div class="cv-archive-head">档 案</div>
+        <div class="cv-archive-rows" id="cvMeta"></div>
+      </div>
+    </div>
+  </div>
+  <footer><div class="crest">埃登维尔追忆</div><p>日蚀 · 第一部</p></footer>
+</div>
+
+
 <div class="view" id="view-supreme">
   <div class="crumbs"><span onclick="go('hall')">世界</span><span class="sep">›</span>至高天</div>
   <div class="hall" style="min-height:80vh;">
@@ -1285,48 +1338,52 @@
       box.style.display='none';
     }
   }
-  /* ===== 五郡展开式 ===== */
+  /* ===== 五郡 · 全屏百科页 ===== */
   function openCounty(card){
     var d = card.querySelector('.cdata');
-    document.getElementById('ctyCrest').textContent = card.dataset.crest || '';
-    document.getElementById('ctyName').textContent  = card.dataset.name  || '';
-    var bg = document.getElementById('ctyBg');
-    if(card.dataset.img){ bg.style.backgroundImage = "url('"+card.dataset.img+"')"; }
-    else { bg.style.backgroundImage = 'none'; }
-    document.getElementById('cty-overview').innerHTML = d.querySelector('.overview').innerHTML;
-    document.getElementById('cty-economy').innerHTML  = d.querySelector('.economy').innerHTML;
-    document.getElementById('cty-culture').innerHTML  = d.querySelector('.culture').innerHTML;
+    document.getElementById('cvCrest').textContent = card.dataset.crest || '';
+    document.getElementById('cvName').textContent  = card.dataset.name  || '';
+    var img = document.getElementById('cvImg');
+    img.src = card.dataset.img || '';
+    img.alt = card.dataset.name || '';
+    document.getElementById('cv-overview').innerHTML = d.querySelector('.overview').innerHTML;
+    document.getElementById('cv-economy').innerHTML  = d.querySelector('.economy').innerHTML;
+    document.getElementById('cv-culture').innerHTML  = d.querySelector('.culture').innerHTML;
+    var meta = d.querySelector('.cmeta');
+    document.getElementById('cvMeta').innerHTML = meta ? meta.innerHTML : '';
     // 复位到「概述」
-    document.querySelectorAll('.county-tab').forEach(function(t,i){t.classList.toggle('active', i===0);});
-    document.querySelectorAll('.county-body .panel').forEach(function(p){p.classList.remove('active');});
-    document.getElementById('cty-overview').classList.add('active');
-    document.querySelector('.county-body').scrollTop = 0;
-    // 每次开郡都回到「设定」态
-    document.getElementById('county-detail').classList.remove('art-mode');
-    document.getElementById('ctyArtBtn').textContent = '原画';
-    document.getElementById('county-stage').classList.add('open');
-  }
-  function toggleArt(btn){
-    var on = document.getElementById('county-detail').classList.toggle('art-mode');
-    btn.textContent = on ? '设定' : '原画';
-  }
-  function closeCounty(){
-    var s=document.getElementById('county-stage'); if(s) s.classList.remove('open');
+    document.querySelectorAll('#view-county .cv-tab').forEach(function(t,i){t.classList.toggle('active', i===0);});
+    document.querySelectorAll('#view-county .cv-panel').forEach(function(p){p.classList.remove('active');});
+    document.getElementById('cv-overview').classList.add('active');
+    go('county');
   }
   function switchCounty(tab){
     var k = tab.dataset.k;
-    document.querySelectorAll('.county-tab').forEach(function(t){t.classList.remove('active');});
+    document.querySelectorAll('#view-county .cv-tab').forEach(function(t){t.classList.remove('active');});
     tab.classList.add('active');
-    document.querySelectorAll('.county-body .panel').forEach(function(p){p.classList.remove('active');});
-    var panel=document.getElementById('cty-'+k); if(panel) panel.classList.add('active');
-    document.querySelector('.county-body').scrollTop = 0;
+    document.querySelectorAll('#view-county .cv-panel').forEach(function(p){p.classList.remove('active');});
+    var panel=document.getElementById('cv-'+k); if(panel) panel.classList.add('active');
+  }
+  function backToCounties(){
+    go('edenvale');
+    setTimeout(function(){ var el=document.getElementById('sec-geo'); if(el) el.scrollIntoView({behavior:'auto',block:'start'}); }, 30);
+  }
+  function zoomCounty(){
+    var box=document.getElementById('placeBox');
+    document.getElementById('lbImg').src = document.getElementById('cvImg').src;
+    document.getElementById('lbImg').alt = document.getElementById('cvName').textContent;
+    document.getElementById('lbCrest').textContent = document.getElementById('cvCrest').textContent;
+    document.getElementById('lbName').textContent  = document.getElementById('cvName').textContent;
+    document.getElementById('lbDesc').textContent  = '';
+    box.classList.remove('person-mode','abyss-mode','cosmos-mode');
+    box.classList.add('show');
+    box.style.display='flex';
   }
   document.addEventListener('keydown',function(e){
     if(e.key==='Escape'){
       var box=document.getElementById('placeBox');
       box.classList.remove('show');
       box.style.display='none';
-      closeCounty();
     }
   });
 </script>
