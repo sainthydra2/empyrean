@@ -550,20 +550,13 @@
   /* 档案信息框（酒红实底 · 尖角 · 白字 · 阴影）*/
   .cv-archive{background:#991a37;border:1px solid var(--wine-dk);border-radius:0;padding:22px 24px;position:sticky;top:92px;
     box-shadow:0 18px 40px -14px rgba(111,18,40,.6), 0 4px 12px rgba(40,8,16,.3);}
-  /* 顶部 1:1 纹章图位 */
-  /* 顶部纹章位：圆形鎏金奖章（白底图嵌入金边圆盘，化解白底/酒红冲突）*/
-  .cv-emblem{position:relative;z-index:1;width:80%;aspect-ratio:1/1;margin:6px auto 22px;border-radius:50%;overflow:hidden;
-    background:var(--paper-3);border:3px solid #c9a44c;
-    box-shadow:0 0 0 4px rgba(255,255,255,.10), inset 0 2px 9px rgba(40,8,16,.30), 0 7px 18px -6px rgba(20,6,12,.55);
-    display:flex;align-items:center;justify-content:center;}
-  /* 奖章绶带：单带，从档案框背后穿出、略探出框顶，垂下挂住勋章（紫/冷白/蓝）*/
-  .cv-ribbon{position:absolute;top:-18px;left:50%;transform:translateX(-50%);width:64px;height:152px;z-index:0;pointer-events:none;
-    background:linear-gradient(90deg,#5b3a8c 0 33.33%,#eef2f5 33.33% 66.66%,#2a4d8f 66.66% 100%);
-    clip-path:polygon(0 0,100% 0,100% 100%,50% 84%,0 100%);
-    box-shadow:0 4px 9px -5px rgba(20,6,12,.35);}
-  .cv-emblem img{width:100%;height:100%;object-fit:contain;}
-  .cv-emblem.empty{background:rgba(255,255,255,.08);}
-  .cv-emblem.empty::after{content:"纹 章";font-family:var(--roman);font-size:.74rem;letter-spacing:.16em;color:rgba(255,255,255,.72);}
+  /* 顶部纹章位：下层纹章图 + 上层共用外框图（crest-frame.png）叠放，外框咬住纹章 */
+  .cv-emblem{position:relative;z-index:1;width:94%;aspect-ratio:1/1;margin:8px auto 18px;}
+  .cv-crest-img{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:38%;height:38%;object-fit:contain;z-index:1;}
+  .cv-frame-img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;z-index:2;pointer-events:none;}
+  .cv-emblem.empty .cv-crest-img{display:none;}
+  .cv-emblem.empty::after{content:"纹 章";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:1;
+    font-family:var(--roman);font-size:.74rem;letter-spacing:.16em;color:rgba(255,255,255,.72);}
   .cv-archive-head{font-family:var(--serif);font-weight:700;color:#fff;font-size:1.02rem;letter-spacing:.3em;
     text-align:center;padding-bottom:14px;margin-bottom:4px;border-bottom:1px solid rgba(255,255,255,.30);}
   .cv-row{display:flex;justify-content:space-between;gap:14px;padding:11px 0;border-bottom:1px solid rgba(255,255,255,.18);}
@@ -1218,8 +1211,10 @@
     </div>
     <div class="cv-side">
       <div class="cv-archive">
-        <div class="cv-ribbon"></div>
-        <div class="cv-emblem empty"><img id="cvEmblem" alt="" onerror="this.style.display='none';this.parentNode.classList.add('empty')"></div>
+        <div class="cv-emblem empty">
+          <img class="cv-crest-img" id="cvEmblem" alt="" onerror="this.style.display='none';this.closest('.cv-emblem').classList.add('empty')">
+          <img class="cv-frame-img" src="crest-frame.png" alt="" onerror="this.style.display='none'">
+        </div>
         <div class="cv-archive-head">档 案</div>
         <div class="cv-archive-rows" id="cvMeta"></div>
       </div>
