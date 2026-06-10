@@ -573,6 +573,170 @@
     .cv-archive{position:relative;}
     .cv-title{padding:26px 24px 22px;}
   }
+
+  /* ====== 王国历史 · 列王纪 ====== */
+  /* —— 第一层 · 纪年带（埃登维尔页内，大地图之后、五郡之前）——
+     酒红实底自左向右淡出：左端最深（历史已凝固），四世段融回纸色（尚未写完） */
+  .hband-wrap{position:relative;padding:30px 0 0;}
+  .hband-cal{position:relative;height:20px;font-family:var(--roman);
+    font-size:.66rem;letter-spacing:.12em;color:var(--ink-soft);}
+  .hband-cal.top{margin-bottom:10px;} .hband-cal.bottom{margin-top:10px;}
+  .hband-cal .tick{position:absolute;top:0;transform:translateX(-50%);white-space:nowrap;}
+  .hband-cal .tick.first{left:0;transform:none;color:var(--wine);}
+  .hband-cal .tick.rt{transform:translateX(-100%);padding-right:10px;}
+  .hband-cal .tick.last{left:100%;transform:translateX(-100%);}
+  .hband{position:relative;display:flex;height:104px;border-radius:4px;
+    background:linear-gradient(90deg,
+      #5f1023 0%, var(--wine-dk) 26%, var(--wine) 58%,
+      rgba(153,26,55,.62) 78%, rgba(153,26,55,.18) 92%, rgba(153,26,55,.04) 100%);
+    box-shadow:0 18px 36px -14px rgba(153,26,55,.5);}
+  .hseg{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    gap:4px;cursor:pointer;}
+  .hseg + .hseg{border-left:1px solid rgba(255,255,255,.24);}
+  .hseg .hseg-en{font-family:var(--roman);font-size:.58rem;letter-spacing:.22em;
+    color:rgba(255,255,255,.62);text-transform:uppercase;white-space:nowrap;transition:color .35s;}
+  .hseg .hseg-zh{font-family:var(--serif);font-weight:700;font-size:1.18rem;color:#fff;
+    letter-spacing:.1em;white-space:nowrap;
+    transition:letter-spacing .4s,text-shadow .4s;text-shadow:0 1px 10px rgba(40,8,16,.6);}
+  .hseg .hseg-sub{font-size:.68rem;color:rgba(255,255,255,.66);white-space:nowrap;transition:color .35s;}
+  /* 悬停：白字发光 + 字距微张（同大地图红雾目录手感） */
+  .hseg:hover .hseg-zh{letter-spacing:.2em;text-shadow:0 0 18px rgba(255,255,255,.65),0 1px 10px rgba(40,8,16,.6);}
+  .hseg:hover .hseg-en{color:rgba(255,255,255,.85);}
+  .hseg:hover .hseg-sub{color:rgba(255,255,255,.88);}
+  /* 四世段：底色已淡至纸面，文字转回酒红——唯一尚未被写进深色里的王 */
+  .hseg.now{border-left-color:rgba(153,26,55,.3);}
+  .hseg.now .hseg-en{color:rgba(153,26,55,.7);}
+  .hseg.now .hseg-zh{color:var(--wine);text-shadow:none;}
+  .hseg.now .hseg-sub{color:rgba(153,26,55,.75);}
+  .hseg.now:hover .hseg-zh{letter-spacing:.2em;text-shadow:0 0 16px rgba(153,26,55,.45);}
+  .hseg.now:hover .hseg-en{color:var(--wine);}
+  .hseg.now:hover .hseg-sub{color:var(--wine);}
+  /* 大事刻度：金色菱形（深描边嵌入感），悬停浮出气泡 */
+  .hev{position:absolute;top:-6px;width:12px;height:12px;transform:translateX(-50%);
+    z-index:2;cursor:help;}
+  .hev .d{display:block;width:11px;height:11px;background:#c9a44c;
+    transform:rotate(45deg);border:1px solid #8a6a25;box-shadow:0 2px 6px rgba(60,40,8,.4);}
+  .hev .lbl{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);
+    background:var(--wine);color:#fff;font-family:var(--serif);font-size:.72rem;
+    letter-spacing:.06em;white-space:nowrap;padding:4px 12px;border-radius:3px;
+    box-shadow:0 8px 18px -6px rgba(40,8,16,.5);opacity:0;pointer-events:none;transition:opacity .3s;}
+  .hev .lbl::after{content:"";position:absolute;top:100%;left:50%;transform:translateX(-50%);
+    border:5px solid transparent;border-top-color:var(--wine);}
+  .hev.edge .lbl{left:auto;right:-4px;transform:none;}
+  .hev.edge .lbl::after{left:auto;right:8px;transform:none;}
+  .hev:hover .lbl{opacity:1;}
+  .hband-cap{margin-top:16px;text-align:center;font-size:.78rem;color:var(--ink-soft);letter-spacing:.04em;}
+  .hband-cap .gd{color:#c9a44c;}
+  .hband-enter{text-align:center;margin-top:28px;}
+  .hband-enter a{display:inline-block;cursor:pointer;font-family:var(--serif);font-weight:700;
+    font-size:.92rem;letter-spacing:.18em;color:var(--wine);border:1px solid var(--wine);
+    border-radius:30px;padding:10px 34px;transition:background .35s,color .35s,box-shadow .35s;}
+  .hband-enter a:hover{background:var(--wine);color:#fff;box-shadow:0 12px 26px -8px rgba(153,26,55,.55);}
+
+  /* —— 第二层 · 全屏列王纪 view-histchron —— */
+  .hv-banner{position:relative;width:100%;aspect-ratio:21/9;max-height:62vh;min-height:340px;overflow:hidden;
+    background:linear-gradient(115deg, #5f1023 0%, var(--wine-dk) 45%, var(--wine) 100%);}
+  .hv-banner img{display:block;width:100%;height:100%;object-fit:cover;}
+  /* 酒红薄纱：与郡页 cv-banner-scrim 同族，自底漫上 */
+  .hv-scrim{position:absolute;left:0;right:0;bottom:0;height:78%;pointer-events:none;
+    background:linear-gradient(to top, rgba(124,20,43,.92) 0%, rgba(124,20,43,.6) 36%, rgba(124,20,43,.22) 68%, transparent 100%);}
+  .hv-back{position:absolute;top:80px;left:24px;z-index:3;cursor:pointer;
+    font-family:var(--serif);font-weight:700;font-size:.95rem;letter-spacing:.14em;color:#fff;
+    padding:11px 24px;border-radius:30px;background:var(--wine);
+    border:1px solid rgba(255,255,255,.55);box-shadow:0 8px 22px -6px rgba(20,6,12,.7);
+    transition:background .3s,transform .3s;}
+  .hv-back::before{content:"‹ ";}
+  .hv-back:hover{background:var(--wine-dk);transform:translateX(-3px);}
+  .hv-title-wrap{position:absolute;left:0;right:0;bottom:0;z-index:2;
+    padding:34px 44px 30px;max-width:1080px;margin:0 auto;}
+  .hv-crest{font-family:var(--roman);font-size:.72rem;letter-spacing:.28em;text-transform:uppercase;
+    color:rgba(255,255,255,.9);margin-bottom:8px;text-shadow:0 1px 6px rgba(0,0,0,.85);}
+  .hv-title{font-family:var(--serif);font-size:clamp(2rem,5vw,3.2rem);font-weight:900;color:#fff;
+    letter-spacing:.04em;line-height:1.15;text-shadow:0 2px 14px rgba(0,0,0,.85);}
+  .hv-tag{font-family:var(--script);font-style:italic;font-size:1.15rem;color:rgba(255,255,255,.82);
+    margin-top:8px;text-shadow:0 1px 8px rgba(0,0,0,.7);}
+  .hv-crumbs{max-width:1080px;margin:0 auto;padding:24px 40px 0;font-family:var(--serif);font-size:.92rem;color:var(--ink-soft);}
+  .hv-crumbs span.lk{cursor:pointer;color:var(--wine);} .hv-crumbs span.lk:hover{text-decoration:underline;}
+  .hv-crumbs .sep{color:var(--ink-soft);margin:0 8px;}
+  /* 右列与正文等高伸展（不加 align-items:flex-start），档案框才有粘性轨道 */
+  .hv-wrap{max-width:1080px;margin:0 auto;padding:42px 40px 64px;display:flex;gap:42px;}
+  .hv-main{flex:1;min-width:0;}
+  .hv-side{flex:0 0 290px;width:290px;}
+  .hv-pre{font-size:1.02rem;line-height:2;color:var(--ink);opacity:.88;margin-bottom:54px;
+    border-left:3px solid #c9a44c;padding:6px 0 6px 22px;}
+  .hchap{margin-bottom:72px;scroll-margin-top:90px;}
+  .hchap:last-child{margin-bottom:0;}
+  .hchap::after{content:"";display:block;clear:both;}
+  .hchap-head{border-bottom:2px solid var(--wine);padding-bottom:18px;margin-bottom:30px;}
+  .hchap-en{font-family:var(--roman);font-size:.7rem;letter-spacing:.3em;text-transform:uppercase;
+    color:var(--wine);margin-bottom:8px;}
+  .hchap-name{font-family:var(--serif);font-size:clamp(1.6rem,3.5vw,2.2rem);font-weight:900;
+    color:var(--ink);letter-spacing:.03em;line-height:1.3;}
+  .hchap-name .epi{color:var(--wine);}
+  .hchap-name .epi-blank{display:inline-block;min-width:2.6em;border-bottom:2px dashed rgba(153,26,55,.55);
+    color:transparent;vertical-align:baseline;line-height:1;}
+  .hchap-theme{font-family:var(--script);font-style:italic;font-size:1.1rem;color:var(--ink-soft);margin-top:8px;}
+  /* 四王肖像：细密画式，浮于章首正文左上，文字环绕；无图自动隐藏 */
+  .hport{float:left;width:188px;margin:6px 28px 14px 0;}
+  .hport .pframe{aspect-ratio:3/4;overflow:hidden;background:var(--paper-2);
+    border:1px solid #c9a44c;
+    box-shadow:0 0 0 5px rgba(201,164,76,.15), 0 12px 28px -10px rgba(153,26,55,.4);}
+  .hport .pframe img{width:100%;height:100%;object-fit:cover;display:block;}
+  .hport .pcap{margin-top:9px;font-size:.7rem;color:var(--ink-soft);text-align:center;
+    letter-spacing:.05em;line-height:1.6;}
+  /* 四世：未上色线稿位——虚线框，与谥号空缺呼应 */
+  .hport.sketch .pframe{border:1px dashed rgba(153,26,55,.55);background:var(--paper-3);
+    box-shadow:0 0 0 5px rgba(153,26,55,.06), 0 12px 28px -10px rgba(153,26,55,.25);}
+  .hsub{margin:40px 0 18px;clear:left;scroll-margin-top:90px;}
+  .hsub .hsub-year{font-family:var(--serif);font-size:.78rem;letter-spacing:.22em;color:var(--wine);
+    margin-bottom:4px;}
+  .hsub .hsub-title{font-family:var(--serif);font-size:1.28rem;font-weight:700;color:var(--ink);
+    padding-left:14px;border-left:3px solid var(--wine);}
+  .hv-main p{font-size:1.02rem;line-height:2;margin:0 0 1.15em;opacity:.88;}
+  .hv-main .hverse{display:block;font-family:var(--script);font-style:italic;font-size:1.18rem;
+    color:var(--wine-dk);border-left:3px solid var(--wine);background:var(--paper-2);
+    padding:13px 20px;margin:0 0 1.3em;border-radius:0 4px 4px 0;line-height:1.7;clear:left;}
+  /* 编年档案栏：粘性常驻 + 滚动联动 */
+  .hv-archive{background:var(--wine);border:1px solid var(--wine-dk);padding:22px 24px;
+    position:sticky;top:92px;
+    box-shadow:0 18px 40px -14px rgba(111,18,40,.6), 0 4px 12px rgba(40,8,16,.3);}
+  .hv-archive-head{font-family:var(--serif);font-weight:700;color:#fff;font-size:1.02rem;letter-spacing:.3em;
+    text-align:center;padding-bottom:14px;margin-bottom:4px;border-bottom:1px solid rgba(255,255,255,.30);}
+  .hv-row{display:flex;justify-content:space-between;gap:14px;padding:10px 0;
+    border-bottom:1px solid rgba(255,255,255,.18);}
+  .hv-row .k{color:rgba(255,255,255,.7);font-size:.9rem;white-space:nowrap;}
+  .hv-row .v{color:#fff;font-weight:600;text-align:right;font-size:.95rem;}
+  .hv-arch-sub{font-family:var(--roman);font-size:.62rem;letter-spacing:.26em;text-transform:uppercase;
+    color:rgba(255,255,255,.65);margin:18px 0 6px;}
+  .hv-reigns{display:flex;flex-direction:column;}
+  .hv-reign{display:flex;justify-content:space-between;gap:10px;padding:9px 8px;cursor:pointer;
+    border-left:2px solid transparent;transition:background .3s,border-color .3s;}
+  .hv-reign:hover{background:rgba(255,255,255,.08);}
+  .hv-reign.cur{background:rgba(255,255,255,.12);border-left-color:#c9a44c;}
+  .hv-reign .n{color:#fff;font-weight:600;font-size:.94rem;}
+  .hv-reign .y{color:rgba(255,255,255,.65);font-size:.82rem;white-space:nowrap;}
+  .hv-events{display:flex;flex-direction:column;}
+  .hv-event{display:flex;align-items:baseline;gap:10px;padding:8px 8px;cursor:pointer;
+    transition:background .3s;}
+  .hv-event:hover{background:rgba(255,255,255,.08);}
+  .hv-event .d{width:9px;height:9px;background:#c9a44c;transform:rotate(45deg);flex:0 0 9px;
+    position:relative;top:-1px;border:1px solid #8a6a25;}
+  .hv-event .t{color:#fff;font-size:.9rem;font-weight:600;}
+  .hv-event .y{color:rgba(255,255,255,.6);font-size:.78rem;margin-left:auto;white-space:nowrap;}
+  @media(max-width:820px){
+    .hseg .hseg-zh{font-size:.92rem;} .hseg .hseg-sub{display:none;}
+    .hseg .hseg-en{display:none;}
+    .hband{height:74px;}
+    .hev .lbl{display:none;}
+    .hband-cal .tick{display:none;}
+    .hband-cal .tick.first,.hband-cal .tick.last{display:inline;}
+    .hv-wrap{flex-direction:column;padding:30px 22px 50px;gap:28px;}
+    .hv-side{width:100%;flex:none;}
+    .hv-archive{position:relative;top:0;}
+    .hv-banner{aspect-ratio:16/10;min-height:280px;}
+    .hv-title-wrap{padding:24px 22px 22px;}
+    .hport{float:none;width:60%;max-width:220px;margin:0 auto 22px;}
+  }
 </style>
 </head>
 <body>
@@ -738,7 +902,7 @@
             <div class="deity d-nox">
               <span class="sigil">☾</span><h3>诺克斯</h3>
               <div class="domain">梦境 · 死亡 · 预言</div>
-              <p>诞生于纯粹阴影中的神祇，继承了原初太阳的阴影和黑暗，肆意变化，潜游梦境，蛇身长出的羽翼昭示着祂与塞拉菲姆的双生关系</p>
+              <p>诞生于纯粹阴影中的神祇，继承了原初太阳的阴影和黑暗，肆意变化，潜游梦境，蛇身长出的羽翼昭示着祂与赛拉菲姆的双生关系</p>
             </div>
             <div class="deity d-sera">
               <span class="sigil">☉</span><h3>赛拉菲姆</h3>
@@ -748,7 +912,7 @@
             <div class="deity d-aios">
               <span class="sigil">✦</span><h3>艾欧斯</h3>
               <div class="domain">众生之母</div>
-              <p>群星中开出花朵的女神，绽放的本质昭示了其联结塞拉菲姆与诺克斯的关系。</p>
+              <p>群星中开出花朵的女神，绽放的本质昭示了其联结赛拉菲姆与诺克斯的关系。</p>
             </div>
           </div>
           <div class="outer" id="outer-gods">
@@ -835,12 +999,69 @@
   <div class="eden-hub" style="--map-img:url('eden-map.webp')">
     <div class="eden-hub-menu">
       <div class="hub-nav">
+        <a onclick="scrollToSec('sec-history')">王国历史</a>
         <a onclick="scrollToSec('sec-geo')">地理 · 五郡</a>
         <a onclick="scrollToSec('sec-people')">家族与人物</a>
         <a onclick="scrollToSec('sec-art')">美术 · 风土</a>
       </div>
     </div>
   </div>
+
+  <!-- ===== 王国历史 · 纪年带（点段或按钮 → 全屏列王纪 view-histchron）=====
+       · 大事刻度位置/文字：改下方 .hev 的 left 百分比与 .lbl 文字
+       · 历史正文在 view-histchron 里（文件下方），直接改中文即可 -->
+  <section id="sec-history">
+    <div class="sec-head reveal">
+      <div class="ornament"><span class="m">历 史</span></div>
+      <h2>王国历史 · 列王纪</h2>
+      <p>埃登维尔的历史以两套纪年丈量：古历始于赫利奥斯塔的覆灭，日蚀纪年始于建国之日。至小说开始时，日蚀纪年走到了第一百九十年。</p>
+    </div>
+    <div class="hband-wrap">
+      <div class="hband-cal top">
+        <span class="tick first">日蚀纪年 · 元年</span>
+        <span class="tick" style="left:26%">五十二年</span>
+        <span class="tick" style="left:55%">一百一十年</span>
+        <span class="tick rt" style="left:89%">一百八十八年</span>
+        <span class="tick last">今 · 一百九十年</span>
+      </div>
+      <div class="hband">
+        <div class="hev" style="left:37.5%"><span class="d"></span><span class="lbl">大饥荒 · 日蚀七十五年 — 八十年</span></div>
+        <div class="hev" style="left:83%"><span class="d"></span><span class="lbl">夜火案 · 日蚀一百七十五年</span></div>
+        <div class="hev edge" style="left:94.5%"><span class="d"></span><span class="lbl">德尔沃恩战争爆发 · 日蚀一百九十年</span></div>
+        <div class="hseg" style="width:26%" onclick="goHistory('h-reign1')">
+          <span class="hseg-en">Draevian Ⅰ</span>
+          <span class="hseg-zh">铁 腕</span>
+          <span class="hseg-sub">日蚀与征伐</span>
+        </div>
+        <div class="hseg" style="width:29%" onclick="goHistory('h-reign2')">
+          <span class="hseg-en">Draevian Ⅱ</span>
+          <span class="hseg-zh">铁算盘</span>
+          <span class="hseg-sub">制度与饥荒</span>
+        </div>
+        <div class="hseg" style="width:34%" onclick="goHistory('h-reign3')">
+          <span class="hseg-en">Draevian Ⅲ</span>
+          <span class="hseg-zh">贤 者</span>
+          <span class="hseg-sub">制衡与暗火</span>
+        </div>
+        <div class="hseg now" style="width:11%" onclick="goHistory('h-reign4')">
+          <span class="hseg-en">Draevian Ⅳ</span>
+          <span class="hseg-zh">「&nbsp;&nbsp;&nbsp;」</span>
+          <span class="hseg-sub">改革与战争</span>
+        </div>
+      </div>
+      <div class="hband-cal bottom">
+        <span class="tick first">古历 1180</span>
+        <span class="tick" style="left:26%">1232</span>
+        <span class="tick" style="left:55%">1290</span>
+        <span class="tick" style="left:89%">1368</span>
+        <span class="tick last">1370</span>
+      </div>
+      <div class="hband-cap"><span class="gd">◆</span> 大事刻度，悬停查看：大饥荒（七十五年） · 夜火案（一百七十五年） · 战争爆发（一百九十年）</div>
+    </div>
+    <div class="hband-enter reveal"><a onclick="goHistory('')">展开列王全卷 ›</a></div>
+  </section>
+
+  <div class="divider"></div>
 
   <!-- 王国与疆域 -->
   <section id="sec-geo">
@@ -902,7 +1123,7 @@
           <div class="cdata" style="display:none">
             <div class="overview">
               <p>维丹郡占据着埃登维尔东部最广袤的平原地带，西接王城伊维特里，北邻古尔纳的丘陵与林地，东面倚靠天望山脉的长墙，南端则与希瑞伊圣郡隔埃尔文林地相望。这片土地地势平缓、河网密布、土层深厚，是整个王国最为肥沃的区域。麦浪连绵的原野上散布着果园、牧场与蜂房，丰收农庄与桃林谷是其中最富盛名的两处产区。如果说伊维特里是埃登维尔的心脏，维丹便是它的胃——这座王国的每一张嘴，最终都靠维丹的土地来喂养。</p>
-              <p>维丹是格雷维尔家族世代经营的封地，现由奥斯特克·格雷维尔公爵执掌。格雷维尔家以蜜蜂为族徽，既象征勤勉与丰产，也暗示着这个家族骨子里的精打细算——蜜蜂从不做亏本的事。奥斯特克本人治郡手腕果断、账目清明，将维丹经营成了四郡之中最富庶的领地，但他的野心从来没有止步于丰收。</p>
+              <p>维丹是格雷维尔家族世代经营的封地，现由奥斯特克·格雷维尔侯爵执掌。格雷维尔家以蜜蜂为族徽，既象征勤勉与丰产，也暗示着这个家族骨子里的精打细算——蜜蜂从不做亏本的事。奥斯特克本人治郡手腕果断、账目清明，将维丹经营成了四郡之中最富庶的领地，但他的野心从来没有止步于丰收。</p>
             </div>
             <div class="economy">
               <p>维丹的经济以农牧业为绝对根基。小麦与黑麦是主要粮食作物，产量足以供养本郡的同时大量输出王城和其余三郡。苹果、桃子等温带果实广泛种植于东部山麓的果园带，蜂蜜则是维丹最具辨识度的特产——维丹蜂蜜以花种纯正、色泽金亮闻名，不仅是日常食材，也是仲夏节祝圣仪式上的指定供品。畜牧业同样发达，牛奶、羊毛和肉类从维丹牧场源源不断地运往王城市场。此外，维丹拥有四郡中最活跃的狩猎传统，东部山麓和北部林缘的猎场出产鹿皮、狐裘与野兔皮，为本郡的手工制革和裁缝行业提供了稳定的原料。</p>
@@ -937,7 +1158,7 @@
             <div class="economy">
               <p>法尔托的经济结构与其余三郡截然不同：它不靠土地吃饭，靠海。</p>
               <p>北海的渔场是法尔托最基础的产业支撑。寒流与暖流在法尔托海域交汇，带来了极为丰富的鱼群——鳕鱼、鲱鱼、大比目鱼，以及季节性洄游的银鳅。法尔托渔民常年出海，捕获的鲜鱼一部分直供盐风港的市场，更大的部分则以盐渍、风干和烟熏的方式加工成可长期储存的海货，经官道南运至王城与各郡。这些蛋白质来源在价格上远低于维丹的畜肉，且不受旱涝与虫灾的影响，暗中对维丹郡的粮食垄断地位构成了持续的侵蚀——王城平民的餐桌上，法尔托盐鱼出现的频率正逐年上升，这是奥斯特克·格雷维尔不愿公开承认却无法忽视的事实。</p>
-              <p>但真正让法尔托在四郡格局中占据独特地位的，是珍珠。北海深处的冷水珠蚌出产一种色泽青灰、光晕冷冽的野生珍珠，被称为"霜珠"，在整个尤洛菲亚大陆都属稀罕之物。部分法尔托渔民在近海湾区尝试养殖珠蚌，产出的养殖珍珠虽然产量更稳定，但在色泽与光泽上始终无法与深海野生霜珠相比。而希瑞伊郡的教会正是霜珠最大的买家——大主教的法衣、圣器上的镶嵌、教堂祭坛的装饰，教廷对野生珍珠有着近乎执念的偏好。这条从北海深处到南方圣殿的珍珠贸易线，将法尔托与希瑞伊牢牢绑定在一起，形成了一种超越地理距离的经济共生：法尔托需要教会的稳定订单来维持珍珠产业的利润，希瑞伊则需要法尔托的供给来维持教廷器物的圣洁与威仪。</p>
+              <p>但真正让法尔托在四郡格局中占据独特地位的，是珍珠。北海深处的冷水珠蚌出产一种色泽青灰、光晕冷冽的野生珍珠，被称为"霜珠"，在整个尤洛斐亚大陆都属稀罕之物。部分法尔托渔民在近海湾区尝试养殖珠蚌，产出的养殖珍珠虽然产量更稳定，但在色泽与光泽上始终无法与深海野生霜珠相比。而希瑞伊郡的教会正是霜珠最大的买家——大主教的法衣、圣器上的镶嵌、教堂祭坛的装饰，教廷对野生珍珠有着近乎执念的偏好。这条从北海深处到南方圣殿的珍珠贸易线，将法尔托与希瑞伊牢牢绑定在一起，形成了一种超越地理距离的经济共生：法尔托需要教会的稳定订单来维持珍珠产业的利润，希瑞伊则需要法尔托的供给来维持教廷器物的圣洁与威仪。</p>
               <p>对外贸易是法尔托经济的第三根支柱，也是它与王座之间博弈的焦点。盐风港是埃登维尔唯一的深水商港，来自北方海域诸国的商船在此停泊，带来毛皮、琥珀、鲸油与异域铁器，换走埃登维尔的蜂蜜、葡萄酒与大理石制品。王室深知扼杀这条商路等于自断一臂，因此与斯特兰德家达成了一项务实的安排：王室让渡盐风港三成的贸易关税收入给法尔托郡，以换取斯特兰德家承诺维持港口的最大开放度与航道安全。这意味着法尔托在商业上拥有四郡中最大的自由裁量权——商船的停泊许可、货物的通关税率、仓储码头的分配，实质上都由斯特兰德家说了算。这份自由让法尔托在经济上独立于王城的粮税体系之外，也让王座始终对北方这头霜狼保持着一分警惕。更何况，盐风港在战时同时承担军港的职能，法尔托的海岸线正对着西方的德尔沃恩王国——海上的战场与商场从来只有一线之隔。</p>
             </div>
             <div class="culture">
@@ -997,7 +1218,7 @@
             </div>
             <div class="economy">
               <p>希瑞伊的经济根基埋在山体之中。</p>
-              <p>大理石是这个郡最核心的产业。希瑞伊南部山脉出产的白色大理石质地细密、纹理均匀，是整个尤洛菲亚大陆公认的建筑与雕塑上品。从王城伊维特里的宫殿立柱、大教堂的祭坛，到四郡贵族宅邸中的壁炉饰面，几乎所有需要彰显庄重与永恒的场合，用的都是希瑞伊的石头。本郡拥有完整的大理石产业链——从山中的采石场，到湖畔的切割工坊，再到精雕细琢的石匠行会——原石在希瑞伊境内被加工成石板、廊柱、雕像和建筑构件之后，一部分留供本郡的教堂与圣殿持续修缮扩建，更大的部分经官道北运至王城，或通过达瑟利尔的南方商路出口。大理石贸易为希瑞伊带来了稳定而丰厚的收入，而这项产业的特性也塑造了希瑞伊经济的节奏——石头不会腐烂、不受丰歉影响，大理石生意没有维丹麦田的季节性焦虑，也没有法尔托渔场的气候风险，它像圣镜湖一样，缓慢、恒定、不起波澜。</p>
+              <p>大理石是这个郡最核心的产业。希瑞伊南部山脉出产的白色大理石质地细密、纹理均匀，是整个尤洛斐亚大陆公认的建筑与雕塑上品。从王城伊维特里的宫殿立柱、大教堂的祭坛，到四郡贵族宅邸中的壁炉饰面，几乎所有需要彰显庄重与永恒的场合，用的都是希瑞伊的石头。本郡拥有完整的大理石产业链——从山中的采石场，到湖畔的切割工坊，再到精雕细琢的石匠行会——原石在希瑞伊境内被加工成石板、廊柱、雕像和建筑构件之后，一部分留供本郡的教堂与圣殿持续修缮扩建，更大的部分经官道北运至王城，或通过达瑟利尔的南方商路出口。大理石贸易为希瑞伊带来了稳定而丰厚的收入，而这项产业的特性也塑造了希瑞伊经济的节奏——石头不会腐烂、不受丰歉影响，大理石生意没有维丹麦田的季节性焦虑，也没有法尔托渔场的气候风险，它像圣镜湖一样，缓慢、恒定、不起波澜。</p>
               <p>山脉深处还蕴藏着少量宝石矿脉——石榴石、青金石与偶尔可见的蓝色碧玺，产量不大，却足以支撑一个精巧的宝石切割与镶嵌行当。这些宝石大多流入教廷的圣器制作体系，与法尔托的珍珠一起，构成了希瑞伊教会器物上那种冷艳而肃穆的美学基底。</p>
               <p>而珍珠正是希瑞伊经济中不可或缺的外部依赖。教廷对法尔托北海野生霜珠的需求近乎刚性——大主教的法冠、主教权杖的饰顶、圣坛烛台的镶嵌，这些核心圣器上的珍珠必须来自北海深处，养殖珠在教廷眼中不具备足够的神圣性。为了确保这条供应线畅通无阻，希瑞伊郡与法尔托郡之间达成了一项长期的经济默契：希瑞伊免除法尔托应缴的全部祭祀税赋，作为对珍珠稳定供给的交换。这笔税赋本应由各郡按教区规模向教廷缴纳，希瑞伊主动替法尔托承担了这部分成本，实质上是用宗教权力为经济利益开路。这种安排让法尔托得以在财务上进一步脱离王城体系的约束，也让希瑞伊牢牢握住了与北方之间的纽带——在阿斯塔林家看来，能用钱买到的忠诚虽然不可靠，但至少比没有强。</p>
               <p>作为埃登维尔境内与达瑟利尔圣座关系最近的郡，希瑞伊还承担着接待圣座巡礼使团的职责。每年达瑟利尔的圣座特使北上入境，第一站便是希瑞伊的大教堂，由阿斯塔林家族以正式教仪接见，随后才继续北行前往王城。希瑞伊大教堂的宗教地位与王城大教堂并列，二者互为双璧——王城大教堂是王权与神权交汇的政治圣殿，希瑞伊大教堂则是纯粹信仰的精神居所。这种双圣殿格局是二世德拉维安有意为之的结果：他将政治中心与信仰中心分置两地，确保教会的权威永远需要经过王城才能抵达世俗世界。</p>
@@ -1222,6 +1443,188 @@
 </div>
 
 
+<!-- ========== 全屏 · 王国历史 · 列王纪（正文直接改中文；肖像图 king-1.webp ~ king-4.webp，无图自动隐藏）========== -->
+<div class="view" id="view-histchron">
+  <div class="hv-banner">
+    <!-- ↓ 历史横幅：21:9，文件名 banner-history.webp；未上传时自动隐藏、显示酒红底 ↓ -->
+    <img src="banner-history.webp" alt="王国历史" onerror="this.style.display='none'">
+    <div class="hv-scrim"></div>
+    <div class="hv-back" onclick="backFromHistory()">返回</div>
+    <div class="hv-title-wrap">
+      <div class="hv-crest">Edenveil · Chronica Regum</div>
+      <div class="hv-title">王国历史 · 列王纪</div>
+      <div class="hv-tag">日蚀纪年元年至一百九十年 · 古历1180年至1370年</div>
+    </div>
+  </div>
+  <div class="hv-crumbs">
+    <span class="lk" onclick="go('hall')">世界</span><span class="sep">›</span><span class="lk" onclick="go('eclipse')">日蚀</span><span class="sep">›</span><span class="lk" onclick="backFromHistory()">埃登维尔追忆</span><span class="sep">›</span>王国历史
+  </div>
+
+  <div class="hv-wrap">
+    <div class="hv-main">
+
+      <div class="hv-pre">埃登维尔的历史以两套纪年丈量。古历始于远古文明赫利奥斯塔的覆灭，是尤洛斐亚大陆通用的时间刻度；日蚀纪年则始于埃登维尔建国之日——那一天，太阳被阴影吞噬又重新破出光芒，一个王朝由此诞生。至小说开始时，古历已行至1370年，日蚀纪年则走到了第190年。这座王国的全部历史，不过是漫长岁月中一段尚未写完的篇章。</div>
+
+      <!-- ===== 一世 · 铁腕 ===== -->
+      <div class="hchap" id="h-reign1">
+        <div class="hchap-head">
+          <div class="hchap-en">Draevian Ⅰ · 日蚀元年 — 五十二年 · 古历 1180 — 1232</div>
+          <div class="hchap-name">一世德拉维安 ·<span class="epi">「铁腕」</span></div>
+          <div class="hchap-theme">日蚀与征伐</div>
+        </div>
+        <div class="hport">
+          <div class="pframe"><img src="king-1.webp" alt="一世德拉维安像" onerror="this.closest('.hport').style.display='none'"></div>
+          <div class="pcap">一世德拉维安像 · 索恩议书馆藏《列王纪》抄本</div>
+        </div>
+        <p>在埃登维尔建国之前，这片大陆腹地没有统一的王权。数个部落各据一方，彼此征伐不休。其中最强势的两支——赛特里斯部族与韦萨利昂部族——自称远古文明赫利奥斯塔的后裔，以这层血统宣称对整片土地的正统支配权。他们的势力盘踞在如今伊维特里周边的山谷与平原上，控制着大陆腹地最肥沃的区域。</p>
+        <p>德拉维安并非贵族出身，而是在部落混战中以军事才能崛起的领袖。他花了数年时间先后说服四个部落的首领——斯特兰德、格雷维尔、法维恩与阿斯塔林——在他的旗帜下联合作战。四首领各有根基、各有野心，但他们做出了同一个判断：跟着德拉维安打赢这场仗，比各自为战更划算。这不是忠诚，而是一笔投资——四首领从一开始就是带着自己的兵马和自己的盘算加入的，他们效忠的不是德拉维安这个人，而是他许诺的胜利。</p>
+
+        <div class="hsub"><div class="hsub-year">日蚀元年</div><div class="hsub-title">决战与神迹</div></div>
+        <p>日蚀元年，决战之日。五部联军与赛特里斯、韦萨利昂的联合部队在日后伊维特里城址所在的旷野上展开最终对决。德拉维安于阵前亲手斩下赛特里斯部族首领的头颅。就在首级落地的那一刻——天空骤暗，日蚀降临大地。太阳被阴影完全吞噬，战场陷入片刻的黑暗与死寂。然后光芒重新破出，照亮了遍地的风铃草与敌军的溃散。</p>
+        <p>这一天象被所有在场者目睹。消息经由南方的商路传至达瑟利尔圣座——彼时尤洛斐亚大陆的信仰权威中心。圣座经过审视后正式认定此天象为不可否认的神迹，授予德拉维安信仰世界的合法祝圣。这一决定的深远意义在于：王冠不是达瑟利尔赐的，是天象赐的，达瑟利尔只是承认了这个事实。这层区别将在此后近两百年的时间里反复被埃登维尔的王室所援引——每当圣座试图以信仰合法性的赐予者自居时，伊维特里都会提醒他们：你们是见证者，不是授权者。</p>
+
+        <div class="hsub"><div class="hsub-year">日蚀元年 — 五年</div><div class="hsub-title">筑城、分封与信仰</div></div>
+        <p>同年，德拉维安在日蚀降临之地筑城，以战场上遍生的蓝紫色风铃草为王室家徽，城名伊维特里。随后数年间，他完成了对战后秩序的全面部署——</p>
+        <p>日蚀元年至三年，四首领论功受封。斯特兰德领法尔托，掌北海门户；格雷维尔领维丹，掌东部粮仓；法维恩领古尔纳，掌丘陵林地；阿斯塔林领希瑞伊，掌南方圣地。四家各领一郡，各设私兵，但三条根本法则同时写入王令：兵权归王座，任何一郡调兵出境须王城敕令方可执行；铸币权归王城，王城西郊金矿由王室直辖，禁止私采；各郡不得私自与外邦缔约宣战。</p>
+        <p>日蚀三年至五年，达瑟利尔圣座在授予合法性的同时完成了对埃登维尔信仰体系的绑定。阿斯塔林家被指定为信仰在埃登维尔境内的代理人。圣座资助阿斯塔林家在希瑞伊建立学院与教会，修道院的抄经室和经院学堂开始运转，教士阶层由此在埃登维尔扎根。这笔交易在当时看来是多方共赢：德拉维安需要信仰体系为他的王冠镀上神圣外壳，达瑟利尔需要一个北方国家作为信仰传播的锚点，阿斯塔林家则从四首领中的一员一跃成为王国精神世界的垄断者。</p>
+
+        <div class="hsub"><div class="hsub-year">日蚀五年 — 四十年</div><div class="hsub-title">建设期</div></div>
+        <p>日蚀五年至四十年间，铁腕将精力投入到王国的物质建设上。伊维特里的城墙、王宫、大教堂、王家铸造所在这一时期先后落成。四郡之间的官道系统初步建成，以王城为中心向四方辐射。赋税体系、粮仓制度和兵额制度在实践中逐步成形——尽管在铁腕时代，许多规则仍以口头惯例而非书面律令的形式存在。</p>
+        <p>赛特里斯与韦萨利昂的残余或死于战场，或逃散于荒野，两个部族的王朝自此不复存在。无人确知那些幸存者的去向——是被埋没在了平民之中，还是遁入了大陆边缘的无人之地。但关于他们的记忆并未完全消亡，尤其是那些据说掌握着黑暗术法的族中智者，他们的下落成为了埃登维尔民间最古老也最持久的恐惧来源。</p>
+
+        <div class="hsub"><div class="hsub-year">日蚀四十年 — 五十二年</div><div class="hsub-title">暮年</div></div>
+        <p>日蚀四十年之后，铁腕步入了统治的最后十年。他的身体不再像青年时代那样经得起战场上的消耗——开疆年代留下的刀伤与箭创伴随了他一生，旧伤在年复一年的冬天里反复发作，每一次都比上一次愈合得更慢。但他的头脑依然清醒，清醒到足以注意到一个他年轻时种下、此刻正在长成的问题：阿斯塔林家的文化垄断。</p>
+        <p>达瑟利尔资助的学院和教会在四十年间扩张到了铁腕未曾预见的程度。希瑞伊的修道院几乎是整个王国唯一的教育来源，抄写员、释经师、教会文书官——这些掌握文字和知识的人全部出自阿斯塔林家的体系。教堂的数量和影响力同步增长，信仰生活的每一个环节都经由阿斯塔林家的手来调度。铁腕意识到，如果这个趋势再持续一两代人，阿斯塔林家就能通过控制一个国家读什么书、信什么神来架空坐在王座上的人。</p>
+        <p>然而铁腕是一个靠剑解决问题的人。这种精密的权力手术——在不摧毁教会体系的前提下拆分一个家族的软性权力——不是他的风格，也不是他的能力范围。他选择了把这个判断留给继承人。</p>
+        <p>日蚀五十二年，冬末。铁腕的旧伤最后一次复发，伤口溃烂感染，他没有撑过那个冬天的尾巴。他是用身体打下的天下，最后也是身体先于意志倒下。一个征服者最合宜的结局，不是在床上安详闭目，而是被自己当年的战场追上。</p>
+        <p>后世以"铁腕"尊之。这个称号不仅指他在战场上的武力，也指他对权力结构的刚性设计——兵权归王座、铸币权归王城、四郡并立——这些铁律在此后近一百四十年间从未被正式撼动。</p>
+      </div>
+
+      <!-- ===== 二世 · 铁算盘 ===== -->
+      <div class="hchap" id="h-reign2">
+        <div class="hchap-head">
+          <div class="hchap-en">Draevian Ⅱ · 日蚀五十二年 — 一百一十年 · 古历 1232 — 1290</div>
+          <div class="hchap-name">二世德拉维安 ·<span class="epi">「铁算盘」</span></div>
+          <div class="hchap-theme">制度与饥荒</div>
+        </div>
+        <div class="hport">
+          <div class="pframe"><img src="king-2.webp" alt="二世德拉维安像" onerror="this.closest('.hport').style.display='none'"></div>
+          <div class="pcap">二世德拉维安像 · 索恩议书馆藏《列王纪》抄本</div>
+        </div>
+        <p>铁算盘从父亲手中继承了一个用武力焊接在一起的国家和一个未竟的预判：阿斯塔林家的文化霸权如果不加限制，终将架空王权。铁腕没有告诉他该怎么做，只留下了方向——不要让任何一个家族同时掌控教育与信仰。铁算盘用此后五十八年的时间，以他自己的方式回应了这个命题。</p>
+        <p>他不是战士。他一生未曾亲自上过战场，也从未表现出对军事扩张的兴趣。他的武器是笔、账册和法令。后世称他"铁算盘"，因为在他的治下，王国第一次可以精确到每一枚铜星币地运转——但真正让他配得上这个称号的，不是他对钱的计算，而是他对权力收支的计算。</p>
+
+        <div class="hsub"><div class="hsub-year">日蚀五十五年 — 六十年</div><div class="hsub-title">政教分离与制度建设</div></div>
+        <p>铁算盘完成了他统治期间最重要的制度工程。首先是政教分离法令。他颁布王令，规定阿斯塔林家族的当代掌权者不得同时身兼领主与教长之职——世俗之剑与信仰之杖必须分握在两只手中。这条法令的精妙之处在于它没有削弱阿斯塔林家的总量：他们依然掌握着教会、学院和整个信仰体系，依然是四郡中文化影响力最大的家族。但法令将这个家族永久地一分为二，使其内部始终存在一道不可弥合的裂缝——掌兵的不掌教，掌教的不掌兵，同一个家族的两条手臂被王法分开了。</p>
+        <p>与此同时，铁算盘确立了双圣殿格局。王城大教堂被定位为王权与神权交汇的政治圣殿——加冕、敕令、圣日大典在此举行；希瑞伊大教堂则被定位为纯粹信仰的精神居所——神学研究、教士培养、经典保存归于此处。二者并列但分属两地，中间隔着从希瑞伊到伊维特里的数日路程。这意味着教会的精神权威可以在希瑞伊自由生长，但如果它想触及世俗政治，就必须经过王城这道关卡。信仰的根在南方，果实却只能在伊维特里被采摘。</p>
+        <p>日蚀六十年前后，铁算盘将注意力转向了王国行政体系的全面整顿。索恩议书馆——铁腕时代只是一个粗陋的文献收藏所——在他手中被扩展为王国的中央行政枢纽。行会登记注册、赋税审核、律令存档、商贸纠纷仲裁，此前全凭口头惯例和各郡领主自行处置的事务，现在都必须经由索恩议书馆的书面程序。四郡的赋税额度、兵额配置、贸易配额第一次被全部量化在册，白纸黑字，不容含混。这套文书制度在短期内大幅提升了王城对四郡的管控精度，但也产生了一个铁算盘可能未曾预见的副作用：它进一步加深了王国对阿斯塔林家培养的文书官和抄写员的依赖——能写、能读、能执行这套制度的人，几乎全部来自希瑞伊的学堂。铁算盘切开了阿斯塔林家的政教权，却在行政层面为他们打开了另一扇门。</p>
+
+        <div class="hsub" id="h-ev-famine"><div class="hsub-year">日蚀七十五年 — 八十年</div><div class="hsub-title">大饥荒</div></div>
+        <p>铁算盘统治中期，灾难降临了。大饥荒。这场饥荒的规模和持续时间远远超出了任何人的预期。从维丹的麦田到古尔纳的菜圃，从法尔托沿海的小片耕地到王城郊外的菜园，作物在田中枯萎、种子播下不发芽、牲畜消瘦而死。最有经验的农民在翻遍了土壤、检查了水源、排除了一切已知的虫害和旱情之后，仍然无法解释这场灾祸的成因。它不像天灾——天灾有迹可循，但这场饥荒像是土地本身忽然忘记了怎么生长。</p>
+        <p>民间的说法很快指向了一个方向：赛特里斯与韦萨利昂的逃亡黑魔法师。那些在开疆战争中幸存并消失于荒野的部族智者，据说掌握着源自赫利奥斯塔古文明的黑暗术法。诅咒之说在饥饿的人群中像野火一样蔓延——他们说，那些被击败的人在暗处施下了腐蚀大地的咒术，以覆灭者的怨恨报复征服者的后代。这个说法至今没有被证实，也没有被推翻。它成为了埃登维尔民间记忆中一道永远无法愈合的疤痕——每当年景不好的时候，总有人低声提起那些消失在荒野中的魔法师。</p>
+        <p>饥荒之中，只有一个郡能够稳定地供应粮食：维丹。格雷维尔家在这场灾难中展现出了惊人的组织能力——或者说，惊人的嗅觉。维丹的平原地带受灾程度相对较轻，格雷维尔家凭借多年积累的农业管理经验，不仅维持了本郡的基本产出，更在其他三郡的农户因绝收而纷纷破产之际，大规模收购了他们抛售的土地。那些走投无路的自耕农把祖辈的田产卖给格雷维尔家的代理人，换来的是一个冬天的口粮。当饥荒终于在数年后缓解的时候，维丹的耕地面积几乎翻了一倍。格雷维尔家从四大家族中的一员，蜕变为了整个王国的粮食命脉——他们不仅种出了最多的粮食，还控制了收购、储存和运输的全部渠道。</p>
+        <p>铁算盘对此并非毫无察觉。但在饥荒的至暗时刻——王城粮仓见底、驻军口粮告急、平民在街头排队领取救济——他不可能对唯一还在往嘴里送粮的那只手动刀。打压维丹等于在饥荒中自杀。铁算盘是一个算账的人，他算得出这笔账：现在打压格雷维尔家，王国撑不过这个冬天；现在不打压，格雷维尔家会变成一个比阿斯塔林家更危险的存在——阿斯塔林控制的是人的头脑，格雷维尔控制的是人的胃。他选择了忍。他把这个未解的难题和他对这个问题的全部理解一起，留给了下一代。</p>
+        <p>日蚀一百一十年，秋末。侍从在清晨进入铁算盘的书房时发现他坐在桌前没有醒来，手边摊着前一夜批阅的文书，墨迹已干。没有病痛，没有征兆，没有阴谋。他在五十八年的时间里把一切都算清楚了——四郡的账、王座的账、权力的账——然后安静地走了。铁算盘的账到最后一天都是平的。</p>
+        <p>后世以"铁算盘"尊之。他没有打过一场仗，没有开拓过一寸领土，但他留下的制度骨架——政教分离、双圣殿、索恩议书馆、文书行政体系——在此后八十年间支撑了整个王国的运转。他也留下了两个没有解决的问题：维丹的粮食垄断，以及一场没人能解释的饥荒在民间留下的恐惧。</p>
+      </div>
+
+      <!-- ===== 三世 · 贤者 ===== -->
+      <div class="hchap" id="h-reign3">
+        <div class="hchap-head">
+          <div class="hchap-en">Draevian Ⅲ · 日蚀一百一十年 — 一百八十八年 · 古历 1290 — 1368</div>
+          <div class="hchap-name">三世德拉维安 ·<span class="epi">「贤者」</span></div>
+          <div class="hchap-theme">制衡与暗火</div>
+        </div>
+        <div class="hport">
+          <div class="pframe"><img src="king-3.webp" alt="三世德拉维安像" onerror="this.closest('.hport').style.display='none'"></div>
+          <div class="pcap">三世德拉维安像 · 索恩议书馆藏《列王纪》抄本</div>
+        </div>
+        <p>贤者德拉维安继承的王国表面上是铁算盘留下的精密机器——制度完备、文书清晰、权力边界明确。但两条暗线正在同时收紧：内部，维丹的粮食垄断已经膨胀到可以左右全国粮价的程度；外部，一个此前几乎不在埃登维尔视野中的威胁正在西方的海面上浮现。</p>
+        <p>贤者是四代王中在位最久的一个——七十八年。这个漫长的统治期跨越了他从青年到暮年的全部人生，也见证了埃登维尔从承平之世滑向内外交困的全过程。他一生所做的每一个重大决定，都不是进攻，而是制衡。他不打碎任何东西，他只是在每一个失衡的地方悄悄加上一块砝码。后世称他"贤者"，但这个称号背后的含义比表面上复杂得多——他的"贤"不是先知式的远见，而是一种近乎冷酷的耐心：他永远在等，等所有人把牌打完，再出自己的那一张。</p>
+
+        <div class="hsub"><div class="hsub-year">日蚀一百二十年 — 一百五十年</div><div class="hsub-title">德尔沃恩的阴影</div></div>
+        <p>三世继位后的前十年相对平静，他将精力用于巩固铁算盘留下的行政体系，并着手处理饥荒后遗留的民间恐慌——他下令索恩议书馆编纂了一部关于大饥荒的官方记录，措辞中既没有否认"诅咒"之说，也没有肯定它，只是将所有已知的事实按时间顺序排列在册。这种不置可否的态度日后被证明是三世处理所有棘手问题的一贯风格。</p>
+        <p>大约日蚀一百二十年前后，西方的德尔沃恩王国开始在北海航道上制造麻烦。德尔沃恩的海上势力在过去数十年间稳步膨胀，其商船和武装船队越来越频繁地出现在法尔托海域附近的航线上。起初只是零星的商业摩擦——航道优先权的争执、渔场边界的纠纷、偶尔的走私缉拿——但冲突逐年升级，到日蚀一百三十年前后，德尔沃恩的武装船已经开始有组织地骚扰法尔托渔船并拦截途经的商船。盐风港作为埃登维尔唯一的深水港口，其军事价值在这一时期骤然凸显。</p>
+        <p>贤者的应对方式不是备战，而是交易。大约在日蚀一百四十年至一百五十年之间——德尔沃恩摩擦最为剧烈的十年里——他与斯特兰德家达成了一项务实的安排：王室让渡盐风港三成的贸易关税收入给法尔托郡，以换取斯特兰德家承诺维持港口的最大开放度与航道安全。这份安排赋予了法尔托在四郡中最大的商业自由裁量权——商船的停泊许可、货物的通关税率、仓储码头的分配，实质上都由斯特兰德家说了算。贤者的选择是清醒的：在外敌逼近的时候，你必须给前线守将足够的空间，哪怕这意味着松开一些绳子。但他也算得到这条绳子松开之后的代价——法尔托在财政上将日益独立于王城体系，斯特兰德家将成为四郡中最难约束的一支。他接受了这个代价，因为在他看来，一个强大但难以驯服的法尔托，总好过一个被德尔沃恩攻破的港口。</p>
+
+        <div class="hsub"><div class="hsub-year">日蚀一百三十年前后</div><div class="hsub-title">制衡维丹</div></div>
+        <p>在应对外部威胁的同时，贤者将另一只手伸向了内政中积压最久的难题：维丹的粮食垄断。大饥荒过去了半个世纪，但格雷维尔家在饥荒中建立的优势不仅没有消退，反而随着时间的推移进一步巩固。维丹的耕地面积、粮食产量、收购网络和运输渠道都在持续扩张，格雷维尔家的前几代人已经将维丹从"最富的郡"经营成了"唯一不可替代的郡"——如果维丹断供，王城的粮仓撑不过两个月。</p>
+        <p>贤者没有选择正面打压。他的方式是侧翼包抄——在维丹周围悄悄扶植替代者，让格雷维尔家的垄断地位被稀释而非被摧毁。大约在日蚀一百三十年前后，他与法维恩家签订了药粮互抵协议：古尔纳每年将半数药材上缴王城药库，以供王家医师、驻军医疗及教廷施药之用；作为交换，古尔纳可免除与上缴药材等值的赋税额度。这份协议表面上是医药保障制度，实质上是用税收杠杆扶植古尔纳成为一个有独立经济能力的势力——药材的利润空间加上赋税减免释放出的财政余裕，让法维恩家得以全力发展葡萄酒产业，逐步建立起不依赖维丹粮食体系的经济自主权。</p>
+        <p>同一时期，贤者对法尔托渔业向内地市场的扩张采取了默许态度。法尔托的盐鱼在价格上远低于维丹的畜肉，且不受旱涝影响，正在悄然侵蚀维丹在蛋白质供应上的主导地位。贤者从未公开鼓励过这种竞争，但他也从未出手阻止——沉默本身就是许可。他从来不跟格雷维尔家正面冲突，他只是安静地在维丹周围多放了几个对手。</p>
+
+        <div class="hsub" id="h-ev-fire"><div class="hsub-year">日蚀一百七十五年</div><div class="hsub-title">夜火案</div></div>
+        <p>日蚀一百七十五年，贤者已步入统治的晚期。就在这一年，一场火灾在法尔托郡爆发，改变了两个家族的命运。</p>
+        <p>事件的起因至今只有极少数人知晓全貌。奥斯特克·格雷维尔——彼时已接掌维丹多年的领主——策划了一次针对法尔托粮仓的秘密行动。法尔托渔业对维丹粮食垄断的持续侵蚀让他无法容忍，他决定以一场"意外"的火灾摧毁法尔托的储粮设施，迫使其在冬季到来前向维丹购粮。</p>
+        <p>然而火势远远超出了他的控制。烈焰从粮仓蔓延至法尔托旧官邸，正在其中的哈维克·斯特兰德之妻与奥斯特克自己的妻子——西维奥拉的母亲——双双葬身火海。一场旨在打击商业对手的阴谋，因为一阵没有被算进去的风，变成了一桩亲手杀妻的惨剧。</p>
+        <p>火灾被公开归因于一名侍卫在粮仓附近生火烤鱼引发的意外。没有证据指向蓄意纵火，没有任何人被追究责任。奥斯特克在公众面前以丧妻者的身份出现，他的悲痛无人质疑——因为那悲痛是真的，只是没人知道它的底色不是丧失，而是罪孽。</p>
+        <p>贤者德拉维安对这个解释不置一词。他的沉默本身就是一种表态。在夜火案发生后不久，他推出了一条新的法令：四大家族领主不得亲自出任王城议事会的代理人，代理人须由家族另行委派的亲属或子女担任。这条法令没有引用夜火案的任何细节，没有点任何人的名字，表面上是针对所有四大家族的普适性制度调整。但所有人都知道它是冲着谁来的——奥斯特克此前正是通过亲自出席议事会来直接影响王城决策的。贤者的手法一如既往：他不定你的罪，他改规矩，让你永远不能再坐到那个位置上。奥斯特克无法反驳，因为反驳等于承认这条法令和自己有关。</p>
+
+        <div class="hsub"><div class="hsub-year">日蚀一百七十五年 — 一百八十年</div><div class="hsub-title">余烬</div></div>
+        <p>夜火案的火焰熄灭了，但它在斯特兰德家内部留下的余烬还在燃烧。哈维克·斯特兰德在火灾中失去了妻子。他不知道真正的纵火者是奥斯特克——没人知道——但丧妻之痛需要一个出口，他的目光落在了兄长埃德里克的妻子身上。仇恨的逻辑往往不需要证据，只需要一个方向。哈维克开始相信大嫂与这场火灾有关，这个念头在此后的年月里像毒藤一样在他心中蔓延。</p>
+        <p>日蚀一百八十年，夜火案五年后。哈维克六岁的儿子在法尔托的一个冬日追逐着埃德里克妻子的猫跑入了雪地。孩子摔倒在积雪中，无人发现，被冻死在旷野里。丧子之痛彻底击碎了哈维克仅存的理智。他杀死了兄嫂——那个他认定害死了自己妻子、间接害死了自己儿子的女人。随后他被捕，被审，被流放出埃登维尔。一场源于粮食竞争的阴谋，经由火灾、误解、丧子和谋杀，最终撕裂了整个斯特兰德家族。而真正的始作俑者奥斯特克·格雷维尔安坐在维丹的侯爵府中，以一个失去妻子的鳏夫的身份继续着他的生活。</p>
+
+        <div class="hsub"><div class="hsub-year">日蚀一百八十年 — 一百八十八年</div><div class="hsub-title">暮年</div></div>
+        <p>贤者的最后八年是在病榻上度过的。肺痨从日蚀一百八十年前后开始蚕食他的身体，起初只是偶尔的咳嗽和气短，但病情逐年恶化，到最后两三年，他已经几乎无法离开卧室。他亲眼看着德尔沃恩的海上摩擦从零星冲突慢慢熬成了无法调和的军事对峙——七十八年的统治中，他一直在用外交手段和经济让利压着这个盖子，但盖子下面的蒸汽从未消散过。他知道战争迟早会来，但他已经没有力气迎接它了。</p>
+        <p>在他最后的日子里，他的长子——日后的四世德拉维安——开始代理行政事务。二十四五岁的年轻人坐在父亲病榻旁批阅文书、接见使者、出席议事会，提前接触了王国运转的全部重量。贤者有没有在这段时间里向儿子交代什么，没有任何文献记录。但四世后来做出的那些决定——每一个都比父亲更果断、更冒险——让人很难不去猜测：那些深夜里的父子对话中，到底说了些什么。</p>
+        <p>日蚀一百八十八年，贤者德拉维安在一个深秋的夜晚停止了呼吸。他走得很安静——和他一生的行事风格一样。</p>
+        <p>后世以"贤者"尊之。但"贤"这个字对他而言是一柄双刃剑：它既是赞誉——他确实在七十八年间维持住了王国的平衡；也是批评——他只是维持，从来没有解决。维丹的垄断被稀释了但没有根除，德尔沃恩的威胁被拖延了但没有化解，夜火案的真相被掩盖了但没有消失，斯特兰德家的裂痕被搁置了但没有弥合。他留给儿子的是一个每一条暗线都绷到了极限、却还没有断的王国——它没有崩溃，但它也已经没有余量了。</p>
+      </div>
+
+      <!-- ===== 四世 · 谥号虚位 ===== -->
+      <div class="hchap" id="h-reign4">
+        <div class="hchap-head">
+          <div class="hchap-en">Draevian Ⅳ · 日蚀一百八十八年 — 今 · 古历 1368 — 1370</div>
+          <div class="hchap-name">四世德拉维安 ·<span class="epi">「</span><span class="epi-blank">谥号虚位</span><span class="epi">」</span></div>
+          <div class="hchap-theme">改革与战争 · 在位</div>
+        </div>
+        <div class="hport sketch">
+          <div class="pframe"><img src="king-4.webp" alt="四世德拉维安像" onerror="this.closest('.hport').style.display='none'"></div>
+          <div class="pcap">四世像 · 抄本此页尚未完成上色</div>
+        </div>
+        <p>四世德拉维安约二十六岁继位，继承的是一个所有压力同时逼近临界点的王国。对外，德尔沃恩在北海航道上六十余年的摩擦已经演变为不可逆转的对抗态势，全面战争的阴影每一天都在加深。对内，维丹的粮食垄断经三世多年侧翼削弱后有所松动，但格雷维尔家的经济实力依然是四郡之首；法尔托因关税让渡和贸易自由而在财政上日益独立于王城体系；斯特兰德家因夜火案的余波而内部分裂，埃德里克独撑大局，被流放的哈维克下落不明；阿斯塔林家在政教分离法令下维持着表面的平衡，但其对知识与信仰的双重垄断仍未被真正打破——索恩议书馆和王城行政系统中的文职人员，大半出自希瑞伊的学堂。</p>
+        <p>四世没有父亲的耐心，也没有时间去培养那种耐心。他面对的不是一个可以慢慢加砝码的天平，而是一张已经绷到了极限的网——每一条线都在颤抖，再多加一两斤力就会断。他选择了不等。</p>
+
+        <div class="hsub"><div class="hsub-year">日蚀一百八十八年 — 一百八十九年</div><div class="hsub-title">议事会改革</div></div>
+        <p>继位后的第一年之内，他做出了一个比父亲七十八年来任何一步都更激进的决定：将两个历史悠久的民间组织——铁砧兄弟会与白塔学会——的领袖正式纳入王城议事会。铁砧兄弟会是与王室长期合作的民间锻造与铁匠组织，根基扎实、遍布城镇，代表着王国中手工业者和城市平民的利益；白塔学会紧靠索恩议书馆，掌握着王城的学术与知识脉络，是阿斯塔林家教育垄断体系之外唯一成规模的知识力量。将这两个组织拉入议事会，等于在四大家族垄断了近两百年的决策桌上硬生生加了两把椅子——坐在上面的不是贵族血统，而是专业能力与民间信誉。</p>
+        <p>四大家族的反应迅速分化。斯特兰德家与法维恩家表示支持——前者因夜火案的余波对格雷维尔家怀有暗恨，乐见任何稀释维丹影响力的举措；后者一贯务实，判断这场改革对自身利益无害。阿斯塔林家保持中立——白塔学会的存在虽然在知识领域构成了对希瑞伊的潜在竞争，但阿斯塔林家的真正权力根基在信仰而非学术，他们选择了观望。格雷维尔家反对，但在表面上选择了服从——奥斯特克·格雷维尔太清楚公开对抗一个刚继位的王意味着什么，何况他自己在夜火案中埋下的秘密随时可能被翻出来。他吞下了这口气，但所有人都知道，维丹的沉默从来不是接受，只是还在算账。</p>
+        <p>与此同时，四世对维丹施以了三世从未动用过的正面手段——重税。提高粮食出郡的过路税，加征牧场的牲畜头数税，将原本由郡守自定的蜂蜜出口配额收归王城核准。三世用侧翼包抄，四世用正面碾压。这些政策有效遏制了格雷维尔家继续扩张的步伐，但也把奥斯特克心中积攒了多年的不满从暗处翻上了台面。维丹人说"付该付的价钱"，但当他们认为自己付得太多的时候，接下来要讨回的就不只是钱了。</p>
+        <p>一个二十六岁的新王，在父亲尸骨未寒的时候就同时动了四大家族的权力结构和最富庶郡的经济命脉。这到底是天才的政治魄力，还是年轻人低估了自己正在搬动的石头的重量，在他的故事结束之前无人能够定论。</p>
+
+        <div class="hsub" id="h-ev-war"><div class="hsub-year">日蚀一百九十年</div><div class="hsub-title">战争爆发</div></div>
+        <p>四世继位的第二年。德尔沃恩全面战争爆发。埃德里克·斯特兰德在前线战死。法尔托失去了它的领主，盐风港失去了它的守护者，北海的第一道防线在战争的第一幕就出现了裂缝。</p>
+        <p>与此同时，十年前被流放的哈维克·斯特兰德重返埃登维尔，接掌兄长留下的法尔托。这个被丧妻之痛、丧子之恨和杀人之罪折磨了十年的男人，带着一身旧疤和一双所有人都读不懂的眼睛回到了盐风港的码头上。没有人知道他在流放的十年里经历了什么，也没有人知道他带回来的是忠诚还是别的什么东西。</p>
+        <span class="hverse">四世德拉维安至今没有获得自己的绰号。铁腕以剑开国，铁算盘以制度立基，贤者以隐忍守成。第四个名字将由他接下来的选择来书写——而战争、旧怨与重归的流放者正同时向他逼来。</span>
+      </div>
+
+    </div>
+
+    <div class="hv-side">
+      <div class="hv-archive">
+        <div class="hv-archive-head">编 年 档 案</div>
+        <div class="hv-row"><span class="k">日蚀纪年</span><span class="v">元年 — 一百九十年</span></div>
+        <div class="hv-row"><span class="k">古历</span><span class="v">1180 — 1370</span></div>
+        <div class="hv-row"><span class="k">王朝</span><span class="v">埃登维尔 · 四代</span></div>
+        <div class="hv-arch-sub">Reigns · 在位年表</div>
+        <div class="hv-reigns">
+          <div class="hv-reign" data-t="h-reign1" onclick="jumpToHist('h-reign1')"><span class="n">铁腕</span><span class="y">52 年</span></div>
+          <div class="hv-reign" data-t="h-reign2" onclick="jumpToHist('h-reign2')"><span class="n">铁算盘</span><span class="y">58 年</span></div>
+          <div class="hv-reign" data-t="h-reign3" onclick="jumpToHist('h-reign3')"><span class="n">贤者</span><span class="y">78 年</span></div>
+          <div class="hv-reign" data-t="h-reign4" onclick="jumpToHist('h-reign4')"><span class="n">四世 ·「&nbsp;&nbsp;」</span><span class="y">在位中</span></div>
+        </div>
+        <div class="hv-arch-sub">Annales · 大事记</div>
+        <div class="hv-events">
+          <div class="hv-event" onclick="jumpToHist('h-reign1')"><span class="d"></span><span class="t">日蚀建国</span><span class="y">元年</span></div>
+          <div class="hv-event" onclick="jumpToHist('h-ev-famine')"><span class="d"></span><span class="t">大饥荒</span><span class="y">75 — 80</span></div>
+          <div class="hv-event" onclick="jumpToHist('h-ev-fire')"><span class="d"></span><span class="t">夜火案</span><span class="y">175</span></div>
+          <div class="hv-event" onclick="jumpToHist('h-ev-war')"><span class="d"></span><span class="t">战争爆发</span><span class="y">190</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer><div class="crest">埃登维尔追忆</div><p>日蚀 · 第一部</p></footer>
+</div>
+
+
 <div class="view" id="view-supreme">
   <div class="crumbs"><span onclick="go('hall')">世界</span><span class="sep">›</span>至高天</div>
   <div class="hall" style="min-height:80vh;">
@@ -1379,6 +1782,41 @@
   function backToCounties(){
     go('edenvale');
     setTimeout(function(){ var el=document.getElementById('sec-geo'); if(el) el.scrollIntoView({behavior:'auto',block:'start'}); }, 30);
+  }
+  /* ===== 王国历史 · 列王纪 ===== */
+  function goHistory(anchor){
+    go('histchron');
+    if(anchor){
+      setTimeout(function(){
+        var el=document.getElementById(anchor);
+        if(el) el.scrollIntoView({behavior:'auto',block:'start'});
+      },30);
+    }
+    initHistSpy();
+  }
+  function backFromHistory(){
+    go('edenvale');
+    setTimeout(function(){ var el=document.getElementById('sec-history'); if(el) el.scrollIntoView({behavior:'auto',block:'start'}); }, 30);
+  }
+  function jumpToHist(id){
+    var el=document.getElementById(id);
+    if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
+  }
+  /* 滚动联动：正文滚到哪一朝，档案栏在位年表亮哪一行 */
+  var histSpyOn=false;
+  function initHistSpy(){
+    if(histSpyOn || !('IntersectionObserver' in window)) return;
+    histSpyOn=true;
+    var io=new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if(en.isIntersecting){
+          document.querySelectorAll('#view-histchron .hv-reign').forEach(function(r){
+            r.classList.toggle('cur', r.dataset.t===en.target.id);
+          });
+        }
+      });
+    },{rootMargin:'-15% 0px -70% 0px'});
+    document.querySelectorAll('#view-histchron .hchap').forEach(function(c){io.observe(c);});
   }
   function zoomCounty(){
     var box=document.getElementById('placeBox');
