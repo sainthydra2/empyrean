@@ -610,22 +610,6 @@
   .hseg.now:hover .hseg-zh{letter-spacing:.2em;text-shadow:0 0 16px rgba(153,26,55,.45);}
   .hseg.now:hover .hseg-en{color:var(--wine);}
   .hseg.now:hover .hseg-sub{color:var(--wine);}
-  /* 大事刻度：金色菱形（深描边嵌入感），悬停浮出气泡 */
-  .hev{position:absolute;top:-6px;width:12px;height:12px;transform:translateX(-50%);
-    z-index:2;cursor:help;}
-  .hev .d{display:block;width:11px;height:11px;background:#c9a44c;
-    transform:rotate(45deg);border:1px solid #8a6a25;box-shadow:0 2px 6px rgba(60,40,8,.4);}
-  .hev .lbl{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);
-    background:var(--wine);color:#fff;font-family:var(--serif);font-size:.72rem;
-    letter-spacing:.06em;white-space:nowrap;padding:4px 12px;border-radius:3px;
-    box-shadow:0 8px 18px -6px rgba(40,8,16,.5);opacity:0;pointer-events:none;transition:opacity .3s;}
-  .hev .lbl::after{content:"";position:absolute;top:100%;left:50%;transform:translateX(-50%);
-    border:5px solid transparent;border-top-color:var(--wine);}
-  .hev.edge .lbl{left:auto;right:-4px;transform:none;}
-  .hev.edge .lbl::after{left:auto;right:8px;transform:none;}
-  .hev:hover .lbl{opacity:1;}
-  .hband-cap{margin-top:16px;text-align:center;font-size:.78rem;color:var(--ink-soft);letter-spacing:.04em;}
-  .hband-cap .gd{color:#c9a44c;}
   .hband-enter{text-align:center;margin-top:28px;}
   .hband-enter a{display:inline-block;cursor:pointer;font-family:var(--serif);font-weight:700;
     font-size:.92rem;letter-spacing:.18em;color:var(--wine);border:1px solid var(--wine);
@@ -726,7 +710,6 @@
     .hseg .hseg-zh{font-size:.92rem;} .hseg .hseg-sub{display:none;}
     .hseg .hseg-en{display:none;}
     .hband{height:74px;}
-    .hev .lbl{display:none;}
     .hband-cal .tick{display:none;}
     .hband-cal .tick.first,.hband-cal .tick.last{display:inline;}
     .hv-wrap{flex-direction:column;padding:30px 22px 50px;gap:28px;}
@@ -1005,7 +988,6 @@
   </div>
 
   <!-- ===== 王国历史 · 纪年带（点段或按钮 → 全屏列王纪 view-histchron）=====
-       · 大事刻度位置/文字：改下方 .hev 的 left 百分比与 .lbl 文字
        · 历史正文在 view-histchron 里（文件下方），直接改中文即可 -->
   <section id="sec-history">
     <div class="sec-head reveal">
@@ -1022,9 +1004,6 @@
         <span class="tick last">今 · 一百九十年</span>
       </div>
       <div class="hband">
-        <div class="hev" style="left:37.5%"><span class="d"></span><span class="lbl">大饥荒 · 日蚀七十五年 — 八十年</span></div>
-        <div class="hev" style="left:83%"><span class="d"></span><span class="lbl">夜火案 · 日蚀一百七十五年</span></div>
-        <div class="hev edge" style="left:94.5%"><span class="d"></span><span class="lbl">德尔沃恩战争爆发 · 日蚀一百九十年</span></div>
         <div class="hseg" style="width:26%" onclick="goHistory('h-reign1')">
           <span class="hseg-en">Draevian Ⅰ</span>
           <span class="hseg-zh">铁 腕</span>
@@ -1053,7 +1032,6 @@
         <span class="tick" style="left:89%">1368</span>
         <span class="tick last">1370</span>
       </div>
-      <div class="hband-cap"><span class="gd">◆</span> 大事刻度，悬停查看：大饥荒（七十五年） · 夜火案（一百七十五年） · 战争爆发（一百九十年）</div>
     </div>
     <div class="hband-enter reveal"><a onclick="goHistory('')">展开列王全卷 ›</a></div>
   </section>
