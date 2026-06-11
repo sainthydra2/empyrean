@@ -1960,6 +1960,7 @@
       var panel=house.querySelector('.hx-panel');
       if(!house.classList.contains('hx-open')){ house.classList.remove('hx-anim'); return; }
       if(house._hxClosing) return;
+      if(window.__routeOnPanelClose) window.__routeOnPanelClose();
       if(REDUCE || !panel){ house.classList.remove('hx-open','hx-anim'); return; }
       house._hxClosing=true;
       panel.style.height=panel.scrollHeight+'px';        /* 钉住当前高度 */
@@ -1984,6 +1985,91 @@
     document.addEventListener('keydown',function(e){
       if(e.key==='Escape'){ document.querySelectorAll('.house.hx-open').forEach(function(h){ closeHx(h); }); }
     });
+  })();
+  /* ===== 哈希路由:每个页面有地址;后退/前进/刷新/分享全部生效 =====
+     #/                门厅          #/eclipse           日蚀(宇宙)
+     #/eclipse/regions 日蚀(地区)    #/edenvale          埃登维尔
+     #/edenvale/history[/reign1-4|famine|fire|war]       列王纪(可锚到朝代/事件)
+     #/county/<郡名拼写>[/economy|culture]                郡页(可锚到标签)
+     #/person/<人物拼写>                                  人物面板
+     #/supreme  至高天   #/dream  甜蜜仙境
+     拼写取自各卡 data-img 文件名(everitel/vidan/draevian…) */
+  (function(){
+    var APPLYING=false, EXPECTED=null, CURRENT_COUNTY=null;
+    function slugOf(el,fb){ var s=(el.dataset.img||'').replace(/^char-/i,'').replace(/\.[^.]+$/,'').toLowerCase(); return s||fb; }
+    var countyBySlug={}, personBySlug={};
+    document.querySelectorAll('#county-stage .place').forEach(function(c,i){ var s=slugOf(c,'county'+(i+1)); c._slug=s; countyBySlug[s]=c; });
+    document.querySelectorAll('#sec-people .person').forEach(function(p,i){ var s=slugOf(p,'person'+(i+1)); p._slug=s; personBySlug[s]=p; });
+    var HSLUG={'h-reign1':'reign1','h-reign2':'reign2','h-reign3':'reign3','h-reign4':'reign4','h-ev-famine':'famine','h-ev-fire':'fire','h-ev-war':'war'};
+    var HID={}; Object.keys(HSLUG).forEach(function(k){ HID[HSLUG[k]]=k; });
+    var TITLES={hall:'SaintHydra',eclipse:'日蚀 · SaintHydra',edenvale:'埃登维尔追忆 · SaintHydra',
+      supreme:'至高天 · SaintHydra','eden-dream':'甜蜜仙境 · SaintHydra',histchron:'王国历史 · 列王纪 · SaintHydra'};
+    function setHash(h,replace){
+      if(APPLYING) return;
+      var full='#'+h;
+      if(location.hash===full) return;
+      EXPECTED=full;
+      try{ if(replace&&history.replaceState) history.replaceState(null,'',full); else location.hash=h; }catch(e){}
+    }
+    function setTitle(t){ try{ document.title=t; }catch(e){} }
+    /* —— 包装现有导航函数:行为原样,顺手写地址 —— */
+    var _go=go;
+    go=function(id){
+      _go(id);
+      if(id==='county'||id==='histchron') return;   /* 这两个由更具体的入口写地址 */
+      var m={hall:'/',eclipse:'/eclipse',edenvale:'/edenvale',supreme:'/supreme','eden-dream':'/dream'};
+      if(m[id]){ setHash(m[id]); setTitle(TITLES[id]||'SaintHydra'); }
+    };
+    var _switchTab=switchTab;
+    switchTab=function(el){ _switchTab(el); setHash(el.dataset.tab==='lore'?'/eclipse/regions':'/eclipse'); };
+    var _openCounty=openCounty;
+    openCounty=function(card){ _openCounty(card); CURRENT_COUNTY=card;
+      setHash('/county/'+card._slug); setTitle((card.dataset.name||'')+' · SaintHydra'); };
+    var _switchCounty=switchCounty;
+    switchCounty=function(tab){ _switchCounty(tab);
+      if(CURRENT_COUNTY) setHash('/county/'+CURRENT_COUNTY._slug+(tab.dataset.k==='overview'?'':'/'+tab.dataset.k)); };
+    var _goHistory=goHistory;
+    goHistory=function(anchor){ _goHistory(anchor);
+      setHash('/edenvale/history'+(anchor&&HSLUG[anchor]?'/'+HSLUG[anchor]:'')); setTitle(TITLES.histchron); };
+    var _openPersonPanel=openPersonPanel;
+    openPersonPanel=function(p){ _openPersonPanel(p);
+      setHash('/person/'+p._slug); setTitle((p.dataset.name||'')+' · SaintHydra'); };
+    window.__routeOnPanelClose=function(){
+      if(/^#\/person\//.test(location.hash)){ setHash('/edenvale',true); setTitle(TITLES.edenvale); }
+    };
+    /* —— 解析地址并应用(后退/前进/刷新/深链共用) —— */
+    function apply(hash){
+      var seg=hash.replace(/^#\/?/,'').split('/').filter(Boolean);
+      APPLYING=true;
+      try{
+        if(!seg.length){ _go('hall'); setTitle(TITLES.hall); return; }
+        var a=seg[0];
+        if(a==='eclipse'){ _go('eclipse');
+          if(seg[1]==='regions'){ var t=document.querySelector('#view-eclipse .tab[data-tab="lore"]'); if(t) _switchTab(t); }
+          setTitle(TITLES.eclipse); return; }
+        if(a==='supreme'){ _go('supreme'); setTitle(TITLES.supreme); return; }
+        if(a==='dream'){ _go('eden-dream'); setTitle(TITLES['eden-dream']); return; }
+        if(a==='edenvale'){
+          if(seg[1]==='history'){ _goHistory(seg[2]&&HID[seg[2]]?HID[seg[2]]:''); setTitle(TITLES.histchron); return; }
+          _go('edenvale'); setTitle(TITLES.edenvale); return; }
+        if(a==='county'&&countyBySlug[seg[1]]){
+          var card=countyBySlug[seg[1]];
+          _openCounty(card); CURRENT_COUNTY=card;
+          if(seg[2]==='economy'||seg[2]==='culture'){
+            var ct=document.querySelector('#view-county .cv-tab[data-k="'+seg[2]+'"]'); if(ct) _switchCounty(ct); }
+          setTitle((card.dataset.name||'')+' · SaintHydra'); return; }
+        if(a==='person'&&personBySlug[seg[1]]){
+          var p=personBySlug[seg[1]];
+          _go('edenvale'); _openPersonPanel(p);
+          setTitle((p.dataset.name||'')+' · SaintHydra'); return; }
+        _go('hall'); setTitle(TITLES.hall);   /* 无效地址回门厅 */
+      } finally { APPLYING=false; }
+    }
+    window.addEventListener('hashchange',function(){
+      if(location.hash===EXPECTED){ EXPECTED=null; return; }
+      apply(location.hash);
+    });
+    if(location.hash&&location.hash!=='#/') apply(location.hash);   /* 深链与刷新还原 */
   })();
 </script>
 </body></html>
