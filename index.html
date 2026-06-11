@@ -499,10 +499,9 @@
   .house.hx-anim .person{transition-duration:.28s !important;opacity:0;pointer-events:none;}
   .house.hx-anim .person:nth-of-type(odd){transform:translateX(-46px);}
   .house.hx-anim .person:nth-of-type(even){transform:translateX(46px);}
-  /* 关闭后卡片滑回:hx-back 先无过渡瞬移到场外,撤类后自然归位 */
-  .house.hx-back .person{transition:none !important;opacity:0;}
-  .house.hx-back .person:nth-of-type(odd){transform:translateX(-46px);}
-  .house.hx-back .person:nth-of-type(even){transform:translateX(46px);}
+  /* 关闭后卡片归位:统一从右侧依次滑回(关键帧动画,免疫显示切换时序,根治闪烁) */
+  @keyframes hxCardBack{from{opacity:0;transform:translateX(46px);}to{opacity:1;transform:none;}}
+  .house.hx-back .person{animation:hxCardBack .45s cubic-bezier(.22,.61,.21,1) both;}
   .house.hx-open .member-grid{display:none;}
   .hx-panel{display:none;scroll-margin-top:92px;color:#fff;overflow:hidden;
     background:linear-gradient(135deg,#a52440 0%,var(--wine-dk) 100%);
@@ -551,7 +550,8 @@
   @media (prefers-reduced-motion: reduce){
     .reveal{opacity:1;transform:none;transition:none;}
     .view.active{animation:none;}
-    .house.hx-anim .person,.house.hx-back .person{transition:none !important;}
+    .house.hx-anim .person{transition:none !important;}
+    .house.hx-back .person{animation:none;}
     .house.hx-open .hx-panel{animation:none;}
     .hx-panel.hx-closing{transition:none;}
   }
@@ -1945,7 +1945,8 @@
       document.querySelectorAll('.house.hx-open, .house.hx-anim').forEach(function(h){ if(h!==house) closeHx(h); });
       var panel=build(house);
       fill(panel,p);
-      house.querySelectorAll('.member-grid .person').forEach(function(c){ c.style.transitionDelay=''; });
+      house.classList.remove('hx-back');
+      house.querySelectorAll('.member-grid .person').forEach(function(c){ c.style.animationDelay=''; });
       if(house.classList.contains('hx-open')) return;    /* 已开:仅切换内容 */
       if(REDUCE){ house.classList.add('hx-open'); return; }
       house.classList.add('hx-anim');                    /* 卡片滑出 */
@@ -1970,20 +1971,13 @@
         panel.classList.remove('hx-closing');
         panel.style.height='';
         var cards=house.querySelectorAll('.member-grid .person');
-        house.classList.add('hx-back');                  /* 卡片瞬移场外 */
-        cards.forEach(function(c,i){ c.style.transitionDelay=(i*0.13)+'s'; });  /* 依次进场:逐卡递增延迟 */
-        void house.offsetWidth;                           /* 提交场外样式 */
-        requestAnimationFrame(function(){                 /* 第一帧:场外状态实际绘制 */
-          requestAnimationFrame(function(){               /* 第二帧:撤类,依次滑回 */
-            setTimeout(function(){
-              house.classList.remove('hx-back');
-              house._hxClosing=false;
-              setTimeout(function(){                      /* 全部归位后清掉延迟 */
-                cards.forEach(function(c){ c.style.transitionDelay=''; });
-              }, cards.length*130+700);
-            }, 20);
-          });
-        });
+        cards.forEach(function(c,i){ c.style.animationDelay=(i*0.13)+'s'; });  /* 依次进场:首张即刻,后续逐卡+0.13s */
+        house.classList.add('hx-back');                  /* 关键帧动画:统一从右侧滑回 */
+        setTimeout(function(){                            /* 全部归位后清理 */
+          house.classList.remove('hx-back');
+          cards.forEach(function(c){ c.style.animationDelay=''; });
+          house._hxClosing=false;
+        }, (cards.length-1)*130+540);
       },370);
     }
     window.openPersonPanel=function(p){ show(p.closest('.house'), p); };
