@@ -501,8 +501,8 @@
   .house.hx-anim .person:nth-of-type(even){transform:translateX(46px);}
   /* 关闭后卡片滑回:hx-back 先无过渡瞬移到场外,撤类后自然归位 */
   .house.hx-back .person{transition:none !important;opacity:0;}
-  .house.hx-back .person:nth-of-type(odd){transform:translateX(-46px);}
-  .house.hx-back .person:nth-of-type(even){transform:translateX(46px);}
+  .house.hx-back .person:nth-of-type(odd){transform:translateX(46px);}
+  .house.hx-back .person:nth-of-type(even){transform:translateX(-46px);}
   .house.hx-open .member-grid{display:none;}
   .hx-panel{display:none;scroll-margin-top:92px;color:#fff;overflow:hidden;
     background:linear-gradient(135deg,#a52440 0%,var(--wine-dk) 100%);
@@ -1969,8 +1969,12 @@
         panel.classList.remove('hx-closing');
         panel.style.height='';
         house.classList.add('hx-back');                  /* 卡片瞬移场外 */
-        void house.offsetWidth;
-        requestAnimationFrame(function(){ house.classList.remove('hx-back'); });  /* 撤类,滑回 */
+        void house.offsetWidth;                           /* 提交场外样式 */
+        requestAnimationFrame(function(){                 /* 第一帧:场外状态实际绘制 */
+          requestAnimationFrame(function(){               /* 第二帧:撤类,过渡滑回 */
+            setTimeout(function(){ house.classList.remove('hx-back'); }, 20);
+          });
+        });
         house._hxClosing=false;
       },370);
     }
