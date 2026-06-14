@@ -356,19 +356,6 @@
   .place-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:26px;}
   .place-grid > .place{flex:0 0 280px;max-width:280px;}
 
-  /* 美术 · 横向画廊 */
-  .art-block{margin-bottom:40px;}
-  .art-block:last-child{margin-bottom:0;}
-  .art-title{font-family:var(--serif);font-size:1.4rem;font-weight:700;color:var(--ink);
-    margin-bottom:16px;padding-left:14px;border-left:3px solid var(--wine);}
-  .gallery{display:flex;gap:18px;overflow-x:auto;padding-bottom:14px;scroll-snap-type:x mandatory;}
-  .gallery::-webkit-scrollbar{height:8px;}
-  .gallery::-webkit-scrollbar-thumb{background:rgba(153,26,55,.3);border-radius:4px;}
-  .art-shot{flex:0 0 auto;width:360px;max-width:80vw;cursor:pointer;scroll-snap-align:start;
-    border:1px solid var(--line);border-radius:4px;overflow:hidden;background:var(--paper-3);
-    transition:transform .5s,border-color .5s,box-shadow .5s;}
-  .art-shot:hover{transform:translateY(-5px);border-color:var(--wine);box-shadow:0 16px 36px rgba(153,26,55,.12);}
-  .art-shot .frame{aspect-ratio:4/3;}
   .place{background:var(--paper-3);border:1px solid var(--line);border-radius:4px;overflow:hidden;
     cursor:pointer;box-shadow:0 14px 26px -12px rgba(153,26,55,.4);
     transition:transform .5s,border-color .5s,box-shadow .5s;}
@@ -386,6 +373,50 @@
     transition:transform .5s,border-color .5s,box-shadow .5s;}
   .person:hover{transform:translateY(-6px);border-color:var(--wine);box-shadow:0 22px 40px -10px rgba(153,26,55,.55);}
   .person .frame{aspect-ratio:3/4;}
+
+  /* ============ 美术 · 画展墙（郡页第四标签 · 点击原地放大停住）============ */
+  .gw-head{text-align:center;margin-bottom:4px;}
+  .gw-orn{font-family:var(--roman);font-size:.68rem;letter-spacing:.5em;color:var(--wine);text-transform:uppercase;}
+  .gw-orn::before,.gw-orn::after{content:"\2726";margin:0 .7em;color:#b9892f;font-size:.7em;}
+  .gw-intro{text-align:center;font-family:var(--script);font-style:italic;color:var(--ink-soft);font-size:1.05rem;margin:6px 0 26px;}
+  .gw-wall{column-count:2;column-gap:18px;}
+  .gw-tile{break-inside:avoid;margin-bottom:18px;cursor:pointer;
+    transition:transform .5s cubic-bezier(.22,.61,.36,1),opacity .45s,filter .45s;
+    transform-origin:center center;will-change:transform;}
+  .gw-frame{position:relative;border:1px solid var(--line);border-radius:3px;overflow:hidden;
+    background:var(--paper-2);box-shadow:0 12px 24px -16px rgba(153,26,55,.5);
+    transition:border-color .4s,box-shadow .5s;}
+  .gw-tile.r43 .gw-frame{aspect-ratio:4/3;}
+  .gw-tile.r11 .gw-frame{aspect-ratio:1/1;}
+  .gw-tile.r34 .gw-frame{aspect-ratio:3/4;}
+  .gw-frame img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;z-index:2;}
+  .gw-ph{position:absolute;inset:0;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    gap:6px;text-align:center;padding:14px;background:linear-gradient(135deg,rgba(153,26,55,.05),transparent 60%),var(--paper-2);}
+  .gw-ph::before{content:"";position:absolute;inset:9px;border:1px solid rgba(185,137,47,.35);border-radius:2px;pointer-events:none;}
+  .gw-ph .gw-plate{font-family:var(--roman);font-size:.56rem;letter-spacing:.22em;color:#b9892f;text-transform:uppercase;}
+  .gw-ph .fname{font-family:var(--roman);font-size:.72rem;letter-spacing:.06em;color:var(--ink-soft);}
+  .gw-cap{text-align:center;font-family:var(--serif);font-size:.88rem;color:var(--ink-soft);line-height:1.5;padding:10px 6px 0;}
+  .gw-cap::before{content:"";display:block;width:22px;height:1px;background:#b9892f;opacity:.6;margin:0 auto 8px;}
+  /* 悬停聚光：抬起 + 金边微光；其余淡出（不挪位，避免抖动）。淡出由 JS 的 .lit/.hot 驱动，杜绝缝隙误触。 */
+  .gw-tile:hover,.gw-tile.hot{transform:translateY(-4px) scale(1.025);position:relative;z-index:20;}
+  .gw-tile:hover .gw-frame,.gw-tile.hot .gw-frame{border-color:#b9892f;
+    box-shadow:0 22px 44px -14px rgba(153,26,55,.5),0 0 0 1px rgba(185,137,47,.45);}
+  .gw-wall.lit .gw-tile:not(.hot):not(.pinned){opacity:.42;filter:grayscale(.5) brightness(.96);}
+  /* 点击：原地放大停住（更大），其余退暗；再点收回。此规则置于 hover 之后，确保放大态生效。 */
+  .gw-tile.pinned{transform:scale(1.9);position:relative;z-index:60;cursor:zoom-out;}
+  .gw-tile.pinned .gw-frame{border-color:#d8b25a;box-shadow:0 40px 80px -20px rgba(31,28,26,.55),0 0 0 2px rgba(216,178,90,.7);}
+  .gw-wall.has-pin .gw-tile:not(.pinned){opacity:.3;filter:grayscale(.6) brightness(.95);pointer-events:none;}
+  @media (prefers-reduced-motion:reduce){
+    .gw-tile{transition:opacity .2s;}
+    .gw-tile:hover,.gw-tile.hot{transform:none;} .gw-tile.pinned{transform:scale(1.9);}
+  }
+  @media(max-width:680px){
+    .gw-wall{column-gap:12px;}
+    .gw-tile{margin-bottom:12px;}
+    .gw-tile:hover,.gw-tile.hot{transform:none;}
+    .gw-tile:hover .gw-frame,.gw-tile.hot .gw-frame{border-color:var(--line);box-shadow:0 12px 24px -16px rgba(153,26,55,.5);}
+    .gw-tile.pinned{transform:scale(1.45);}
+  }
 
   /* 灯箱 */
   .lightbox{position:fixed;inset:0;z-index:200;background:rgba(31,28,26,.72);
@@ -1062,7 +1093,6 @@
         <a onclick="scrollToSec('sec-history')">王国历史</a>
         <a onclick="scrollToSec('sec-geo')">地理 · 五郡</a>
         <a onclick="scrollToSec('sec-people')">家族与人物</a>
-        <a onclick="scrollToSec('sec-art')">美术 · 风土</a>
       </div>
     </div>
   </div>
@@ -1160,6 +1190,18 @@
               <p>万灵节在深秋、万物凋敝之际到来，是教廷历法中追悼亡者的圣日。埃登维尔人相信，深秋的夜晚是天国与人间最为贴近的时刻，逝者的灵魂会在薄暮中短暂归来探望生者。家家户户在门前摆放亡者生前喜爱的食物与一盏油灯，不锁门扉，以迎故人。教堂在黄昏时分举行安魂弥撒，钟声从日落敲至午夜，声声低沉，不为驱散亡灵，而为引领他们找到回家的路。孩子们被允许戴上面具在街巷间穿行，扮作幽灵与恶鬼，向邻人讨取蜂蜜糕与果脯——教士们对此睁一只眼闭一只眼，毕竟那些面具卖得最好的，恰恰是教堂旁边的小贩。万灵节是埃登维尔一年中最安静的节日，没有篝火，没有长歌，只有烛光与低声念出的名字。</p>
               <p>冬至圣日是一年中最后的盛典，在隆冬最短的白昼举行，纪念圣典所载的神圣诞生——光明于最深的黑暗中降世，宣告世间不会永陷长夜。王城大教堂在这一日点燃所有烛台，光芒从彩窗中倾泻而出，照亮冬夜的街道。大主教主持午夜弥撒，王室成员与四郡来使同席礼拜。王室向全城分发冬粮与蜡烛，贵族与平民在同一片烛光下用餐，饮热酒，交换以常青枝编成的小礼物。各郡领地也遵循同样的习俗，但会加入各自的地方传统——法尔托人在港口燃起灯塔上的冬火，维丹人用蜂蜡铸造太阳形烛台，古尔纳人以当年最好的陈酿敬先祖，希瑞伊的教士则在大理石圣殿中彻夜诵经，直到第一缕日光重新照入殿堂。这一夜被称为"最长之夜"，埃登维尔人相信：只要人间的火不灭，黎明就一定会降临。</p>
             </div>
+            <div class="art">
+              <div class="gw-head"><div class="gw-orn">美 术</div></div>
+              <p class="gw-intro">王都的典仪与钱币——所有道路的终点。</p>
+              <div class="gw-wall">
+                <div class="gw-tile r43"><div class="gw-frame"><img src="everitel_art_1.webp" alt="日蚀祭祀 · 仲秋大典" loading="lazy" onerror="this.style.display='none'"><div class="gw-ph"><span class="gw-plate">横 · 4:3</span><span class="fname">everitel_art_1</span></div></div><div class="gw-cap">日蚀祭祀 · 仲秋大典</div></div>
+                <div class="gw-tile r11"><div class="gw-frame"><img src="everitel_art_2.webp" alt="金日 · 银月 · 铜星" loading="lazy" onerror="this.style.display='none'"><div class="gw-ph"><span class="gw-plate">方 · 1:1</span><span class="fname">everitel_art_2</span></div></div><div class="gw-cap">金日 · 银月 · 铜星</div></div>
+                <div class="gw-tile r34"><div class="gw-frame"><img src="everitel_art_3.webp" alt="王城大教堂" loading="lazy" onerror="this.style.display='none'"><div class="gw-ph"><span class="gw-plate">竖 · 3:4</span><span class="fname">everitel_art_3</span></div></div><div class="gw-cap">王城大教堂</div></div>
+                <div class="gw-tile r43"><div class="gw-frame"><img src="everitel_art_4.webp" alt="仲夏节 · 中央大集市" loading="lazy" onerror="this.style.display='none'"><div class="gw-ph"><span class="gw-plate">横 · 4:3</span><span class="fname">everitel_art_4</span></div></div><div class="gw-cap">仲夏节 · 中央大集市</div></div>
+                <div class="gw-tile r11"><div class="gw-frame"><img src="everitel_art_5.webp" alt="王徽 · 风铃草" loading="lazy" onerror="this.style.display='none'"><div class="gw-ph"><span class="gw-plate">方 · 1:1</span><span class="fname">everitel_art_5</span></div></div><div class="gw-cap">王徽 · 风铃草</div></div>
+                <div class="gw-tile r34"><div class="gw-frame"><img src="everitel_art_6.webp" alt="索恩议书馆" loading="lazy" onerror="this.style.display='none'"><div class="gw-ph"><span class="gw-plate">竖 · 3:4</span><span class="fname">everitel_art_6</span></div></div><div class="gw-cap">索恩议书馆</div></div>
+              </div>
+            </div>
             <div class="cmeta">
               <div class="cv-row"><span class="k">类型</span><span class="v">王都</span></div>
               <div class="cv-row"><span class="k">王徽</span><span class="v">风铃草</span></div>
@@ -1188,6 +1230,18 @@
               <p>畜牧与狩猎为维丹提供了王国中最丰富的毛皮与纤维原料：羊毛、亚麻、鹿皮、狐裘乃至野猪鬃，几乎一切可以裁剪缝制的材料都可以在维丹的市集上找到。由此催生出一个庞大而骄傲的裁缝行会。维丹的裁缝师不自称匠人，而自称"剪裁者"，他们将衣物视为对人体的第二次塑造——不是装饰，而是表达。维丹式的剪裁以结构利落、线条干净著称，拒绝王城贵族偏爱的繁复刺绣和层叠褶皱，转而追求面料本身的质地与剪裁的精准贴合。一件上好的维丹猎装，缝线平直到可以用来校准铅垂。</p>
               <p>这种审美渗透了维丹人生活的方方面面。即便是田间的农夫，工服也讲究接缝齐整、扣件牢靠；牧羊人的斗篷用本地粗纺羊毛制成，厚实防雨，但领口的收边必定细密匀称。维丹人以穿着判断一个人的品性——衣衫邋遢者在维丹得不到信任，不是因为虚荣，而是因为维丹人相信：一个人怎样对待自己身上的针脚，就会怎样对待手里的契约。</p>
               <p>每年仲夏节期间，维丹的裁缝行会会在丰收农庄举办"剪裁大会"，各地裁缝师携自己最得意的作品参展，由行会长老与格雷维尔家指定的评判共同评鉴。获胜者将获得"金针"荣衬，并有资格承接格雷维尔家族来年的全部定制衣物——这既是最高荣誉，也是最丰厚的商业合同。王城的贵族们近年来也开始竞相聘请维丹裁缝，维丹式剪裁正悄然取代王城旧有的繁缛风尚，成为上流社会的新宠。</p>
+            </div>
+            <div class="art">
+              <div class="gw-head"><div class="gw-orn">美 术</div></div>
+              <p class="gw-intro">蜂蜜与针脚之乡——王国的胃。</p>
+              <div class="gw-wall">
+                <div class="gw-tile r43"><div class="gw-frame"><img src="vidan_art_1.webp" alt="蜂蜜市集的清晨" loading="lazy" onerror="this.style.display='none'"><div class="gw-ph"><span class="gw-plate">横 · 4:3</span><span class="fname">vidan_art_1</span></div></div><div class="gw-cap">蜂蜜市集的清晨</div></div>
+                <div class="gw-tile r11"><div class="gw-frame"><img src="vidan_art_2.webp" alt="格雷维尔家的蜜蜂纹章" loading="lazy" onerror="this.style.display='none'"><div class="gw-ph"><span class="gw-plate">方 · 1:1</span><span class="fname">vidan_art_2</span></div></div><div class="gw-cap">格雷维尔家的蜜蜂纹章</div></div>
+                <div class="gw-tile r34"><div class="gw-frame"><img src="vidan_art_3.webp" alt="剪裁者的作坊" loading="lazy" onerror="this.style.display='none'"><div class="gw-ph"><span class="gw-plate">竖 · 3:4</span><span class="fname">vidan_art_3</span></div></div><div class="gw-cap">剪裁者的作坊</div></div>
+                <div class="gw-tile r43"><div class="gw-frame"><img src="vidan_art_4.webp" alt="仲夏 · 剪裁大会" loading="lazy" onerror="this.style.display='none'"><div class="gw-ph"><span class="gw-plate">横 · 4:3</span><span class="fname">vidan_art_4</span></div></div><div class="gw-cap">仲夏 · 剪裁大会</div></div>
+                <div class="gw-tile r11"><div class="gw-frame"><img src="vidan_art_5.webp" alt="维丹当年新蜜" loading="lazy" onerror="this.style.display='none'"><div class="gw-ph"><span class="gw-plate">方 · 1:1</span><span class="fname">vidan_art_5</span></div></div><div class="gw-cap">维丹当年新蜜</div></div>
+                <div class="gw-tile r34"><div class="gw-frame"><img src="vidan_art_6.webp" alt="丰收农庄的麦仓" loading="lazy" onerror="this.style.display='none'"><div class="gw-ph"><span class="gw-plate">竖 · 3:4</span><span class="fname">vidan_art_6</span></div></div><div class="gw-cap">丰收农庄的麦仓</div></div>
+              </div>
             </div>
             <div class="cmeta">
               <div class="cv-row"><span class="k">类型</span><span class="v">农业之郡</span></div>
@@ -1219,6 +1273,18 @@
               <p>值得注意的是，法尔托的宴会传统并不局限于贵族阶层。斯特兰德家历代领主都默许甚至鼓励平民自行组织冬季宴饮——渔民在码头仓库里搭起临时长桌，矿工在坑道入口的棚屋中围炉而坐，猎户把自己腌的鹿肉和私酿的烈酒带到邻居家。这种跨阶层的聚饮习俗有着朴素的实用逻辑：漫长的冬夜里，独自待着的人容易发疯。法尔托人深谙这一点，所以他们用噪音、热量和酒精筑起一道对抗黑暗的墙。在法尔托，拒绝一次宴会邀请比拒绝一次决斗更令人不齿。</p>
               <p>冬至圣日的法尔托版本是全年最盛大的宴会。盐风港的灯塔在那一夜燃起冬火，火光从港口一直烧到海面上，渔船在桅杆上挂满油灯，整个海湾变成一片浮动的星海。斯特兰德家在港口广场设开放长席，从公爵到搬鱼的苦力同桌而饮，没有人在那一晚讲究身份。法尔托人把这一夜叫作"燃海之夜"——他们说，北海想冻死我们，我们就把海点着。</p>
             </div>
+            <div class="art">
+              <div class="gw-head"><div class="gw-orn">美 术</div></div>
+              <p class="gw-intro">北海与寒铁——把海点着的人。</p>
+              <div class="gw-wall">
+                <div class="gw-tile r43"><div class="gw-frame"><img src="falto_art_1.webp" alt="盐风港的清晨" loading="lazy" onerror="this.style.display='none'"><div class="gw-ph"><span class="gw-plate">横 · 4:3</span><span class="fname">falto_art_1</span></div></div><div class="gw-cap">盐风港的清晨</div></div>
+                <div class="gw-tile r11"><div class="gw-frame"><img src="falto_art_2.webp" alt="斯特兰德家的霜狼纹章" loading="lazy" onerror="this.style.display='none'"><div class="gw-ph"><span class="gw-plate">方 · 1:1</span><span class="fname">falto_art_2</span></div></div><div class="gw-cap">斯特兰德家的霜狼纹章</div></div>
+                <div class="gw-tile r34"><div class="gw-frame"><img src="falto_art_3.webp" alt="北海上的渔民" loading="lazy" onerror="this.style.display='none'"><div class="gw-ph"><span class="gw-plate">竖 · 3:4</span><span class="fname">falto_art_3</span></div></div><div class="gw-cap">北海上的渔民</div></div>
+                <div class="gw-tile r43"><div class="gw-frame"><img src="falto_art_4.webp" alt="燃海之夜 · 冬至" loading="lazy" onerror="this.style.display='none'"><div class="gw-ph"><span class="gw-plate">横 · 4:3</span><span class="fname">falto_art_4</span></div></div><div class="gw-cap">燃海之夜 · 冬至</div></div>
+                <div class="gw-tile r11"><div class="gw-frame"><img src="falto_art_5.webp" alt="北海野生霜珠" loading="lazy" onerror="this.style.display='none'"><div class="gw-ph"><span class="gw-plate">方 · 1:1</span><span class="fname">falto_art_5</span></div></div><div class="gw-cap">北海野生霜珠</div></div>
+                <div class="gw-tile r34"><div class="gw-frame"><img src="falto_art_6.webp" alt="盐风港的灯塔" loading="lazy" onerror="this.style.display='none'"><div class="gw-ph"><span class="gw-plate">竖 · 3:4</span><span class="fname">falto_art_6</span></div></div><div class="gw-cap">盐风港的灯塔</div></div>
+              </div>
+            </div>
             <div class="cmeta">
               <div class="cv-row"><span class="k">类型</span><span class="v">港湾之郡</span></div>
               <div class="cv-row"><span class="k">家族</span><span class="v">斯特兰德家</span></div>
@@ -1246,6 +1312,18 @@
               <p>古尔纳人常被其他郡的人形容为"慢半拍"，但这不是迟钝，而是一种有意识的从容。丘陵的地形让人无法急行，林间的雾气让人习惯等待视野自行清晰，药草的生长周期教会了古尔纳人一件事——催熟的东西没有药效。这种由气候、地理与产业共同塑造出的节奏感渗透在古尔纳生活的每一个角落，使得这个郡的民风在四郡之中最为平和沉稳。古尔纳人不急于争论，不热衷站队，也很少在王城的政治风暴中第一个表态——但这并不意味着他们没有立场，只是他们更愿意等所有人把话说完，再开口。</p>
               <p>这种气质在古尔纳最引以为傲的文化传统中体现得淋漓尽致——酿酒与品酒。古尔纳的酿酒师行会是四郡中历史最悠久的行会之一，其地位在本郡几乎与教堂比肩。酿酒在古尔纳不仅仅是一门手艺，而是一套关于时间与耐心的完整哲学。从葡萄的采摘时机、压榨的力度、发酵桶所用橡木的年份，到陈酿的时长，每一个环节都有严格的行会规范，但最终的判断权永远留给酿酒师本人的舌头和鼻子——"规矩告诉你什么时候不能开桶，但只有你自己知道什么时候该开桶"，这是行会学徒入门时听到的第一句话。</p>
               <p>品酒则是古尔纳社交生活的核心仪式。无论是贵族议事、商约签订还是邻里调解，古尔纳人的第一反应都是先开一瓶酒。品酒的礼仪繁复而不做作——持杯的角度、观色的顺序、闻香时的呼吸节奏都有讲究，但目的不在炫耀，而在于让所有在场的人放慢到同一个速度。古尔纳人相信，愿意坐下来认真喝完一杯酒的人，不会是坏人；而一个在品酒时表现出急躁的人，不值得签任何契约。法维恩家的宴席上永远不会催促客人，科尔文公爵本人虽然年轻，据说已经能在盲品中分辨出古尔纳七个主要酒庄的年份——这在郡内比任何政治头衔都更能赢得尊敬。</p>
+            </div>
+            <div class="art">
+              <div class="gw-head"><div class="gw-orn">美 术</div></div>
+              <p class="gw-intro">药草与陈酿之地——生生不息。</p>
+              <div class="gw-wall">
+                <div class="gw-tile r43"><div class="gw-frame"><img src="qurna_art_1.webp" alt="晨雾中的丘陵" loading="lazy" onerror="this.style.display='none'"><div class="gw-ph"><span class="gw-plate">横 · 4:3</span><span class="fname">qurna_art_1</span></div></div><div class="gw-cap">晨雾中的丘陵</div></div>
+                <div class="gw-tile r11"><div class="gw-frame"><img src="qurna_art_2.webp" alt="法维恩家的银鹿纹章" loading="lazy" onerror="this.style.display='none'"><div class="gw-ph"><span class="gw-plate">方 · 1:1</span><span class="fname">qurna_art_2</span></div></div><div class="gw-cap">法维恩家的银鹿纹章</div></div>
+                <div class="gw-tile r34"><div class="gw-frame"><img src="qurna_art_3.webp" alt="林间的采药人" loading="lazy" onerror="this.style.display='none'"><div class="gw-ph"><span class="gw-plate">竖 · 3:4</span><span class="fname">qurna_art_3</span></div></div><div class="gw-cap">林间的采药人</div></div>
+                <div class="gw-tile r43"><div class="gw-frame"><img src="qurna_art_4.webp" alt="酒庄 · 品酒之礼" loading="lazy" onerror="this.style.display='none'"><div class="gw-ph"><span class="gw-plate">横 · 4:3</span><span class="fname">qurna_art_4</span></div></div><div class="gw-cap">酒庄 · 品酒之礼</div></div>
+                <div class="gw-tile r11"><div class="gw-frame"><img src="qurna_art_5.webp" alt="古尔纳当年青酿" loading="lazy" onerror="this.style.display='none'"><div class="gw-ph"><span class="gw-plate">方 · 1:1</span><span class="fname">qurna_art_5</span></div></div><div class="gw-cap">古尔纳当年青酿</div></div>
+                <div class="gw-tile r34"><div class="gw-frame"><img src="qurna_art_6.webp" alt="林中的银鹿" loading="lazy" onerror="this.style.display='none'"><div class="gw-ph"><span class="gw-plate">竖 · 3:4</span><span class="fname">qurna_art_6</span></div></div><div class="gw-cap">林中的银鹿</div></div>
+              </div>
             </div>
             <div class="cmeta">
               <div class="cv-row"><span class="k">类型</span><span class="v">药材与酒之郡</span></div>
@@ -1279,6 +1357,18 @@
               <p>文学与艺术创作是这种知识传统的自然延伸。希瑞伊出产的不是维丹那种实用性的工匠手艺，而是更接近精神活动的创造——宗教诗歌、圣徒传记、释经论著，以及大量精美的手抄本彩饰画。希瑞伊的修道院抄经室是整个王国最重要的书籍生产中心，修士们用矿物颜料在羊皮纸上绘制繁复的花体首字母和圣经故事插图，一部完整的彩饰福音书需要数年才能完成，成品的价值堪比同等重量的白银。这些手抄本不仅供教会使用，也是贵族家庭最珍视的收藏品——拥有一部希瑞伊手抄本，在埃登维尔的上流社会中是教养与虔诚的双重证明。</p>
               <p>世俗方面，大理石雕刻自然是希瑞伊最具代表性的艺术形式。石匠行会与教会的合作关系根深蒂固——大教堂外墙上的浮雕叙事带、圣徒雕像、墓碑上的铭文装饰，全部出自本郡石匠之手。希瑞伊的雕刻风格追求一种克制的庄严：人物比例严格遵循教廷范式，面部表情宁静而超脱，衣裳的处理极度细腻，但绝不追求动态与戏剧感。这种审美与维丹裁缝对剪裁的执着有异曲同工之处，只是维丹人塑造的是活人的轮廓，希瑞伊人雕刻的是永恒的面容。</p>
               <p>圣镜湖畔每年万灵节的前夜会举行"静湖祭"——教士与平民共同在湖岸排列数千盏油灯，灯火倒映在蓝色湖面上，形成一片与夜空对称的光海。整个仪式期间不许出声，不许走动，所有人静立湖畔，为亡者默祷。法尔托人的万灵节是宴会和烈酒，维丹人的万灵节是蜂蜜糕和面具，而希瑞伊的万灵节只有沉默和光。这座圣城用它自己的方式说出了那句俗语——静如止水。</p>
+            </div>
+            <div class="art">
+              <div class="gw-head"><div class="gw-orn">美 术</div></div>
+              <p class="gw-intro">白石与蓝湖——静如止水。</p>
+              <div class="gw-wall">
+                <div class="gw-tile r43"><div class="gw-frame"><img src="shirei_art_1.webp" alt="圣镜湖畔的大教堂" loading="lazy" onerror="this.style.display='none'"><div class="gw-ph"><span class="gw-plate">横 · 4:3</span><span class="fname">shirei_art_1</span></div></div><div class="gw-cap">圣镜湖畔的大教堂</div></div>
+                <div class="gw-tile r11"><div class="gw-frame"><img src="shirei_art_2.webp" alt="阿斯塔林家的红钥纹章" loading="lazy" onerror="this.style.display='none'"><div class="gw-ph"><span class="gw-plate">方 · 1:1</span><span class="fname">shirei_art_2</span></div></div><div class="gw-cap">阿斯塔林家的红钥纹章</div></div>
+                <div class="gw-tile r34"><div class="gw-frame"><img src="shirei_art_3.webp" alt="抄经室的修士" loading="lazy" onerror="this.style.display='none'"><div class="gw-ph"><span class="gw-plate">竖 · 3:4</span><span class="fname">shirei_art_3</span></div></div><div class="gw-cap">抄经室的修士</div></div>
+                <div class="gw-tile r43"><div class="gw-frame"><img src="shirei_art_4.webp" alt="南境的大理石山脉" loading="lazy" onerror="this.style.display='none'"><div class="gw-ph"><span class="gw-plate">横 · 4:3</span><span class="fname">shirei_art_4</span></div></div><div class="gw-cap">南境的大理石山脉</div></div>
+                <div class="gw-tile r11"><div class="gw-frame"><img src="shirei_art_5.webp" alt="彩饰福音书" loading="lazy" onerror="this.style.display='none'"><div class="gw-ph"><span class="gw-plate">方 · 1:1</span><span class="fname">shirei_art_5</span></div></div><div class="gw-cap">彩饰福音书</div></div>
+                <div class="gw-tile r34"><div class="gw-frame"><img src="shirei_art_6.webp" alt="静湖祭 · 万灵之夜" loading="lazy" onerror="this.style.display='none'"><div class="gw-ph"><span class="gw-plate">竖 · 3:4</span><span class="fname">shirei_art_6</span></div></div><div class="gw-cap">静湖祭 · 万灵之夜</div></div>
+              </div>
             </div>
             <div class="cmeta">
               <div class="cv-row"><span class="k">类型</span><span class="v">宗教圣郡</span></div>
@@ -1413,43 +1503,6 @@
 
   </section>
 
-  <div class="divider"></div>
-
-  <!-- 美术 · 埃登维尔风土 -->
-  <section id="sec-art">
-    <div class="sec-head reveal">
-      <div class="ornament"><span class="m">美 术</span></div>
-      <h2>埃登维尔风土</h2>
-      <p>镀金王国的生活、建筑与节庆——神战尺度之下，那些仍在发生的人间日常。横向滑动浏览，点击查看大图。</p>
-    </div>
-
-    <div class="art-block reveal">
-      <h3 class="art-title">生活</h3>
-      <div class="gallery">
-        <div class="art-shot" onclick="openPlace(this)" data-img="art-life-1.png" data-crest="生活" data-name="埃登维尔的生活" data-desc="（占位 · 待作者填充图片与描述。）"><div class="frame"><img src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='400' height='300'&gt;&lt;rect width='400' height='300' fill='%23e9edf1'/&gt;&lt;text x='50%25' y='50%25' fill='%236b645d' font-family='serif' font-size='14' text-anchor='middle'&gt;生活 · 图位&lt;/text&gt;&lt;/svg&gt;"></div></div>
-        <div class="art-shot" onclick="openPlace(this)" data-img="art-life-2.png" data-crest="生活" data-name="埃登维尔的生活" data-desc="（占位 · 待作者填充图片与描述。）"><div class="frame"><img src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='400' height='300'&gt;&lt;rect width='400' height='300' fill='%23e9edf1'/&gt;&lt;text x='50%25' y='50%25' fill='%236b645d' font-family='serif' font-size='14' text-anchor='middle'&gt;生活 · 图位&lt;/text&gt;&lt;/svg&gt;"></div></div>
-        <div class="art-shot" onclick="openPlace(this)" data-img="art-life-3.png" data-crest="生活" data-name="埃登维尔的生活" data-desc="（占位 · 待作者填充图片与描述。）"><div class="frame"><img src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='400' height='300'&gt;&lt;rect width='400' height='300' fill='%23e9edf1'/&gt;&lt;text x='50%25' y='50%25' fill='%236b645d' font-family='serif' font-size='14' text-anchor='middle'&gt;生活 · 图位&lt;/text&gt;&lt;/svg&gt;"></div></div>
-      </div>
-    </div>
-
-    <div class="art-block reveal">
-      <h3 class="art-title">建筑</h3>
-      <div class="gallery">
-        <div class="art-shot" onclick="openPlace(this)" data-img="art-arch-1.png" data-crest="建筑" data-name="埃登维尔的建筑" data-desc="（占位 · 待作者填充图片与描述。）"><div class="frame"><img src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='400' height='300'&gt;&lt;rect width='400' height='300' fill='%23e9edf1'/&gt;&lt;text x='50%25' y='50%25' fill='%236b645d' font-family='serif' font-size='14' text-anchor='middle'&gt;建筑 · 图位&lt;/text&gt;&lt;/svg&gt;"></div></div>
-        <div class="art-shot" onclick="openPlace(this)" data-img="art-arch-2.png" data-crest="建筑" data-name="埃登维尔的建筑" data-desc="（占位 · 待作者填充图片与描述。）"><div class="frame"><img src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='400' height='300'&gt;&lt;rect width='400' height='300' fill='%23e9edf1'/&gt;&lt;text x='50%25' y='50%25' fill='%236b645d' font-family='serif' font-size='14' text-anchor='middle'&gt;建筑 · 图位&lt;/text&gt;&lt;/svg&gt;"></div></div>
-        <div class="art-shot" onclick="openPlace(this)" data-img="art-arch-3.png" data-crest="建筑" data-name="埃登维尔的建筑" data-desc="（占位 · 待作者填充图片与描述。）"><div class="frame"><img src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='400' height='300'&gt;&lt;rect width='400' height='300' fill='%23e9edf1'/&gt;&lt;text x='50%25' y='50%25' fill='%236b645d' font-family='serif' font-size='14' text-anchor='middle'&gt;建筑 · 图位&lt;/text&gt;&lt;/svg&gt;"></div></div>
-      </div>
-    </div>
-
-    <div class="art-block reveal">
-      <h3 class="art-title">节庆</h3>
-      <div class="gallery">
-        <div class="art-shot" onclick="openPlace(this)" data-img="art-fest-1.png" data-crest="节庆" data-name="埃登维尔的节庆" data-desc="（占位 · 待作者填充图片与描述。）"><div class="frame"><img src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='400' height='300'&gt;&lt;rect width='400' height='300' fill='%23e9edf1'/&gt;&lt;text x='50%25' y='50%25' fill='%236b645d' font-family='serif' font-size='14' text-anchor='middle'&gt;节庆 · 图位&lt;/text&gt;&lt;/svg&gt;"></div></div>
-        <div class="art-shot" onclick="openPlace(this)" data-img="art-fest-2.png" data-crest="节庆" data-name="埃登维尔的节庆" data-desc="（占位 · 待作者填充图片与描述。）"><div class="frame"><img src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='400' height='300'&gt;&lt;rect width='400' height='300' fill='%23e9edf1'/&gt;&lt;text x='50%25' y='50%25' fill='%236b645d' font-family='serif' font-size='14' text-anchor='middle'&gt;节庆 · 图位&lt;/text&gt;&lt;/svg&gt;"></div></div>
-        <div class="art-shot" onclick="openPlace(this)" data-img="art-fest-3.png" data-crest="节庆" data-name="埃登维尔的节庆" data-desc="（占位 · 待作者填充图片与描述。）"><div class="frame"><img src="data:image/svg+xml;utf8,&lt;svg xmlns='http://www.w3.org/2000/svg' width='400' height='300'&gt;&lt;rect width='400' height='300' fill='%23e9edf1'/&gt;&lt;text x='50%25' y='50%25' fill='%236b645d' font-family='serif' font-size='14' text-anchor='middle'&gt;节庆 · 图位&lt;/text&gt;&lt;/svg&gt;"></div></div>
-      </div>
-    </div>
-  </section>
 
   <footer><div class="crest">埃登维尔追忆</div><p>日蚀 · 第一部</p></footer>
 </div>
@@ -1474,11 +1527,13 @@
         <span class="cv-tab active" data-k="overview" onclick="switchCounty(this)">概述</span>
         <span class="cv-tab" data-k="economy" onclick="switchCounty(this)">经济</span>
         <span class="cv-tab" data-k="culture" onclick="switchCounty(this)">文化</span>
+        <span class="cv-tab" data-k="art" onclick="switchCounty(this)">美术</span>
       </div>
       <div class="cv-body">
         <div class="cv-panel active" id="cv-overview"></div>
         <div class="cv-panel" id="cv-economy"></div>
         <div class="cv-panel" id="cv-culture"></div>
+        <div class="cv-panel" id="cv-art"></div>
       </div>
     </div>
     <div class="cv-side">
@@ -1813,6 +1868,7 @@
     document.getElementById('cv-overview').innerHTML = d.querySelector('.overview').innerHTML;
     document.getElementById('cv-economy').innerHTML  = d.querySelector('.economy').innerHTML;
     document.getElementById('cv-culture').innerHTML  = d.querySelector('.culture').innerHTML;
+    document.getElementById('cv-art').innerHTML      = (d.querySelector('.art') ? d.querySelector('.art').innerHTML : '');
     var meta = d.querySelector('.cmeta');
     document.getElementById('cvMeta').innerHTML = meta ? meta.innerHTML : '';
     // 复位到「概述」
@@ -1823,6 +1879,8 @@
   }
   function switchCounty(tab){
     var k = tab.dataset.k;
+    document.querySelectorAll('#cv-art .gw-tile.pinned').forEach(function(p){p.classList.remove('pinned');});
+    var _aw=document.querySelector('#cv-art .gw-wall.has-pin'); if(_aw) _aw.classList.remove('has-pin');
     document.querySelectorAll('#view-county .cv-tab').forEach(function(t){t.classList.remove('active');});
     tab.classList.add('active');
     document.querySelectorAll('#view-county .cv-panel').forEach(function(p){p.classList.remove('active');});
@@ -2080,6 +2138,39 @@
       apply(location.hash);
     });
     if(location.hash&&location.hash!=='#/') apply(location.hash);   /* 深链与刷新还原 */
+  })();
+  /* ===== 美术 · 画展墙交互：点击原地放大停住、再点收回；悬停聚光（其余淡出，不挪位）===== */
+  (function(){
+    var panel=document.getElementById('cv-art');
+    if(!panel) return;
+    function release(){
+      panel.querySelectorAll('.gw-tile.pinned').forEach(function(p){p.classList.remove('pinned');p.style.transformOrigin='';});
+      panel.querySelectorAll('.gw-wall.has-pin').forEach(function(w){w.classList.remove('has-pin');});
+    }
+    function setOrigin(t){
+      var r=t.getBoundingClientRect(), cx=r.left+r.width/2, cy=r.top+r.height/2, w=window.innerWidth, h=window.innerHeight;
+      var ox=cx<w*0.33?'left':cx>w*0.67?'right':'center';
+      var oy=cy<h*0.33?'top':cy>h*0.67?'bottom':'center';
+      t.style.transformOrigin=ox+' '+oy;
+    }
+    panel.addEventListener('click',function(e){
+      var t=e.target.closest('.gw-tile');
+      if(!t){ release(); return; }
+      var w=t.closest('.gw-wall');
+      if(t.classList.contains('pinned')){ release(); return; }
+      release(); setOrigin(t); t.classList.add('pinned'); if(w) w.classList.add('has-pin');
+    });
+    panel.addEventListener('mouseover',function(e){
+      var w=e.target.closest('.gw-wall'); if(!w||w.classList.contains('has-pin')) return;
+      var t=e.target.closest('.gw-tile');
+      if(t){ w.classList.add('lit'); w.querySelectorAll('.gw-tile').forEach(function(x){x.classList.toggle('hot',x===t);}); }
+      else { w.classList.remove('lit'); w.querySelectorAll('.gw-tile.hot').forEach(function(x){x.classList.remove('hot');}); }
+    });
+    panel.addEventListener('mouseout',function(e){
+      var w=e.target.closest('.gw-wall'); if(!w) return;
+      if(!w.contains(e.relatedTarget)){ w.classList.remove('lit'); w.querySelectorAll('.gw-tile.hot').forEach(function(x){x.classList.remove('hot');}); }
+    });
+    document.addEventListener('keydown',function(e){ if(e.key==='Escape') release(); });
   })();
 </script>
 </body></html>
